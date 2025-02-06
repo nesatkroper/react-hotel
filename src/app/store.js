@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 
 import roleReduce from "@/app/reducer/role-slice";
 import userReduce from "@/app/reducer/user-slice";
+import authReduce from "@/app/reducer/auth-slice";
 import roomReduce from "@/app/reducer/room-slice";
 import departmentReduce from "@/app/reducer/department-slice";
 import positionReduce from "@/app/reducer/position-slice";
@@ -21,7 +22,8 @@ import closeshiftReduce from "@/app/reducer/close-shift-slice";
 export default configureStore({
   reducer: {
     role: roleReduce,
-    users: userReduce,
+    user: userReduce,
+    auths: authReduce,
     rooms: roomReduce,
     departments: departmentReduce,
     positions: positionReduce,

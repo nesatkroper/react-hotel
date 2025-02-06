@@ -28,7 +28,6 @@ const FormSelect = (props) => {
     onCallbackSelect,
     mainClass,
     labelClass,
-    placeholder = "Select gender",
     size = 250,
     label = "Gender",
     item = demo,
@@ -42,7 +41,7 @@ const FormSelect = (props) => {
       <Label className={labelClass}>{label}</Label>
       <Select onValueChange={handleSelect}>
         <SelectTrigger className={`w-[${size}px]`}>
-          <SelectValue placeholder={placeholder} />
+          <SelectValue placeholder={`Select ${label}`} />
         </SelectTrigger>
         <SelectContent>
           {item?.map((d, i) => (
