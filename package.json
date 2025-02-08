@@ -14,7 +14,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "postinstall": "npx husky install",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "git": "git add . && git commit -m \"change dir structure, setup telegram service and setup socket\" &&   git push"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",

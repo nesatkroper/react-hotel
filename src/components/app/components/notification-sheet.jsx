@@ -15,12 +15,24 @@ import { SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { X } from "lucide-react";
+import { io } from "socket.io-client";
+
+const SOCKET = io("http://localhost:3000");
 
 const NotificationSheet = () => {
   const [date, setDate] = useState(new Date());
-  const [item, setItem] = useState(20);
+  const [item, setItem] = useState(2);
+  const [messages, setMessages] = useState([]);
+
+  useEffect(() => {
+    SOCKET.on("receiveMessage", (message) => {
+      setMessages((prev) => [...prev, message]);
+    });
+
+    return () => SOCKET.off("receiveMessage");
+  }, []);
   return (
     <>
       <SheetContent>
@@ -29,12 +41,12 @@ const NotificationSheet = () => {
         </SheetHeader>
         <Separator className="my-3" />
         <ScrollArea className="h-[85vh] w-full rounded-xl border-y ">
-          {Array?.from({ length: item })?.map((_, index) => (
+          {messages?.map((msg, index) => (
             <Card key={index} className="mb-3">
               <CardHeader className="p-2 px-3 pb-0">
                 <CardTitle>
                   <div className="flex justify-between items-center">
-                    <p className="underline">Order</p>
+                    <p className="underline">{msg.sender}</p>
                     <p className="font-normal">
                       {date.toLocaleDateString("en-US", {
                         year: "numeric",
@@ -58,9 +70,7 @@ const NotificationSheet = () => {
                     </TooltipProvider>
                   </div>
                 </CardTitle>
-                <CardDescription>
-                  {index % 2 ? "Room Reservation" : "Product Order"}
-                </CardDescription>
+                <CardDescription>{msg.content}</CardDescription>
               </CardHeader>
               <CardContent className="p-3">
                 <div className="flex justify-between">
