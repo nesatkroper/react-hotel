@@ -79,16 +79,22 @@ export const EmployeeColumns = [
     enableHiding: false,
   },
   {
-    accessorKey: "account_status",
+    accessorKey: "status",
     header: "Status",
     cell: ({ row }) => {
-      const status = row.original.account_status;
-      console.log(status);
+      const status = row.original.status;
       return (
-        <div className="flex justify-center">
-          {" "}
-          <Checkbox checked={status == "available"} />
-        </div>
+        <p
+          className={` capitalize font-semibold ${
+            status == "active"
+              ? "text-green-600"
+              : status == "pending"
+              ? "text-yellow-600"
+              : "text-red-600"
+          }`}
+        >
+          {status}
+        </p>
       );
     },
   },
@@ -96,10 +102,11 @@ export const EmployeeColumns = [
     accessorKey: "picture",
     header: () => <div className="text-start">Picture</div>,
     cell: ({ row }) => {
+      const picture = row.original.info?.picture;
       return (
         <img
-          src={`${local}/uploads/employee/${row.getValue("picture")}`}
-          alt="product"
+          src={`${local}/uploads/employee/${picture}`}
+          alt="profile"
           onError={(e) => (e.target.src = defimg)}
           className="h-[80px] rounded-lg"
         />
@@ -120,7 +127,7 @@ export const EmployeeColumns = [
       return (
         <Button
           variant="ghost"
-          className="font-bold"
+          className="font-bold text-center"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Employee Code
@@ -165,27 +172,11 @@ export const EmployeeColumns = [
     },
   },
   {
-    accessorKey: "email",
-    header: () => <div className="text-center">Email</div>,
-    cell: ({ row }) => {
-      return <div className="text-center">{row.getValue("email")}</div>;
-    },
-  },
-  {
     accessorKey: "phone",
     header: () => <div className="text-center">Phone</div>,
     cell: ({ row }) => {
       return (
         <div className="text-center capitalize">{row.getValue("phone")}</div>
-      );
-    },
-  },
-  {
-    accessorKey: "address",
-    header: () => <div className="text-center">Address</div>,
-    cell: ({ row }) => {
-      return (
-        <div className="text-center capitalize">{row.getValue("address")}</div>
       );
     },
   },
@@ -221,7 +212,7 @@ export const EmployeeColumns = [
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
                   <AlertDialogAction
-                    onClick={() => handleDelete(item.product_id)}
+                    onClick={() => handleDelete(item.employee_id)}
                     className="bg-red-500"
                   >
                     Continue

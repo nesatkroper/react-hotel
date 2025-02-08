@@ -5,11 +5,9 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
-import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { defimg } from "@/utils/resize-crop-image";
 import { getPositions } from "@/app/reducer/position-slice";
 import { getEmployees } from "@/app/reducer/employee-slice";
 import axiosInstance from "@/providers/axiosInstance";
@@ -17,32 +15,24 @@ import PropTypes from "prop-types";
 import FormInput from "@/components/app/form/form-input";
 import FormSelect from "@/components/app/form/form-select";
 import FormDatePicker from "@/components/app/form/form-date-picker";
-import FormTextArea from "@/components/app/form/form-textarea";
 import FormComboBox from "@/components/app/form/form-combobox";
-import FormImageOriginal from "@/components/app/form/form-image-ori";
-import FormImagePreview from "@/components/app/form/form-image-preview";
 import { Loader2 } from "lucide-react";
+import { getDepartments } from "@/app/reducer/department-slice";
 
 const EmployeeAdd = ({ lastCode }) => {
   const dispatch = useDispatch();
+  const { depData } = useSelector((state) => state?.departments);
   const { posData } = useSelector((state) => state?.positions);
   const [issend, setIssend] = useState(false);
-  const [imagePreview, setImagePreview] = useState(defimg);
   const [formData] = useState(() => {
     const form = new FormData();
     form.append("employee_code", parseInt(lastCode, 10) + 1);
-    form.append("auth_id", 0);
-    form.append("account_status", "available");
+    form.append("status", "active");
     form.append("first_name", "");
     form.append("last_name", "");
-    form.append("picture", "");
     form.append("gender", "");
     form.append("dob", "");
-    form.append("email", "");
     form.append("phone", "");
-    form.append("address", "");
-    form.append("city", "Siem Reap");
-    form.append("state", "Siem Reap");
     form.append("position_id", 0);
     form.append("department_id", 1);
     form.append("salary", 0);
@@ -52,6 +42,7 @@ const EmployeeAdd = ({ lastCode }) => {
 
   useEffect(() => {
     dispatch(getPositions());
+    dispatch(getDepartments());
   }, [dispatch]);
 
   const handleFormData = (event) => {
@@ -59,12 +50,6 @@ const EmployeeAdd = ({ lastCode }) => {
       for (let [key, value] of event.entries()) {
         console.log(`Key: ${key}, Value:`, value);
         formData.set(key, value);
-      }
-
-      if (event.has("picture")) {
-        const file = event.get("picture");
-        const previewUrl = URL.createObjectURL(file);
-        setImagePreview(previewUrl);
       }
     } else if (event?.target) {
       const { name, value } = event.target;
@@ -87,6 +72,7 @@ const EmployeeAdd = ({ lastCode }) => {
           dispatch(getEmployees());
         })
         .catch((error) => {
+          setIssend(false);
           console.log("Error submitting form:", error);
         });
       console.log(formData);
@@ -142,9 +128,9 @@ const EmployeeAdd = ({ lastCode }) => {
             />
             <FormInput
               onCallbackInput={handleFormData}
-              name="email"
-              label="Email Address*"
-              placeholder="someone@example.com"
+              label="Salary*"
+              name="salary"
+              placeholder="$250.00"
             />
           </div>
           <div className="flex justify-between mb-2 mt-2">
@@ -157,27 +143,14 @@ const EmployeeAdd = ({ lastCode }) => {
               label="Hired Date"
             />
           </div>
-          <div className="flex justify-between mb-2 mt-2">
-            <FormInput
-              onCallbackInput={handleFormData}
-              label="City"
-              name="city"
-              placeholder="Siem Reap"
-            />
-            <FormInput
-              onCallbackInput={handleFormData}
-              label="State"
-              name="state"
-              placeholder="Siem Reap"
-            />
-          </div>
-          <FormTextArea
-            onCallbackInput={handleFormData}
-            label="Address"
-            name="address"
-            placeholder="Something ..."
-          />
           <div className="flex justify-between mb-2 mt-3">
+            <FormComboBox
+              onCallbackSelect={(e) => formData.set("department_id", e)}
+              label="Department"
+              item={depData}
+              optID="department_id"
+              optLabel="department_name"
+            />
             <FormComboBox
               onCallbackSelect={(e) => formData.set("position_id", e)}
               label="Position"
@@ -185,20 +158,8 @@ const EmployeeAdd = ({ lastCode }) => {
               optID="position_id"
               optLabel="position_name"
             />
-            <FormInput
-              onCallbackInput={handleFormData}
-              label="Salary*"
-              name="salary"
-              placeholder="$250.00"
-            />
           </div>
-          <div className="flex justify-between mb-2 mt-3">
-            <div className="flex flex-col gap-2">
-              <Label>Product Picture</Label>
-              <FormImageOriginal onCallbackFormData={handleFormData} />
-            </div>
-            <FormImagePreview imgSrc={imagePreview} />
-          </div>
+          <div className="flex justify-between mb-2 mt-3"></div>
           <DialogClose onClick={handleFormSubmit} className="mt-2">
             <Button type="submit">
               {issend ? <Loader2 className=" animate-spin" /> : "Submit"}
