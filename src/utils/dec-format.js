@@ -49,7 +49,7 @@ export const toPercentage = (value, fixed = 0) => {
   return `${value.toFixed(fixed)} %`;
 };
 
-export const toUnit = (value, fixed = 0, unit = "pcs") => {
+export const toUnit = (value, fixed = 0, unit = "Pcs") => {
   return `${value.toFixed(fixed)} ${unit}`;
 };
 

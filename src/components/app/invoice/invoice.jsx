@@ -1,43 +1,22 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import InvoiceHeader from "./components/inv-header";
 import InvoiceContent from "./components/inv-content";
 import InvoiceTable from "./components/inv-table";
 import InvoiceFooter from "./components/inv-footer";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
-import FormSelect from "../form/form-select";
+
 import { logo } from "@/utils/resize-crop-image";
 import axiosInstance from "@/providers/axios-instance";
+import PropTypes from "prop-types";
 
-const METHOD = [
-  {
-    value: "cash",
-    data: "Cash",
-  },
-  {
-    value: "leave",
-    data: "On Leave",
-  },
-];
-const TYPE = [
-  {
-    value: "sale",
-    data: "Sale",
-  },
-  {
-    value: "room",
-    data: "Room",
-  },
-];
+const Invoice = (props) => {
+  const { method = "cash", type = "sale" } = props;
 
-const Invoice = () => {
   const cardRef = useRef();
-  const [method, setMethod] = useState("cash");
-  const [type, setType] = useState("sale");
 
   const handleDownloadPDF = async () => {
     const originalCard = cardRef.current;
@@ -121,62 +100,37 @@ const Invoice = () => {
     return response.data.filePath;
   };
 
-  const handleMethodChange = (event) => {
-    setMethod(event);
-    console.log(event);
-  };
-  const handleTypeChange = (event) => {
-    console.log(event);
-    setType(event);
-  };
-
   return (
-    <div className="flex justify-between">
-      <div className="flex flex-col gap-4">
-        <div className="flex flex-col gap-3">
-          <Label>Download Invoice</Label>
-          <Button onClick={handleDownloadPDF} className="w-[150px] ">
-            Download PDF
-          </Button>
-          <Button onClick={handleSaveAsJPG} className="w-[150px] ">
-            Download JPG
-          </Button>
-        </div>
-        <div className="flex flex-col gap-3">
-          <FormSelect
-            onCallbackSelect={handleTypeChange}
-            item={TYPE}
-            label="Type"
-            placeholder="Sale"
-            size={150}
-          />
-          <FormSelect
-            onCallbackSelect={handleMethodChange}
-            item={METHOD}
-            label="Method"
-            placeholder="Cash"
-            size={150}
-          />
-        </div>
-      </div>
-      <div className="flex justify-center">
-        <Card
-          ref={cardRef}
-          className="w-[10cm] text-center rounded-none  max-h-[13cm] overflow-y-auto "
-        >
-          <InvoiceHeader brand="Hotel Jee Heang" logo={logo} />
-          <CardContent className="px-3">
-            <Separator className="mb-1" />
-            <InvoiceContent payment={method} />
-            <Separator />
-            <InvoiceTable type={type} />
-            <Separator />
-            <InvoiceFooter method={method} />
-          </CardContent>
-        </Card>
+    <div className="flex justify-center relative">
+      <Card
+        ref={cardRef}
+        className="w-[10cm] text-center rounded-none  max-h-[15cm] overflow-y-auto "
+      >
+        <InvoiceHeader brand="Hotel Jee Heang" logo={logo} />
+        <CardContent className="px-3">
+          <Separator className="mb-1" />
+          <InvoiceContent payment={method} />
+          <Separator />
+          <InvoiceTable type={type} />
+          <Separator />
+          <InvoiceFooter method={method} />
+        </CardContent>
+      </Card>
+      <div className="flex gap-3 absolute bottom-[-47px] left-0">
+        <Button onClick={handleDownloadPDF} className=" ">
+          PDF
+        </Button>
+        <Button onClick={handleSaveAsJPG} className=" ">
+          JPG
+        </Button>
       </div>
     </div>
   );
+};
+
+Invoice.propTypes = {
+  method: PropTypes.string,
+  type: PropTypes.string,
 };
 
 export default Invoice;

@@ -14,41 +14,39 @@ import {
   datetimeNow,
   toUnit,
 } from "@/utils/dec-format";
+import { useDispatch, useSelector } from "react-redux";
+import { getCart } from "@/app/reducer/cart-slice";
+import { useEffect, useMemo } from "react";
 
-const demo = [
-  {
-    product: "Burger",
-    unit: 7,
-    qty: 2,
-    notes: [{ list: "With extra cheese" }, { list: "Grilled" }],
-  },
-  {
-    product: "Pasta",
-    unit: 12,
-    qty: 1,
-    notes: [{ list: "Creamy Alfredo" }, { list: "With garlic bread" }],
-  },
-  {
-    product: "Pizzar",
-    unit: 9,
-    qty: 3,
-    notes: [{ list: "Large size" }, { list: "Hot Dog" }],
-  },
-  {
-    product: "Burger",
-    unit: 7,
-    qty: 2,
-    notes: [{ list: "With extra cheese" }, { list: "Grilled" }],
-  },
-];
+const Tax = 10;
 
 const InvoiceTable = (props) => {
-  const { data, type } = props;
+  const { type = "sale" } = props;
 
-  const totalAmount = data?.reduce(
-    (acc, item) => acc + item.unit * item.qty,
-    0
-  );
+  const dispatch = useDispatch();
+  const { cartData } = useSelector((state) => state.cart);
+
+  useEffect(() => {
+    dispatch(getCart());
+  }, [dispatch]);
+
+  const { total, discount, amount } = useMemo(() => {
+    const total = cartData?.reduce(
+      (sum, item) => sum + item.product.price * item.quantity,
+      0
+    );
+
+    const discount = cartData?.reduce(
+      (sum, item) =>
+        sum +
+        (item.product.price * item.quantity * item.product.discount_rate) / 100,
+      0
+    );
+
+    const amount = total - discount;
+
+    return { total, discount, amount };
+  }, [cartData]);
 
   return (
     <div>
@@ -63,22 +61,22 @@ const InvoiceTable = (props) => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data?.map((d, i) => (
+            {cartData?.map((item, i) => (
               <TableRow key={i} className="!border-none">
                 <TableCell className="text-left py-1">
-                  <p className="font-medium">{d.product}</p>
-                  {d.notes?.map((m, j) => (
-                    <p key={j}>- {m.list}</p>
+                  <p className="font-medium">{item.product?.product_name}</p>
+                  {item.note?.map((m, j) => (
+                    <p key={j}>- {m.note}</p>
                   ))}
                 </TableCell>
                 <TableCell className="text-center align-top py-1">
-                  {cDollar(d.unit)}
+                  {cDollar(item.product.price)}
                 </TableCell>
                 <TableCell className="text-center align-top py-1">
-                  {d.qty} pcs
+                  {toUnit(item.quantity, 0)}
                 </TableCell>
                 <TableCell className="text-right align-top py-1">
-                  {cDollar(d.qty * d.unit)}
+                  {cDollar(item.quantity * item.product?.price)}
                 </TableCell>
               </TableRow>
             ))}
@@ -116,20 +114,20 @@ const InvoiceTable = (props) => {
       <div className="flex flex-col px-1 my-2">
         <div className="flex justify-between font-semibold">
           <p>TOTAL :</p>
-          <p className="font-semibold">{cDollar(totalAmount)}</p>
+          <p className="font-semibold">{cDollar(total)}</p>
         </div>
         <div className="flex justify-between font-semibold">
-          <p>TAX ({toUnit(5, 0, "%")}) :</p>
-          <p className="font-semibold">{cDollar(totalAmount, 5)}</p>
+          <p>Tax ({toUnit(Tax, 0, "%")}) :</p>
+          <p className="font-semibold">{cDollar(total, Tax)}</p>
         </div>
         <div className="flex justify-between font-semibold">
           <p>DISCOUNT :</p>
-          <p className="font-semibold">{cDollar(0)}</p>
+          <p className="font-semibold">{cDollar(discount)}</p>
         </div>
         <div className="flex justify-between font-semibold">
           <p>AMOUNT :</p>
           <p className="font-bold text-red-600">
-            {afterPerDollar(totalAmount, 5)}
+            {afterPerDollar(amount, -Tax)}
           </p>
         </div>
       </div>
@@ -140,11 +138,6 @@ const InvoiceTable = (props) => {
 InvoiceTable.propTypes = {
   data: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
   type: PropTypes.string,
-};
-
-InvoiceTable.defaultProps = {
-  data: demo,
-  type: "sale",
 };
 
 export default InvoiceTable;
