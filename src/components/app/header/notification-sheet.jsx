@@ -18,8 +18,9 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import { io } from "socket.io-client";
+import { local } from "@/utils/resize-crop-image";
 
-const SOCKET = io("http://localhost:3000");
+const SOCKET = io(local);
 
 const NotificationSheet = () => {
   const [date, setDate] = useState(new Date());
@@ -27,11 +28,11 @@ const NotificationSheet = () => {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    SOCKET.on("receiveMessage", (message) => {
+    SOCKET.on("receiveNotification", (message) => {
       setMessages((prev) => [...prev, message]);
     });
 
-    return () => SOCKET.off("receiveMessage");
+    return () => SOCKET.off("receiveNotification");
   }, []);
   return (
     <SheetContent>

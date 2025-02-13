@@ -13,10 +13,13 @@ import { io } from "socket.io-client";
 import NotificationSheet from "./notification-sheet";
 import GroupChat from "./group-chat";
 import AppSearchBar from "./app-search-bar";
+import chatSound from "@/assets/mp3/chat.wav";
+import useSound from "../sound/use-sound";
 
 const SOCKET = io(local);
 
 const AppHeader = () => {
+  const play = useSound(chatSound);
   const [notiCount] = useState(2);
   const [chatcount, setChatcount] = useState(0);
   const [unreadMessages, setUnreadMessages] = useState([]);
@@ -39,6 +42,7 @@ const AppHeader = () => {
     }, 1000);
 
     SOCKET.on("receiveGroup", (message) => {
+      play();
       if (!isChatOpen) {
         setChatcount((prev) => prev + 1);
         setUnreadMessages((prev) => [...prev, message]);

@@ -14,9 +14,9 @@ const InvoiceFooter = (props) => {
       ) : (
         ""
       )}
-      <p>+855 010 280 202</p>
-      <p>Thanks you and see you again !</p>
-      <p>
+      <p className="text-sm font-semibold">+855 010 280 202</p>
+      <p className="text-sm">Thanks you and see you again !</p>
+      <p className="text-sm">
         Systems By Developer. <b className="underline">SUON Phanun</b>
       </p>
     </div>

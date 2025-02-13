@@ -1,22 +1,26 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
+import { useRef } from "react";
+import { cDollar, dollarToRiel } from "@/utils/dec-format";
 import QRCode from "react-qr-code";
 import axiosAuth from "@/providers/axios-auth";
 import PropTypes from "prop-types";
-import { cDollar, dollarToRiel } from "@/utils/dec-format";
 import riel from "@/assets/images/riel.png";
-import { useRef } from "react";
-import paymentSuccessSound from "@/assets/mp3/payment_success.mp3";
+import dollar from "@/assets/images/dollar.png";
+import paymentSuccessSound from "@/assets/mp3/success.mp3";
 import axios from "axios";
 import Cookies from "js-cookie";
-import axiosInstance from "@/providers/axios-instance";
+import { io } from "socket.io-client";
+import { local } from "@/utils/resize-crop-image";
 
 const emp_id = Cookies.get("employee_id");
+const SOCKET = io(local);
 
 const RequestKHQR = (props) => {
-  const { amount = null, currency = "khr" } = props;
+  const { amount = null, currency = "usd" } = props;
   const audioRef = useRef(null);
   const [qrData, setQrData] = useState(null);
+  const [msg, setMsg] = useState("");
   const [form] = useState({
     account: "suon_phanun@aclb",
     name: "PHANUN SUON",
@@ -38,7 +42,13 @@ const RequestKHQR = (props) => {
     externalRef: "external-reference-id",
   });
 
-  console.log(form.amount);
+  const handleSendMessage = (data) => {
+    if (!msg.trim()) return;
+    SOCKET.emit("sendGroup", {
+      data,
+    });
+    setMsg("");
+  };
 
   useEffect(() => {
     if (amount) handleGenerateQR();
@@ -97,22 +107,23 @@ const RequestKHQR = (props) => {
         response.data.responseCode === 0 &&
         response.data.responseMessage === "Success"
       ) {
-        console.log("Payment Status:", response.data.data.hash);
+        handleSendMessage(response.data.data);
+        // console.log("Payment Status:", response.data.data);
 
-        setFormPayment({
-          sale_id: response.data.data.sale_id || null,
-          reservation_id: response.data.data.reservation_id || null,
-          employee_id: emp_id,
-          invoice: response.data.data.invoice || null,
-          hash: response.data.data.hash || "",
-          fromAccountId: response.data.data.fromAccountId || "",
-          toAccountId: response.data.data.toAccountId || "",
-          currency: response.data.data.currency || "",
-          amount: response.data.data.amount || 0,
-          externalRef: response.data.data.externalRef || "",
-        });
+        // setFormPayment({
+        //   sale_id: response.data.data.sale_id || null,
+        //   reservation_id: response.data.data.reservation_id || null,
+        //   employee_id: emp_id,
+        //   invoice: response.data.data.invoice || null,
+        //   hash: response.data.data.hash || "",
+        //   fromAccountId: response.data.data.fromAccountId || "",
+        //   toAccountId: response.data.data.toAccountId || "",
+        //   currency: response.data.data.currency || "",
+        //   amount: response.data.data.amount || 0,
+        //   externalRef: response.data.data.externalRef || "",
+        // });
 
-        handleCreatePayment();
+        // handleCreatePayment();
         setQrData(null);
         return "success";
       }
@@ -122,16 +133,16 @@ const RequestKHQR = (props) => {
     }
   };
 
-  const handleCreatePayment = async () => {
-    try {
-      console.log("Form Payment:", formPayment);
+  // const handleCreatePayment = async () => {
+  //   try {
+  //     console.log("Form Payment:", formPayment);
 
-      const res = await axiosInstance.post("/payment", formPayment);
-      console.log(res);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  //     const res = await axiosInstance.post("/payment", formPayment);
+  //     console.log(res);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
   return (
     <Card className="w-full p-0">
@@ -145,13 +156,17 @@ const RequestKHQR = (props) => {
             <p className="text-2xl font-bold text-gray-800">
               {currency === "usd"
                 ? cDollar(form.amount)
-                : dollarToRiel(form.amount)}
+                : dollarToRiel(form.amount, 1)}
             </p>
             {qrData ? (
               <div className="mt-4 flex flex-col items-center relative">
                 <QRCode value={qrData} size={256} className="rounded-xl" />
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <img src={riel} alt="Logo" className="w-12 h-12" />
+                  {currency === "khr" ? (
+                    <img src={riel} alt="Logo" className="w-12 h-12" />
+                  ) : (
+                    <img src={dollar} alt="Logo" className="w-12 h-12" />
+                  )}
                 </div>
                 <p className="mt-2 text-sm text-gray-500">
                   Scan the QR code above

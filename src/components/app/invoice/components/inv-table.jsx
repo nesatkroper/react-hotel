@@ -12,6 +12,7 @@ import {
   afterPerDollar,
   cDollar,
   datetimeNow,
+  dollarToRiel,
   toUnit,
 } from "@/utils/dec-format";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,7 +22,7 @@ import { useEffect, useMemo } from "react";
 const Tax = 10;
 
 const InvoiceTable = (props) => {
-  const { type = "sale" } = props;
+  const { type = "sale", currency = "usd" } = props;
 
   const dispatch = useDispatch();
   const { cartData } = useSelector((state) => state.cart);
@@ -113,21 +114,32 @@ const InvoiceTable = (props) => {
       <Separator />
       <div className="flex flex-col px-1 my-2">
         <div className="flex justify-between font-semibold">
-          <p>TOTAL :</p>
-          <p className="font-semibold">{cDollar(total)}</p>
+          <p className="text-sm">Total :</p>
+          <p className="text-sm font-semibold">
+            {currency === "usd" ? cDollar(total) : dollarToRiel(total)}
+          </p>
         </div>
         <div className="flex justify-between font-semibold">
-          <p>Tax ({toUnit(Tax, 0, "%")}) :</p>
-          <p className="font-semibold">{cDollar(total, Tax)}</p>
+          <p className="text-sm">Tax ({toUnit(Tax, 0, "%")}) :</p>
+          <p className="text-sm font-semibold">
+            {currency === "usd"
+              ? cDollar(total, Tax)
+              : dollarToRiel(total, 4000, Tax)}
+          </p>
         </div>
         <div className="flex justify-between font-semibold">
-          <p>DISCOUNT :</p>
-          <p className="font-semibold">{cDollar(discount)}</p>
+          <p className="text-sm">Discount :</p>
+          <p className="text-sm font-semibold text-red-600">
+            {currency === "usd" ? cDollar(discount) : dollarToRiel(discount)}
+          </p>
         </div>
+        <Separator className="my-1" />
         <div className="flex justify-between font-semibold">
-          <p>AMOUNT :</p>
+          <p className="text-sm">Amount :</p>
           <p className="font-bold text-red-600">
-            {afterPerDollar(amount, -Tax)}
+            {currency === "usd"
+              ? afterPerDollar(amount, -Tax)
+              : dollarToRiel(amount, 4000, (1 + Tax) * 10)}
           </p>
         </div>
       </div>
@@ -136,7 +148,7 @@ const InvoiceTable = (props) => {
 };
 
 InvoiceTable.propTypes = {
-  data: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+  currency: PropTypes.string,
   type: PropTypes.string,
 };
 
