@@ -1,10 +1,29 @@
-import axios from "@/providers/axiosInstance";
+import axiosAuth from "@/providers/axios-auth";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-export const getProduct = createAsyncThunk("getProduct", async () => {
-  const res = await axios.get("/products");
-  return res?.data;
-});
+export const getProduct = createAsyncThunk(
+  "getProduct",
+  async (
+    { id, category = false, stocks = false, saledetails = false } = {},
+    { rejectWithValue }
+  ) => {
+    try {
+      const queryParams = new URLSearchParams({
+        category: category.toString(),
+        stocks: stocks.toString(),
+        saledetails: saledetails.toString(),
+      }).toString();
+
+      const res = id
+        ? await axiosAuth.get(`/product/${id}?${queryParams}`)
+        : await axiosAuth.get(`/product?${queryParams}`);
+      console.log(res.data);
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "Something went wrong");
+    }
+  }
+);
 
 const productSlice = createSlice({
   name: "product",

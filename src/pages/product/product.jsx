@@ -1,7 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { getProduct } from "@/app/reducer/product-slice.jsx";
 import { ProductColumns } from "./components/product-columns.jsx";
+import { toNumber } from "@/utils/dec-format.js";
 import Layout from "@/components/app/layout";
 import ProductAdd from "./components/product-add.jsx";
 import AppDataTable from "@/components/app/table/app-data-table.jsx";
@@ -11,8 +12,14 @@ const Product = () => {
   const { proData, proLoading } = useSelector((state) => state?.products);
 
   useEffect(() => {
-    dispatch(getProduct());
+    dispatch(getProduct({ category: true }));
   }, [dispatch]);
+
+  const lastCode = useMemo(() => {
+    if (!proData || proData.length === 0) return 0;
+    const code = toNumber(proData[0]?.product_code, "-");
+    return Number.isNaN(code) || code == null ? 0 : code;
+  }, [proData]);
 
   return (
     <Layout>
@@ -23,11 +30,7 @@ const Product = () => {
         main="product_name"
         loading={proLoading}
         add="Add Product"
-        addElement={
-          <ProductAdd
-            lastCode={parseInt(proData[0]?.product_code.split("-")[1], 10)}
-          />
-        }
+        addElement={<ProductAdd key={lastCode} lastCode={lastCode} />}
       />
     </Layout>
   );

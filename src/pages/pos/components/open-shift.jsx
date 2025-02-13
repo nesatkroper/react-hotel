@@ -14,7 +14,8 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getOpenShift } from "@/app/reducer/open-shift-slice";
 import { getBanknote } from "@/app/reducer/bank-note-slice";
-import axios from "@/providers/axiosInstance";
+import axiosAuth from "@/providers/axios-auth";
+import Cookies from "js-cookie";
 
 const OpenShift = ({ setShift }) => {
   const dispatch = useDispatch();
@@ -109,17 +110,14 @@ const OpenShift = ({ setShift }) => {
 
   const handleAddShiftCode = (code) => {
     setShiftCode(code);
-    sessionStorage.setItem(
-      "shiftcode",
-      `SHIFT-${code.toString().padStart(4, "0")}`
-    );
+    Cookies.set("shiftcode", `SHIFT-${code.toString().padStart(4, "0")}`);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    await axios
-      .post("/open-shift", data)
+    await axiosAuth
+      .post("/open", data)
       .then((res) => {
         console.log(res);
       })
@@ -127,15 +125,15 @@ const OpenShift = ({ setShift }) => {
         console.log(err);
       });
 
-    await axios
-      .post("/bank-note", banknote)
+    await axiosAuth
+      .post("/banknote", banknote)
       .then((res) => {
         console.log(res);
       })
       .catch((err) => {
         console.log(err);
       });
-
+    console.log(banknote);
     handleAddShiftCode(opeData[0]?.open_shift_id + 1);
   };
 
@@ -177,6 +175,7 @@ const OpenShift = ({ setShift }) => {
                     name={key}
                     value={banknote[key] || 0}
                     onChange={handleBanknoteChange}
+                    min={0}
                     className="w-[80px] h-[30px]"
                   />
                 </div>

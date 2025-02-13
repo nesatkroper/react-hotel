@@ -31,6 +31,7 @@ const FormSelect = (props) => {
     size = 250,
     label = "Gender",
     item = demo,
+    isLabel = true,
   } = props;
 
   const handleSelect = (event) => {
@@ -38,7 +39,7 @@ const FormSelect = (props) => {
   };
   return (
     <div className={`flex flex-col gap-2 ${mainClass}`}>
-      <Label className={labelClass}>{label}</Label>
+      {isLabel ? <Label className={labelClass}>{label}</Label> : ""}
       <Select onValueChange={handleSelect}>
         <SelectTrigger className={`w-[${size}px]`}>
           <SelectValue placeholder={`Select ${label}`} />
@@ -62,6 +63,7 @@ FormSelect.propTypes = {
   placeholder: PropTypes.string,
   size: PropTypes.number,
   label: PropTypes.string,
+  isLabel: PropTypes.bool,
   item: PropTypes.arrayOf(
     PropTypes.shape({
       value: PropTypes.string.isRequired,

@@ -42,7 +42,7 @@ import { Button } from "@/components/ui/button";
 import { demo } from "./demo";
 import { column } from "./column";
 import PropTypes from "prop-types";
-import AppLoading from "../components/app-loading";
+import AppLoading from "../utils/app-loading";
 
 const AppDataTable = (props) => {
   const { data, columns, main, btnSize, addElement, title, des, loading } =

@@ -11,17 +11,18 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { getPcategory } from "@/app/reducer/product-category-slice";
 import { defimg } from "@/utils/resize-crop-image";
-import CropImageUploader from "@/components/app/utils/crop-image-uploader";
-import axiosInstance from "@/providers/axiosInstance";
+import { getRooms } from "@/app/reducer/room-slice";
 import FormInput from "@/components/app/form/form-input";
 import FormTextArea from "@/components/app/form/form-textarea";
-import { getRooms } from "@/app/reducer/room-slice";
 import FormImagePreview from "@/components/app/form/form-image-preview";
 import PropTypes from "prop-types";
+import FormImageResize from "@/components/app/form/form-image-resize";
+import axiosInstance from "@/providers/axios-instance";
 
 const ProductCategoryAdd = ({ lastCode }) => {
   const dispatch = useDispatch();
   const [imagePreview, setImagePreview] = useState(defimg);
+
   const [formData] = useState(() => {
     const form = new FormData();
     form.append("picture", "");
@@ -62,13 +63,13 @@ const ProductCategoryAdd = ({ lastCode }) => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
-    for (let [key, value] of formData.entries()) {
-      console.log(`${key}: ${value}`);
-    }
-
     try {
       await axiosInstance
-        .post("/category", formData)
+        .post("/category", formData, {
+          headers: {
+            "Content-type": "multipart/form-data",
+          },
+        })
         .then((res) => {
           console.log(res);
           dispatch(getPcategory());
@@ -107,11 +108,15 @@ const ProductCategoryAdd = ({ lastCode }) => {
               }
             />
           </div>
-          <FormTextArea onCallbackInput={handleFormData} name="memo" />
+          <FormTextArea
+            onCallbackInput={handleFormData}
+            name="memo"
+            label="Description"
+          />
           <div className="flex justify-between my-3 ">
             <div className="flex flex-col gap-2">
               <Label>Choose Image*</Label>
-              <CropImageUploader
+              <FormImageResize
                 onCallbackFormData={handleFormData}
                 resolution={400}
               />

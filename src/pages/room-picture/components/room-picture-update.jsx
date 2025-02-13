@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
-import axios from "@/providers/axiosInstance";
+import axios from "@/providers/axios-instance";
 import { useDispatch } from "react-redux";
 import { getRpicture } from "@/app/reducer/room-picture-slice";
 import { local } from "@/utils/resize-crop-image";

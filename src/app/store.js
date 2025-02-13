@@ -13,11 +13,12 @@ import reservationReduce from "@/app/reducer/reservationSlice";
 import rpictureReduce from "@/app/reducer/room-picture-slice";
 import pcategoryReduce from "@/app/reducer/product-category-slice";
 import productReduce from "@/app/reducer/product-slice";
-import counterReduce from "./reducer/counter";
+import counterReduce from "./reducer/cart-slice";
 import searchCateReduce from "@/app/reducer/search-category-slice";
 import banknoteRduce from "@/app/reducer/bank-note-slice";
 import openshiftReduce from "@/app/reducer/open-shift-slice";
 import closeshiftReduce from "@/app/reducer/close-shift-slice";
+import cartReduce from "@/app/reducer/cart-slice";
 
 export default configureStore({
   reducer: {
@@ -34,6 +35,7 @@ export default configureStore({
     reservations: reservationReduce,
     pcategories: pcategoryReduce,
     products: productReduce,
+    cart: cartReduce,
     searchCates: searchCateReduce,
     banknotes: banknoteRduce,
     openshifts: openshiftReduce,

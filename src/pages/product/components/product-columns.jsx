@@ -26,7 +26,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
-import axiosInstance from "@/providers/axiosInstance";
+import axiosInstance from "@/providers/axios-instance";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { defimg, local } from "@/utils/resize-crop-image";
@@ -82,7 +82,6 @@ export const ProductColumns = [
     header: "Status",
     cell: ({ row }) => {
       const status = row.original.status;
-      console.log(status);
       return (
         <div
           className={`capitalize ${status ? "text-green-600" : "text-red-600"}`}
@@ -96,9 +95,10 @@ export const ProductColumns = [
     accessorKey: "picture",
     header: () => <div className="text-start">Picture</div>,
     cell: ({ row }) => {
+      console.log(row.original);
       return (
         <img
-          src={`${local}/images/product/${row.getValue("picture")}`}
+          src={`${local}/uploads/${row.getValue("picture")}`}
           alt="product"
           onError={(e) => (e.target.src = defimg)}
           className="h-[80px] rounded-lg"
@@ -139,7 +139,7 @@ export const ProductColumns = [
     accessorKey: "product_category_id",
     header: () => <div className="text-center">Category</div>,
     cell: ({ row }) => {
-      const categoryName = row.original.categories?.category_name || "N/A";
+      const categoryName = row.original.category?.category_name || "N/A";
 
       return <div className="text-center capitalize">{categoryName}</div>;
     },

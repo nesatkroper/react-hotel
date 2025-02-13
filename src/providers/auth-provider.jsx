@@ -19,6 +19,7 @@ const AuthProvider = ({ children }) => {
     } else {
       delete axios.defaults.headers.common["Authorization"];
       Cookies.remove("token");
+      Cookies.remove("auth_id");
       Cookies.remove("role");
     }
   }, [token]);

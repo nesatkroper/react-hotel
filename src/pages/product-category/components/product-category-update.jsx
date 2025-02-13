@@ -11,7 +11,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { getPcategory } from "@/app/reducer/product-category-slice";
 import { local } from "@/utils/resize-crop-image";
-import axiosInstance from "@/providers/axiosInstance";
+import axiosInstance from "@/providers/axios-instance";
 import FormInput from "@/components/app/form/form-input";
 import PropTypes from "prop-types";
 import FormTextArea from "@/components/app/form/form-textarea";

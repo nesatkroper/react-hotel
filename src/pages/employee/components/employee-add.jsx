@@ -10,34 +10,32 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getPositions } from "@/app/reducer/position-slice";
 import { getEmployees } from "@/app/reducer/employee-slice";
-import axiosInstance from "@/providers/axiosInstance";
+import { Loader2 } from "lucide-react";
+import { getDepartments } from "@/app/reducer/department-slice";
 import PropTypes from "prop-types";
 import FormInput from "@/components/app/form/form-input";
 import FormSelect from "@/components/app/form/form-select";
 import FormDatePicker from "@/components/app/form/form-date-picker";
 import FormComboBox from "@/components/app/form/form-combobox";
-import { Loader2 } from "lucide-react";
-import { getDepartments } from "@/app/reducer/department-slice";
+import axiosAuth from "@/providers/axios-auth";
 
 const EmployeeAdd = ({ lastCode }) => {
   const dispatch = useDispatch();
   const { depData } = useSelector((state) => state?.departments);
   const { posData } = useSelector((state) => state?.positions);
   const [issend, setIssend] = useState(false);
-  const [formData] = useState(() => {
-    const form = new FormData();
-    form.append("employee_code", parseInt(lastCode, 10) + 1);
-    form.append("status", "active");
-    form.append("first_name", "");
-    form.append("last_name", "");
-    form.append("gender", "");
-    form.append("dob", "");
-    form.append("phone", "");
-    form.append("position_id", 0);
-    form.append("department_id", 1);
-    form.append("salary", 0);
-    form.append("hired_date", 0);
-    return form;
+  const [formData, setFormData] = useState({
+    employee_code: parseInt(lastCode, 10) + 1,
+    status: "active",
+    first_name: "",
+    last_name: "",
+    gender: "",
+    dob: "",
+    phone: "",
+    position_id: "",
+    department_id: "",
+    salary: "",
+    hired_date: "",
   });
 
   useEffect(() => {
@@ -45,31 +43,41 @@ const EmployeeAdd = ({ lastCode }) => {
     dispatch(getDepartments());
   }, [dispatch]);
 
-  const handleFormData = (event) => {
-    if (event instanceof FormData) {
-      for (let [key, value] of event.entries()) {
-        console.log(`Key: ${key}, Value:`, value);
-        formData.set(key, value);
-      }
-    } else if (event?.target) {
-      const { name, value } = event.target;
-      formData.set(name, value);
-    } else {
-      console.log("Unexpected event structure:", event);
-    }
-    return formData;
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleDataChange = (name, value) => {
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const validateForm = () => {
+    if (!formData.employee_code) return "Employee code is required.";
+    if (!formData.first_name) return "First name is required.";
+    if (!formData.last_name) return "Last name is required.";
+    if (!formData.gender) return "Gender is required.";
+    if (!formData.position_id) return "Position is required.";
+    if (!formData.department_id) return "Department is required.";
+    if (!formData.salary) return "Salary is required.";
+    return null;
   };
 
   const handleFormSubmit = async (e) => {
     try {
       e.preventDefault();
       setIssend(!issend);
+      validateForm();
 
-      await axiosInstance
+      await axiosAuth
         .post("/employee", formData)
         .then((res) => {
           console.log(res);
           dispatch(getEmployees());
+          setIssend(!issend);
         })
         .catch((error) => {
           setIssend(false);
@@ -82,7 +90,7 @@ const EmployeeAdd = ({ lastCode }) => {
     }
   };
 
-  console.log(lastCode);
+  console.log(formData);
 
   return (
     <>
@@ -94,14 +102,14 @@ const EmployeeAdd = ({ lastCode }) => {
           <Separator />
           <div className="flex justify-between mb-2 mt-2">
             <FormInput
-              onCallbackInput={handleFormData}
+              onCallbackInput={handleChange}
               label="First Name*"
               name="first_name"
               placeholder="Jonh, ..."
               required={true}
             />
             <FormInput
-              onCallbackInput={handleFormData}
+              onCallbackInput={handleChange}
               label="Last Name*"
               name="last_name"
               placeholder="Ramboo, ..."
@@ -110,24 +118,24 @@ const EmployeeAdd = ({ lastCode }) => {
           </div>
           <div className="flex justify-between mb-2 mt-3">
             <FormInput
-              onCallbackInput={handleFormData}
+              onCallbackInput={handleChange}
               label="Employee Code*"
               value={`EMP-${(lastCode + 1).toString().padStart(4, "0")}`}
             />
             <FormSelect
               name="gender"
-              onCallbackSelect={(e) => formData.set("gender", e)}
+              onCallbackSelect={(event) => handleDataChange("gender", event)}
             />
           </div>
           <div className="flex justify-between mb-2 mt-2">
             <FormInput
-              onCallbackInput={handleFormData}
+              onCallbackInput={handleChange}
               label="Phone Number"
               name="phone"
               placeholder="010280202"
             />
             <FormInput
-              onCallbackInput={handleFormData}
+              onCallbackInput={handleChange}
               label="Salary*"
               name="salary"
               placeholder="$250.00"
@@ -135,24 +143,30 @@ const EmployeeAdd = ({ lastCode }) => {
           </div>
           <div className="flex justify-between mb-2 mt-2">
             <FormDatePicker
-              onCallbackPicker={(e) => formData.set("dob", e)}
+              onCallbackPicker={(event) => handleDataChange("dob", event)}
               label="Date of Birth"
             />
             <FormDatePicker
-              onCallbackPicker={(e) => formData.set("hired_date", e)}
+              onCallbackPicker={(event) =>
+                handleDataChange("hired_date", event)
+              }
               label="Hired Date"
             />
           </div>
           <div className="flex justify-between mb-2 mt-3">
             <FormComboBox
-              onCallbackSelect={(e) => formData.set("department_id", e)}
+              onCallbackSelect={(event) =>
+                handleDataChange("department_id", event)
+              }
               label="Department"
               item={depData}
               optID="department_id"
               optLabel="department_name"
             />
             <FormComboBox
-              onCallbackSelect={(e) => formData.set("position_id", e)}
+              onCallbackSelect={(event) =>
+                handleDataChange("position_id", event)
+              }
               label="Position"
               item={posData}
               optID="position_id"

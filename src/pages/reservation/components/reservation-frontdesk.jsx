@@ -13,7 +13,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import axios from "@/providers/axiosInstance";
+import axios from "@/providers/axios-instance";
 import Details from "./reservation-detail";
 
 //! THIS IS LOCAL VARIABLE

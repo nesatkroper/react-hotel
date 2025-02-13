@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { getPcategory } from "@/app/reducer/product-category-slice.jsx";
 import Layout from "@/components/app/layout";
 import ProductCategoryAdd from "./components/product-category-add.jsx";
@@ -15,6 +15,11 @@ const ProductCategory = () => {
     dispatch(getPcategory());
   }, [dispatch]);
 
+  const lastCode = useMemo(() => {
+    const code = toNumber(pcaData[0]?.category_code, "-");
+    return Number.isNaN(code) || code == null ? 0 : code;
+  }, [pcaData]);
+
   return (
     <Layout>
       <AppDataTable
@@ -24,11 +29,7 @@ const ProductCategory = () => {
         main="category_name"
         loading={pcaLoading}
         add="Add Category"
-        addElement={
-          <ProductCategoryAdd
-            lastCode={toNumber(pcaData[0]?.category_code, "-")}
-          />
-        }
+        addElement={<ProductCategoryAdd key={lastCode} lastCode={lastCode} />}
       />
     </Layout>
   );

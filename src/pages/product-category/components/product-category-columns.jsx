@@ -26,7 +26,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
-import axiosInstance from "@/providers/axiosInstance";
+import axiosInstance from "@/providers/axios-instance";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { defimg, local } from "@/utils/resize-crop-image";
@@ -84,7 +84,7 @@ export const ProductCategoryColumns = [
     cell: ({ row }) => {
       return (
         <img
-          src={`${local}/uploads/category/${row.getValue("picture")}`}
+          src={`${local}/uploads/${row.getValue("picture")}`}
           alt="product"
           onError={(e) => (e.target.src = defimg)}
           className="h-[80px] rounded-lg"

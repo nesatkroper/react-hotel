@@ -1,9 +1,17 @@
+import axiosAuth from "@/providers/axios-auth";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axiosInstance from "@/providers/axiosInstance";
+import Cookies from "js-cookie";
 
 export const getUser = createAsyncThunk("getUser", async () => {
-  const response = await axiosInstance.get("/me");
-  return response.data;
+  const res = await axiosAuth.get("/me");
+  Cookies.set(
+    "employee",
+    res.data?.employee
+      ? `${res.data.employee.first_name} ${res.data.employee.last_name}`
+      : "Admin"
+  );
+  Cookies.set("employee_id", res.data.employee.employee_id ?? null);
+  return res?.data;
 });
 
 const userSlice = createSlice({
@@ -17,16 +25,16 @@ const userSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getUser.pending, (state) => {
-        state.userLoading = true;
-        state.userError = null;
+        state.usrLoading = true;
+        state.usrError = null;
       })
       .addCase(getUser.fulfilled, (state, action) => {
-        state.userLoading = false;
-        state.userData = action.payload;
+        state.usrLoading = false;
+        state.usrData = action.payload;
       })
       .addCase(getUser.rejected, (state, action) => {
-        state.userLoading = false;
-        state.userError = action.payload;
+        state.usrLoading = false;
+        state.usrError = action.payload;
       });
   },
 });

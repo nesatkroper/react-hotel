@@ -1,9 +1,8 @@
-import axios from "@/providers/axiosInstance";
+import axios from "@/providers/axios-instance";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 export const getPcategory = createAsyncThunk("getPcategory", async () => {
   const res = await axios.get("/category");
-  console.log(res.data);
   return res?.data;
 });
 

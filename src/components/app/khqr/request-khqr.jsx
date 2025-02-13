@@ -1,0 +1,176 @@
+import { useEffect, useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import QRCode from "react-qr-code";
+import axiosAuth from "@/providers/axios-auth";
+import PropTypes from "prop-types";
+import { cDollar, dollarToRiel } from "@/utils/dec-format";
+import riel from "@/assets/images/riel.png";
+import { useRef } from "react";
+import paymentSuccessSound from "@/assets/mp3/payment_success.mp3";
+import axios from "axios";
+import Cookies from "js-cookie";
+import axiosInstance from "@/providers/axios-instance";
+
+const emp_id = Cookies.get("employee_id");
+
+const RequestKHQR = (props) => {
+  const { amount = null, currency = "khr" } = props;
+  const audioRef = useRef(null);
+  const [qrData, setQrData] = useState(null);
+  const [form] = useState({
+    account: "suon_phanun@aclb",
+    name: "PHANUN SUON",
+    city: "Siem Reap",
+    amount: amount,
+    currency: currency,
+  });
+
+  const [formPayment, setFormPayment] = useState({
+    sale_id: null,
+    reservation_id: null,
+    employee_id: 1,
+    invoice: null,
+    hash: "some-hash-value",
+    fromAccountId: "123456789",
+    toAccountId: "987654321",
+    currency: "USD",
+    amount: 0,
+    externalRef: "external-reference-id",
+  });
+
+  console.log(form.amount);
+
+  useEffect(() => {
+    if (amount) handleGenerateQR();
+  }, []);
+
+  const playAlertSound = () => {
+    audioRef.current.play();
+  };
+
+  const handleGenerateQR = async () => {
+    try {
+      const response = await axiosAuth.post("/khqr", form);
+      setQrData(response.data.qr);
+      console.log("MD5:", response.data.md5);
+
+      pollPaymentStatus(response.data.md5);
+    } catch (error) {
+      console.error("Failed to generate QR:", error);
+      alert("Failed to generate QR code.");
+    }
+  };
+
+  const pollPaymentStatus = (md5) => {
+    const interval = setInterval(async () => {
+      try {
+        const status = await checkPaymentStatus(md5);
+        if (status === "success") {
+          playAlertSound();
+          setQrData(null);
+          clearInterval(interval);
+        }
+      } catch (error) {
+        console.error("Error polling payment status:", error);
+        clearInterval(interval);
+      }
+    }, 1000);
+  };
+
+  const checkPaymentStatus = async (md5) => {
+    try {
+      const url = "https://api-bakong.nbc.gov.kh/v1/check_transaction_by_md5";
+      const token =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoiNDdjMGY2MzY4ZTFmNGFjYSJ9LCJpYXQiOjE3MzkzNDM1MTQsImV4cCI6MTc0NzExOTUxNH0.M0WDv6-p8iM-R3noFb0VkGz4f5X1131mDWOUudX_N5Q";
+
+      const response = await axios.post(
+        url,
+        { md5 },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (
+        response.data.responseCode === 0 &&
+        response.data.responseMessage === "Success"
+      ) {
+        console.log("Payment Status:", response.data.data.hash);
+
+        setFormPayment({
+          sale_id: response.data.data.sale_id || null,
+          reservation_id: response.data.data.reservation_id || null,
+          employee_id: emp_id,
+          invoice: response.data.data.invoice || null,
+          hash: response.data.data.hash || "",
+          fromAccountId: response.data.data.fromAccountId || "",
+          toAccountId: response.data.data.toAccountId || "",
+          currency: response.data.data.currency || "",
+          amount: response.data.data.amount || 0,
+          externalRef: response.data.data.externalRef || "",
+        });
+
+        handleCreatePayment();
+        setQrData(null);
+        return "success";
+      }
+    } catch (err) {
+      console.log("Failed to check payment status:", err);
+      return "pending";
+    }
+  };
+
+  const handleCreatePayment = async () => {
+    try {
+      console.log("Form Payment:", formPayment);
+
+      const res = await axiosInstance.post("/payment", formPayment);
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  return (
+    <Card className="w-full p-0">
+      <CardContent className="p-0">
+        <div className="bg-white shadow-lg rounded-lg">
+          <div className="bg-red-600 text-white text-center py-2 rounded-t-lg">
+            <h2 className="text-xl font-semibold">KHQR</h2>
+          </div>
+          <div className="p-4 text-center">
+            <p className="text-gray-700 font-medium">{form.name}</p>
+            <p className="text-2xl font-bold text-gray-800">
+              {currency === "usd"
+                ? cDollar(form.amount)
+                : dollarToRiel(form.amount)}
+            </p>
+            {qrData ? (
+              <div className="mt-4 flex flex-col items-center relative">
+                <QRCode value={qrData} size={256} className="rounded-xl" />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <img src={riel} alt="Logo" className="w-12 h-12" />
+                </div>
+                <p className="mt-2 text-sm text-gray-500">
+                  Scan the QR code above
+                </p>
+              </div>
+            ) : (
+              ""
+            )}
+          </div>
+        </div>
+        <audio ref={audioRef} src={paymentSuccessSound} />
+      </CardContent>
+    </Card>
+  );
+};
+
+RequestKHQR.propTypes = {
+  amount: PropTypes.number,
+  currency: PropTypes.string,
+};
+
+export default RequestKHQR;

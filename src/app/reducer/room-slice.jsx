@@ -1,4 +1,4 @@
-import axios from "@/providers/axiosInstance";
+import axios from "@/providers/axios-instance";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 export const getRooms = createAsyncThunk("getRooms", async () => {

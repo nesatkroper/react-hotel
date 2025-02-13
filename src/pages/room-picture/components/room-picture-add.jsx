@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getRooms } from "@/app/reducer/room-slice";
 import { getRpicture } from "@/app/reducer/room-picture-slice";
 import { defimg } from "@/utils/resize-crop-image";
-import axios from "@/providers/axiosInstance";
+import axios from "@/providers/axios-instance";
 // import OriCropImageUploader from "@/components/app/utils/ori-crop-image-uploader";
 import FormComboBox from "@/components/app/form/form-combobox";
 import FormInput from "@/components/app/form/form-input";

@@ -37,8 +37,14 @@ const Signin = () => {
       await axiosAuth
         .post("/login", formData)
         .then((res) => {
+          console.log(res);
           setToken(res.data.token);
-          dispatch(setAuthData({ role: res.data.auth.role }));
+          dispatch(
+            setAuthData({
+              role: res.data.auth.role,
+              auth_id: res.data.auth.auth_id,
+            })
+          );
           dispatch(getUser());
           navigate("/", { replace: true });
         })

@@ -31,7 +31,7 @@ import { Button } from "@/components/ui/button";
 import { defimg, local } from "@/utils/resize-crop-image";
 import { useDispatch } from "react-redux";
 import { getProduct } from "@/app/reducer/product-slice";
-import axiosInstance from "@/providers/axiosInstance";
+import axiosInstance from "@/providers/axios-instance";
 import RoomPictureUpdate from "./room-picture-update";
 
 export const RoomPictureActions = () => {
