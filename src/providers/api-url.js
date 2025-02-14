@@ -1,1 +1,1 @@
-export const apiUrl = "https://express-hotel-pro.up.railway.app/api";
+export const apiUrl = "https://phanun.up.railway.app/api";
