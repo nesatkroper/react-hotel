@@ -11,8 +11,9 @@ import { useDispatch } from "react-redux";
 import { getUser } from "@/app/reducer/user-slice";
 import Cookies from "js-cookie";
 import axiosAuth from "@/providers/axios-auth";
+import { local } from "@/utils/resize-crop-image";
 
-const SOCKET = io("http://localhost:3000");
+const SOCKET = io(local);
 
 const GroupChat = () => {
   const dispatch = useDispatch();
@@ -83,21 +84,21 @@ const GroupChat = () => {
           ref={scrollRef}
         >
           {messages?.map((msg, index) => (
-            <Card key={index} className="mb-3 w-[350px]">
-              <CardHeader className="p-2 px-3 pb-0">
+            <Card key={index} className="mb-2 w-[350px] shadow-none">
+              <CardHeader className="p-1 px-3 pb-0">
                 <CardTitle className="flex justify-between">
-                  <p>
+                  <p className="text-sm ps-2">
                     {msg.sender
                       ? msg.sender
                       : `${msg.employee?.first_name ?? "Admin"} ${
                           msg.employee?.last_name ?? " "
                         }`}
                   </p>
-                  <p className="font-normal">{dateFormat(msg.time)}</p>
+                  <p className="font-normal text-sm">{dateFormat(msg.time)}</p>
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-3 pt-0">
-                <p className="text-wrap">{msg.content}</p>
+                <p className="text-wrap text-sm">{msg.content}</p>
               </CardContent>
             </Card>
           ))}

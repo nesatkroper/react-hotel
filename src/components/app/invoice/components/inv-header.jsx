@@ -5,16 +5,16 @@ import { PropTypes } from "prop-types";
 const InvoiceHeader = (props) => {
   const { logo, brand } = props;
   return (
-    <CardHeader className="pb-2">
-      <CardTitle className=" flex flex-col items-center gap-3">
-        <p className="text-xl">{brand}</p>
+    <CardHeader className="pb-2 pt-3">
+      <CardTitle className=" flex flex-col items-center gap-2">
+        <p className="text-lg">{brand}</p>
         <img
           src={logo || defimg}
           onError={defimg}
           alt="logo"
-          className="w-[120px] rounded-xl"
+          className="w-[100px] rounded-lg my-0"
         />
-        <p className="text-lg underline">INVOICE</p>
+        <p className="text-lg underline ">INVOICE</p>
       </CardTitle>
     </CardHeader>
   );

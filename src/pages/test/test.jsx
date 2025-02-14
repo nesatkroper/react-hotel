@@ -30,9 +30,18 @@
 // };
 
 // export default DownloadExcel;
+import useSound from "@/components/app/sound/use-sound";
 import axiosAuth from "@/providers/axios-auth";
+import chatSound from "@/assets/mp3/chat.wav";
+import { useRef } from "react";
+import ChatSound from "@/components/app/sound/chat-sound";
 
 const DownloadExcel = () => {
+  // const play = useSound(chatSound);
+  const play = useRef();
+  const handlePlay = () => {
+    if (play.current) play.current();
+  };
   const downloadExcel = async () => {
     try {
       const response = await axiosAuth.get("/cart/export", {
@@ -52,12 +61,16 @@ const DownloadExcel = () => {
   };
 
   return (
-    <button
-      onClick={downloadExcel}
-      className="bg-blue-500 text-white px-4 py-2 rounded"
-    >
-      Download Excel
-    </button>
+    <div>
+      <button
+        onClick={downloadExcel}
+        className="bg-blue-500 text-white px-4 py-2 rounded"
+      >
+        Download Excel
+      </button>
+      <ChatSound onRef={(p) => (play.current = p)} />
+      <button onClick={handlePlay}>Play</button>
+    </div>
   );
 };
 

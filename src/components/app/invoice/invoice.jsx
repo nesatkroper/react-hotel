@@ -14,7 +14,7 @@ import axiosInstance from "@/providers/axios-instance";
 import PropTypes from "prop-types";
 
 const Invoice = (props) => {
-  const { method = "cash", type = "sale" } = props;
+  const { method = "cash", type = "sale", currency = "usd" } = props;
 
   const cardRef = useRef();
 
@@ -104,23 +104,23 @@ const Invoice = (props) => {
     <div className="flex justify-center relative">
       <Card
         ref={cardRef}
-        className="w-[10cm] text-center rounded-none  max-h-[15cm] overflow-y-auto "
+        className="w-[8cm] text-center rounded-none  max-h-[20cm] overflow-y-auto "
       >
         <InvoiceHeader brand="Hotel Jee Heang" logo={logo} />
         <CardContent className="px-3">
           <Separator className="mb-1" />
           <InvoiceContent payment={method} />
           <Separator />
-          <InvoiceTable type={type} />
+          <InvoiceTable type={type} currency={currency} />
           <Separator />
           <InvoiceFooter method={method} />
         </CardContent>
       </Card>
       <div className="flex gap-3 absolute bottom-[-47px] left-0">
-        <Button onClick={handleDownloadPDF} className=" ">
+        <Button variant="outline" onClick={handleDownloadPDF} className=" ">
           PDF
         </Button>
-        <Button onClick={handleSaveAsJPG} className=" ">
+        <Button variant="outline" onClick={handleSaveAsJPG} className=" ">
           JPG
         </Button>
       </div>
@@ -131,6 +131,7 @@ const Invoice = (props) => {
 Invoice.propTypes = {
   method: PropTypes.string,
   type: PropTypes.string,
+  currency: PropTypes.string,
 };
 
 export default Invoice;

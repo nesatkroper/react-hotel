@@ -7,32 +7,32 @@ const InvoiceContent = (props) => {
   return (
     <div className="flex flex-col px-1 mb-2">
       <div className="flex justify-between">
-        <p>ROOM :</p>
-        <p className="font-bold">{room || "Room-101"}</p>
+        <p className="text-sm">ROOM :</p>
+        <p className="font-bold text-sm">{room ?? "Room-101"}</p>
       </div>
       <div className="flex justify-between">
-        <p>TABLE :</p>
-        <p className="font-bold">{table || "Z6 T06"}</p>
+        <p className="text-sm">TABLE :</p>
+        <p className="font-bold text-sm">{table ?? "Z6 T06"}</p>
       </div>
       <div className="flex justify-between">
-        <p>INVNUM :</p>
-        <p className="font-bold">{ref || "REF.S-000-0001"}</p>
+        <p className="text-sm">INVNUM :</p>
+        <p className="font-bold text-sm">{ref ?? "REF.S-000-0001"}</p>
       </div>
       <div className="flex justify-between">
-        <p>OPE-D :</p>
-        <p className="font-bold">{optD || "0005"}</p>
+        <p className="text-sm">OPE-D :</p>
+        <p className="font-bold text-sm">{optD ?? "0005"}</p>
       </div>
       <div className="flex justify-between">
-        <p>OPT Type :</p>
-        <p className="font-bold">{optT || "HOTEL"}</p>
+        <p className="text-sm">OPT Type :</p>
+        <p className="font-bold text-sm">{optT ?? "HOTEL"}</p>
       </div>
       <div className="flex justify-between">
-        <p>DATATIME :</p>
-        <p className="font-bold">{datetimeNow(true, true)}</p>
+        <p className="text-sm">DATATIME :</p>
+        <p className="font-bold text-sm">{datetimeNow(true, true)}</p>
       </div>
       <div className="flex justify-between">
-        <p>PAYMENT METHOD :</p>
-        <p className="font-bold">{payment}</p>
+        <p className="text-sm">PAYMENT METHOD :</p>
+        <p className="font-bold text-sm capitalize">{payment}</p>
       </div>
     </div>
   );
