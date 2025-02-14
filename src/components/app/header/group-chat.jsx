@@ -14,7 +14,7 @@ import axiosAuth from "@/providers/axios-auth";
 import { local } from "@/utils/resize-crop-image";
 
 const SOCKET = io(local, {
-  transports: ["websocket"],
+  transports: ["websocket", "polling"],
   withCredentials: true,
 });
 
