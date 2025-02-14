@@ -9,6 +9,7 @@
     "access": "public"
   },
   "scripts": {
+    "start": "vite preview",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
