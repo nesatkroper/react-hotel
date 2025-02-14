@@ -13,7 +13,10 @@ import Cookies from "js-cookie";
 import axiosAuth from "@/providers/axios-auth";
 import { local } from "@/utils/resize-crop-image";
 
-const SOCKET = io(local);
+const SOCKET = io(local, {
+  transports: ["websocket"],
+  withCredentials: true,
+});
 
 const GroupChat = () => {
   const dispatch = useDispatch();
