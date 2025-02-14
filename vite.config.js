@@ -10,8 +10,6 @@ export default defineConfig({
     },
   },
   server: {
-    proxy: {
-      "/api": "http://localhost:3000",
-    },
+    port: process.env.PORT || 5173, // Railway sets PORT in production
   },
 });
