@@ -9,11 +9,9 @@ import riel from "@/assets/images/riel.png";
 import dollar from "@/assets/images/dollar.png";
 import paymentSuccessSound from "@/assets/mp3/success.mp3";
 import axios from "axios";
-import Cookies from "js-cookie";
 import { io } from "socket.io-client";
 import { local } from "@/utils/resize-crop-image";
 
-const emp_id = Cookies.get("employee_id");
 const SOCKET = io(local);
 
 const RequestKHQR = (props) => {
@@ -29,19 +27,6 @@ const RequestKHQR = (props) => {
     currency: currency,
   });
 
-  const [formPayment, setFormPayment] = useState({
-    sale_id: null,
-    reservation_id: null,
-    employee_id: 1,
-    invoice: null,
-    hash: "some-hash-value",
-    fromAccountId: "123456789",
-    toAccountId: "987654321",
-    currency: "USD",
-    amount: 0,
-    externalRef: "external-reference-id",
-  });
-
   const handleSendMessage = (data) => {
     if (!msg.trim()) return;
     SOCKET.emit("sendGroup", {
@@ -51,16 +36,19 @@ const RequestKHQR = (props) => {
   };
 
   useEffect(() => {
-    if (amount) handleGenerateQR();
-  }, []);
+    const validAmount = amount ?? 0;
+    if (validAmount) handleGenerateQR();
+  }, [amount]);
 
   const playAlertSound = () => {
     audioRef.current.play();
   };
 
   const handleGenerateQR = async () => {
+    const validAmount = amount ?? 0;
+    const formData = { ...form, amount: validAmount };
     try {
-      const response = await axiosAuth.post("/khqr", form);
+      const response = await axiosAuth.post("/khqr", formData);
       setQrData(response.data.qr);
       console.log("MD5:", response.data.md5);
 
@@ -84,7 +72,14 @@ const RequestKHQR = (props) => {
         console.error("Error polling payment status:", error);
         clearInterval(interval);
       }
-    }, 1000);
+    }, 3000);
+
+    setTimeout(() => {
+      clearInterval(interval);
+      setQrData(null);
+      alert("KHQR Code Time out");
+      console.log("Polling stopped after 3 minutes.");
+    }, 70000);
   };
 
   const checkPaymentStatus = async (md5) => {
@@ -108,22 +103,7 @@ const RequestKHQR = (props) => {
         response.data.responseMessage === "Success"
       ) {
         handleSendMessage(response.data.data);
-        // console.log("Payment Status:", response.data.data);
 
-        // setFormPayment({
-        //   sale_id: response.data.data.sale_id || null,
-        //   reservation_id: response.data.data.reservation_id || null,
-        //   employee_id: emp_id,
-        //   invoice: response.data.data.invoice || null,
-        //   hash: response.data.data.hash || "",
-        //   fromAccountId: response.data.data.fromAccountId || "",
-        //   toAccountId: response.data.data.toAccountId || "",
-        //   currency: response.data.data.currency || "",
-        //   amount: response.data.data.amount || 0,
-        //   externalRef: response.data.data.externalRef || "",
-        // });
-
-        // handleCreatePayment();
         setQrData(null);
         return "success";
       }
@@ -132,17 +112,6 @@ const RequestKHQR = (props) => {
       return "pending";
     }
   };
-
-  // const handleCreatePayment = async () => {
-  //   try {
-  //     console.log("Form Payment:", formPayment);
-
-  //     const res = await axiosInstance.post("/payment", formPayment);
-  //     console.log(res);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
 
   return (
     <Card className="w-full p-0">
@@ -186,6 +155,10 @@ const RequestKHQR = (props) => {
 RequestKHQR.propTypes = {
   amount: PropTypes.number,
   currency: PropTypes.string,
+};
+
+RequestKHQR.defaultProps = {
+  amount: 0,
 };
 
 export default RequestKHQR;

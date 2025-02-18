@@ -25,6 +25,9 @@ const authSlice = createSlice({
       state.auth_id = null;
 
       Cookies.remove("token");
+      Cookies.remove("auth_id");
+      Cookies.remove("employee");
+      Cookies.remove("role");
     },
   },
 });

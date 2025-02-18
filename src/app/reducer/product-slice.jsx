@@ -17,7 +17,7 @@ export const getProduct = createAsyncThunk(
       const res = id
         ? await axiosAuth.get(`/product/${id}?${queryParams}`)
         : await axiosAuth.get(`/product?${queryParams}`);
-      console.log(res.data);
+
       return res.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || "Something went wrong");

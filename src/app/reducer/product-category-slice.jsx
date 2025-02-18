@@ -1,10 +1,26 @@
 import axios from "@/providers/axios-instance";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-export const getPcategory = createAsyncThunk("getPcategory", async () => {
-  const res = await axios.get("/category");
-  return res?.data;
-});
+export const getPcategory = createAsyncThunk(
+  "getPcategory",
+  async (
+    { id, order = "desc", products = false } = {},
+    { rejectWithValue }
+  ) => {
+    try {
+      const queryParams = new URLSearchParams({
+        order: order,
+        products: products.toString(),
+      }).toString();
+      const res = id
+        ? await axios.get(`/category/${id}?${queryParams}`)
+        : await axios.get(`/category?${queryParams}`);
+      return res?.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "Something went wrong");
+    }
+  }
+);
 
 const pcategorySlice = createSlice({
   name: "pcategory",

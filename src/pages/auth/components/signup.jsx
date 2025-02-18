@@ -101,7 +101,6 @@ const Signup = () => {
         label="Email*"
         type="email"
         placeholder="someone@something.com"
-        size={300}
         mainClass="my-2"
         inputClass={isComplete ? "border-green-500" : ""}
         labelClass={isComplete ? "text-green-500" : ""}
@@ -129,8 +128,8 @@ const Signup = () => {
           ""
         )}
         {isMail ? (
-          <Button type="button" onClick={handleOtp}>
-            {isSend ? "Verify Email" : "Send OTP"}{" "}
+          <Button type="button" onClick={handleOtp} className="px-3">
+            {isSend ? "Verify" : "Send OTP"}{" "}
           </Button>
         ) : (
           ""
@@ -144,7 +143,6 @@ const Signup = () => {
             label="Password"
             type={show ? "password" : "text"}
             placeholder="1234"
-            size={300}
             mainClass="my-2"
             required={true}
           />

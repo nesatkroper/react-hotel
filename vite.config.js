@@ -11,7 +11,11 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      "/api": "http://localhost:3000",
+      "/api-bakong": {
+        target: "https://api-bakong.nbc.gov.kh",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api-bakong/, ""),
+      },
     },
   },
 });

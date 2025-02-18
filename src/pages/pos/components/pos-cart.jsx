@@ -211,27 +211,31 @@ const CheckoutDialog = ({ currency, amount }) => (
   </AlertDialog>
 );
 
-const ConfirmDialog = ({ currency, amount }) => (
-  <AlertDialog>
-    <AlertDialogTrigger>
-      <AlertDialogAction>Continue</AlertDialogAction>
-    </AlertDialogTrigger>
-    <AlertDialogContent className="w-[350px] p-6">
-      <AlertDialogHeader>
-        <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-      </AlertDialogHeader>
-      <RequestKHQR
-        // amount={100}
-        amount={currency === "usd" ? amount : amount * 4000}
-        currency={currency}
-      />
-      <AlertDialogFooter>
-        <AlertDialogCancel>Cancel</AlertDialogCancel>
-        <AlertDialogAction>Success</AlertDialogAction>
-      </AlertDialogFooter>
-    </AlertDialogContent>
-  </AlertDialog>
-);
+const ConfirmDialog = ({ currency, amount }) => {
+  const finalAmount = amount || 0;
+
+  return (
+    <AlertDialog>
+      <AlertDialogTrigger>
+        <AlertDialogAction>Continue</AlertDialogAction>
+      </AlertDialogTrigger>
+      <AlertDialogContent className="w-[350px] p-6">
+        <AlertDialogHeader>
+          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+        </AlertDialogHeader>
+        <RequestKHQR
+          amount={currency === "usd" ? finalAmount : finalAmount * 4000}
+          // amount={100}
+          currency={currency}
+        />
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction>Success</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+};
 
 POSCart.propTypes = {
   label: PropTypes.string,

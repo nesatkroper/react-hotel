@@ -34,23 +34,17 @@ const Signin = () => {
     setIssend(true);
 
     try {
-      await axiosAuth
-        .post("/login", formData)
-        .then((res) => {
-          console.log(res);
-          setToken(res.data.token);
-          dispatch(
-            setAuthData({
-              role: res.data.auth.role,
-              auth_id: res.data.auth.auth_id,
-            })
-          );
-          dispatch(getUser());
-          navigate("/", { replace: true });
+      const res = await axiosAuth.post("/login", formData);
+
+      setToken(res.data.token);
+      dispatch(
+        setAuthData({
+          role: res.data.auth.role,
+          auth_id: res.data.auth.auth_id,
         })
-        .catch((err) => {
-          console.log(err);
-        });
+      );
+      navigate("/", { replace: true });
+      dispatch(getUser());
     } catch (err) {
       console.log(err);
     }
@@ -64,7 +58,6 @@ const Signin = () => {
         label="Email*"
         type="email"
         placeholder="devnun"
-        size={300}
         required={true}
       />
       <FormInput
@@ -73,7 +66,6 @@ const Signin = () => {
         label="Password*"
         type={show ? "text" : "password"}
         placeholder="1234"
-        size={300}
         mainClass="my-3"
         required={true}
       />

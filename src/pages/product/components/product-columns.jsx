@@ -95,7 +95,7 @@ export const ProductColumns = [
     accessorKey: "picture",
     header: () => <div className="text-start">Picture</div>,
     cell: ({ row }) => {
-      console.log(row.original);
+      // console.log(row.original);
       return (
         <img
           src={`${local}/uploads/${row.getValue("picture")}`}

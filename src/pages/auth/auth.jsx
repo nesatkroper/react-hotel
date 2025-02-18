@@ -5,12 +5,12 @@ import Signup from "./components/signup";
 
 const Auth = () => {
   return (
-    <div className="flex items-center justify-center h-[100vh]">
+    <div className="flex items-center justify-center h-[70vh]">
       <Card>
         <CardContent className=" p-0 border-gray-300 shadow-xl">
           <Tabs
             defaultValue="signin"
-            className="w-full flex  flex-col justify-center"
+            className="w-[300px] flex  flex-col justify-center"
           >
             <TabsList>
               <TabsTrigger value="signin">Sign In </TabsTrigger>

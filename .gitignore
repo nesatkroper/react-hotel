@@ -24,4 +24,4 @@ dist-ssr
 *.sw?
 
 
-src/providers/api-url.js
+web/src/providers/api-url.js
