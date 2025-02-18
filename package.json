@@ -9,7 +9,7 @@
     "access": "public"
   },
   "scripts": {
-    "start": "vite preview",
+  "start": "serve -s dist",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
@@ -79,6 +79,7 @@
     "react-spreadsheet": "^0.9.5",
     "react-to-print": "^3.0.4",
     "recharts": "^2.15.0",
+    "serve": "^14.2.4",
     "socket.io": "^4.8.1",
     "socket.io-client": "^4.8.1",
     "tailwind-merge": "^2.6.0",
