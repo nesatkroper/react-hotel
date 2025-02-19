@@ -1,7 +1,6 @@
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import PropTypes from "prop-types";
-import { Check } from "lucide-react";
 
 const FormInput = (props) => {
   const {

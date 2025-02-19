@@ -18,9 +18,9 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import { io } from "socket.io-client";
-import { local } from "@/utils/resize-crop-image";
+import { apiUrl } from "@/providers/api";
 
-const SOCKET = io(local);
+const SOCKET = io(apiUrl);
 
 const NotificationSheet = () => {
   const [date, setDate] = useState(new Date());

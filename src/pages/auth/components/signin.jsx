@@ -3,12 +3,11 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/providers/auth-provider";
-import FormInput from "@/components/app/form/form-input";
-import axiosAuth from "@/providers/axios-auth";
 import { setAuthData } from "@/app/reducer/role-slice";
 import { useDispatch } from "react-redux";
-import { getUser } from "@/app/reducer/user-slice";
 import { Loader2 } from "lucide-react";
+import FormInput from "@/components/app/form/form-input";
+import axiosAuth from "@/providers/axios-auth";
 
 const Signin = () => {
   const navigate = useNavigate();
@@ -37,14 +36,15 @@ const Signin = () => {
       const res = await axiosAuth.post("/login", formData);
 
       setToken(res.data.token);
+
       dispatch(
         setAuthData({
           role: res.data.auth.role,
           auth_id: res.data.auth.auth_id,
         })
       );
+
       navigate("/", { replace: true });
-      dispatch(getUser());
     } catch (err) {
       console.log(err);
     }

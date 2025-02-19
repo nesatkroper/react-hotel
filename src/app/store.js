@@ -16,8 +16,7 @@ import productReduce from "@/app/reducer/product-slice";
 import counterReduce from "./reducer/cart-slice";
 import searchCateReduce from "@/app/reducer/search-category-slice";
 import banknoteRduce from "@/app/reducer/bank-note-slice";
-import openshiftReduce from "@/app/reducer/open-shift-slice";
-import closeshiftReduce from "@/app/reducer/close-shift-slice";
+import shiftReduce from "@/app/reducer/shift-slice";
 import cartReduce from "@/app/reducer/cart-slice";
 
 export default configureStore({
@@ -38,8 +37,7 @@ export default configureStore({
     cart: cartReduce,
     searchCates: searchCateReduce,
     banknotes: banknoteRduce,
-    openshifts: openshiftReduce,
-    closeshifts: closeshiftReduce,
+    shifts: shiftReduce,
     counters: counterReduce,
   },
 });

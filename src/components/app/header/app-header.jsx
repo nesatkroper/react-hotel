@@ -8,15 +8,15 @@ import { BellRing, Mail, Search } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { useEffect, useState } from "react";
 import { ModeToggle } from "../theme/mode-toggle";
-import { local } from "@/utils/resize-crop-image";
 import { io } from "socket.io-client";
+import { apiUrl } from "@/providers/api";
 import NotificationSheet from "./notification-sheet";
 import GroupChat from "./group-chat";
 import AppSearchBar from "./app-search-bar";
 import chatSound from "@/assets/mp3/chat.wav";
 import useSound from "../sound/use-sound";
 
-const SOCKET = io(local);
+const SOCKET = io(apiUrl);
 
 const AppHeader = () => {
   const play = useSound(chatSound);

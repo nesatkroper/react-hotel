@@ -21,25 +21,32 @@ import { Input } from "@/components/ui/input";
 import { useSelector, useDispatch } from "react-redux";
 import { getPcategory } from "@/app/reducer/product-category-slice";
 import { getSearchCate } from "@/app/reducer/search-category-slice";
-import OpenShift from "./open-shift";
-import CloseShift from "./close-shift";
+import { useCode } from "@/providers/shift-provider";
+import OpenShift from "../../shift/open";
+import CloseShift from "../../shift/close";
 
-const POSSearch = ({ shift, setShift }) => {
-  const { pcaData } = useSelector((state) => state?.pcategories);
+const POSSearch = () => {
   const dispatch = useDispatch();
+  const { pcaData } = useSelector((state) => state?.pcategories);
+  const { code } = useCode();
+  const [shift, setShift] = useState(false);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const [formData, setFormData] = useState();
 
   useEffect(() => {
     dispatch(getPcategory());
   }, [dispatch]);
 
+  useEffect(() => {
+    setShift(!!code);
+  }, [code]);
+
   return (
     <div className="flex justify-between">
       <div className="flex gap-6">
         <div className="flex flex-col gap-2">
+          {" "}
           <Label>Product Category</Label>
           <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
@@ -77,10 +84,6 @@ const POSSearch = ({ shift, setShift }) => {
                         onSelect={(currentValue) => {
                           setValue(currentValue);
                           setOpen(false);
-                          setData((prevData) => ({
-                            ...prevData,
-                            product_category_id: Number(currentValue),
-                          }));
                         }}
                       >
                         {cate.category_name}
@@ -124,7 +127,7 @@ const POSSearch = ({ shift, setShift }) => {
               Open Shift
             </Button>
           </AlertDialogTrigger>
-          <OpenShift setShift={setShift()} />
+          <OpenShift />
         </AlertDialog>
         <AlertDialog>
           <AlertDialogTrigger disabled={shift ? false : true}>
@@ -132,7 +135,7 @@ const POSSearch = ({ shift, setShift }) => {
               Close Shift
             </Button>
           </AlertDialogTrigger>
-          <CloseShift setShift={setShift()} />
+          <CloseShift />
         </AlertDialog>
       </div>
     </div>

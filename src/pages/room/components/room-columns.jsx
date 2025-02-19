@@ -29,9 +29,10 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import axiosInstance from "@/providers/axios-instance";
 import { Button } from "@/components/ui/button";
-import { defimg, local } from "@/utils/resize-crop-image";
+import { defimg } from "@/utils/resize-crop-image";
 import { useDispatch } from "react-redux";
 import { getProduct } from "@/app/reducer/product-slice";
+import { apiUrl } from "@/providers/api";
 
 export const RoomActions = () => {
   const dispatch = useDispatch();
@@ -104,7 +105,7 @@ export const RoomColumns = [
       const img = row.original.room_pictures[0]?.picture;
       return (
         <img
-          src={`${local}/images/rooms/${img}`}
+          src={`${apiUrl}/images/rooms/${img}`}
           alt="product"
           onError={(e) => (e.target.src = defimg)}
           className="h-[80px] rounded-lg"

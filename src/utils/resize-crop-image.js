@@ -1,11 +1,7 @@
 import defimg from "@/assets/images/default.png";
 import logo from "@/assets/images/logo.png";
 
-import { apiUrl } from "@/providers/api-url";
-
-const local = apiUrl.split("/api").join("");
-
-export { logo, defimg, local };
+export { logo, defimg };
 
 export const resizeCropImage = (file, callback, aspect) => {
   return new Promise((resolve, reject) => {

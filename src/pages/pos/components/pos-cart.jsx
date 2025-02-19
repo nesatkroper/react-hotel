@@ -8,20 +8,21 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Card, CardContent } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
-import { ChevronDown, ChevronUp } from "lucide-react";
-import { useSelector, useDispatch } from "react-redux";
-import { defimg, local } from "@/utils/resize-crop-image";
-import { useEffect, useMemo, useState } from "react";
-import { getCart } from "@/app/reducer/cart-slice";
 import {
   afterPerDollar,
   cDollar,
   dollarToRiel,
   toUnit,
 } from "@/utils/dec-format";
+import { Card, CardContent } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
+import { ChevronDown, ChevronUp } from "lucide-react";
+import { useSelector, useDispatch } from "react-redux";
+import { defimg } from "@/utils/resize-crop-image";
+import { useEffect, useMemo, useState } from "react";
+import { getCart } from "@/app/reducer/cart-slice";
+import { apiUrl } from "@/providers/api";
 import Cookies from "js-cookie";
 import axiosAuth from "@/providers/axios-auth";
 import Invoice from "@/components/app/invoice/invoice";
@@ -75,14 +76,14 @@ const POSCart = () => {
   };
 
   const renderCartItem = (item) => (
-    <Card key={item.cart_id} className="shadow-none">
-      <CardContent className="p-0 flex justify-between rounded-lg">
+    <Card key={item.cart_id} className="shadow-none rounded-md">
+      <CardContent className="p-0 flex justify-between">
         <div className="flex gap-3">
           <img
-            src={`${local}/uploads/${item.product.picture}`}
+            src={`${apiUrl}/uploads/${item.product.picture}`}
             onError={(e) => (e.target.src = defimg)}
             alt={item?.product.product_name}
-            className="h-[50px] object-cover rounded-s-lg"
+            className="h-[60px] object-cover rounded-s-md"
           />
           <div className="flex flex-col justify-between py-1">
             <p className="text-sm">{item.product.product_name}</p>
@@ -94,23 +95,23 @@ const POSCart = () => {
             </p>
           </div>
         </div>
-        <div className="flex items-center pr-2 font-semibold">
+        <div className="flex flex-col items-center justify-center font-semibold">
           <Button
-            variant="outline"
+            variant="icon"
             size="icon"
-            className="h-6 w-6"
-            onClick={() => handleQuantityChange(item.cart_id, "down")}
-          >
-            <ChevronDown className="text-red-600" />
-          </Button>
-          <p className="text-sm mx-2">{toUnit(item.quantity, 0, "Pcs")}</p>
-          <Button
-            variant="outline"
-            size="icon"
-            className="h-6 w-6"
+            className="h-5 w-6"
             onClick={() => handleQuantityChange(item.cart_id, "up")}
           >
             <ChevronUp className="text-green-600" />
+          </Button>
+          <p className="text-xs mx-2">{toUnit(item.quantity, 0, "Pcs")}</p>
+          <Button
+            variant="icon"
+            size="icon"
+            className="h-5 w-6"
+            onClick={() => handleQuantityChange(item.cart_id, "down")}
+          >
+            <ChevronDown className="text-red-600" />
           </Button>
         </div>
       </CardContent>
@@ -155,7 +156,7 @@ const POSCart = () => {
   const SummaryRow = ({ label, value, isTotal }) => (
     <div
       className={`flex justify-between w-full text-md font-semibold ${
-        isTotal ? "text-lg" : ""
+        isTotal ? "" : ""
       }`}
     >
       <p className="text-sm">{label} :</p>
@@ -164,11 +165,11 @@ const POSCart = () => {
   );
 
   return (
-    <div className="lg:col-span-1 col-span-2 mt-0">
-      <Card>
-        <CardContent className="p-3 pt-1">
+    <div className="2xl:col-span-1 lg:col-span-1 md:col-span-2 col-span-1 mt-0">
+      <Card className="rounded-md">
+        <CardContent className="p-2 pt-1">
           <div className="flex justify-between items-center">
-            <p className="text-lg font-semibold">Cart Order</p>
+            <p className="font-semibold text-sm">Cart Order</p>
             <FormSelect
               onCallbackSelect={setCurrency}
               item={CurrencyOptions}

@@ -1,9 +1,9 @@
 import axios from "axios";
-import { apiUrl } from "@/providers/api-url";
 import Cookies from "js-cookie";
+import { apiKey } from "./api";
 
 const axiosAuth = axios.create({
-  baseURL: apiUrl,
+  baseURL: apiKey,
   headers: {
     "content-type": "application/json",
   },

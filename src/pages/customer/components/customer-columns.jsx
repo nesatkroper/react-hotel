@@ -29,9 +29,10 @@ import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import axiosInstance from "@/providers/axios-instance";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
-import { defimg, local } from "@/utils/resize-crop-image";
+import { defimg } from "@/utils/resize-crop-image";
 import { useDispatch } from "react-redux";
 import { getProduct } from "@/app/reducer/product-slice";
+import { apiUrl } from "@/providers/api";
 
 export const CustomerActions = () => {
   const dispatch = useDispatch();
@@ -98,7 +99,7 @@ export const CustomerColumns = [
     cell: ({ row }) => {
       return (
         <img
-          src={`${local}/images/product/${row.getValue("picture")}`}
+          src={`${apiUrl}/images/product/${row.getValue("picture")}`}
           alt="product"
           onError={(e) => (e.target.src = defimg)}
           className="h-[80px] rounded-lg"

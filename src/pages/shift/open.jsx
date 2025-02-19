@@ -12,16 +12,16 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getOpenShift } from "@/app/reducer/open-shift-slice";
+import { getShift } from "@/app/reducer/shift-slice";
 import { getBanknote } from "@/app/reducer/bank-note-slice";
 import axiosAuth from "@/providers/axios-auth";
-import Cookies from "js-cookie";
+import { useCode } from "@/providers/shift-provider";
 
-const OpenShift = ({ setShift }) => {
+const OpenShift = () => {
   const dispatch = useDispatch();
-  const [shiftCode, setShiftCode] = useState();
-  const { opeData } = useSelector((state) => state?.openshifts) || 0;
+  const { shiData } = useSelector((state) => state?.shifts) || 0;
   const { banData } = useSelector((state) => state?.banknotes) || 0;
+  const { setCode } = useCode();
   const [data, setData] = useState({
     open_khmer_riel: 0,
     open_us_dollar: 0,
@@ -75,7 +75,7 @@ const OpenShift = ({ setShift }) => {
   };
 
   useEffect(() => {
-    dispatch(getOpenShift());
+    dispatch(getShift());
     dispatch(getBanknote());
   }, [dispatch]);
 
@@ -99,7 +99,7 @@ const OpenShift = ({ setShift }) => {
       setData({
         open_khmer_riel: totalKhmer,
         open_us_dollar: totalUS,
-        shift_code: opeData[0]?.open_shift_id + 1,
+        shift_code: shiData[0]?.open_shift_id + 1,
         bank_note_id: banData[0]?.bank_note_id + 1,
         employee_id: 1,
       });
@@ -108,48 +108,34 @@ const OpenShift = ({ setShift }) => {
     });
   };
 
-  const handleAddShiftCode = (code) => {
-    setShiftCode(code);
-    Cookies.set("shiftcode", `SHIFT-${code.toString().padStart(4, "0")}`);
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      // await axiosAuth.post("/banknote", banknote);
+      // await axiosAuth.post("/open", data);
+      console.log(banknote);
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
 
-    await axiosAuth
-      .post("/open", data)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
-    await axiosAuth
-      .post("/banknote", banknote)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    console.log(banknote);
-    handleAddShiftCode(opeData[0]?.open_shift_id + 1);
+    setCode(shiData[0]?.open_shift_id + 1);
   };
 
   return (
-    <AlertDialogContent>
+    <AlertDialogContent className="w-[700]">
       <form onSubmit={handleSubmit}>
         <AlertDialogHeader>
-          <AlertDialogTitle>Shift Opening Details</AlertDialogTitle>
+          <AlertDialogTitle className="text-base">
+            Shift Opening Details
+          </AlertDialogTitle>
           <Separator />
         </AlertDialogHeader>
-        <div className="flex justify-between my-1">
-          {/* Khmer Money Section */}
+        <div className="flex justify-between my-2 gap-3">
           <div className="flex flex-col gap-2">
-            <Label>Open Money Khmer (៛)*</Label>
-            <div className="flex gap-2">
-              <Input value="៛" readOnly className="w-[35px]" />
+            <Label className="font-normal text-xs">Open Money Khmer (៛)*</Label>
+            <div className="flex gap-1">
+              <Input value="៛" readOnly className="w-[25px] p-0 text-center" />
               <Input
                 readOnly
                 value={
@@ -159,35 +145,37 @@ const OpenShift = ({ setShift }) => {
                     maximumFractionDigits: 2,
                   }).format(data?.open_khmer_riel)}` || "$ 0"
                 }
-                className="w-[180px]"
+                className="w-[150px]"
               />
             </div>
-            <Label>Select Bank Note</Label>
-            <div className="flex flex-col gap-1 border p-1 rounded-lg w-[225px]">
+            <Label className="font-normal text-xs">Select Bank Note</Label>
+            <div className="flex flex-col gap-1 rounded-lg">
               {Object.keys(khmerDenominations).map((key) => (
                 <div
                   key={key}
-                  className="flex justify-between w-[225px] items-center px-4"
+                  className="flex justify-between w-[160px] items-center px-4"
                 >
-                  <Label>x {khmerDenominations[key].toLocaleString()} ៛</Label>
+                  <Label className="font-normal text-xs">
+                    x {khmerDenominations[key].toLocaleString()} ៛
+                  </Label>
                   <Input
                     type="number"
                     name={key}
                     value={banknote[key] || 0}
                     onChange={handleBanknoteChange}
                     min={0}
-                    className="w-[80px] h-[30px]"
+                    className="w-[60px] h-[25px]"
                   />
                 </div>
               ))}
             </div>
           </div>
-
-          {/* US Dollar Section */}
           <div className="flex flex-col gap-2">
-            <Label>Open Money Dollar ($)*</Label>
-            <div className="flex gap-2">
-              <Input value="$" readOnly className="w-[35px]" />
+            <Label className="font-normal text-xs">
+              Open Money Dollar ($)*
+            </Label>
+            <div className="flex gap-1">
+              <Input value="$" readOnly className="w-[25px] p-0 text-center" />
               <Input
                 readOnly
                 value={
@@ -200,20 +188,22 @@ const OpenShift = ({ setShift }) => {
                 className="w-[180px]"
               />
             </div>
-            <Label>Select Bank Note</Label>
-            <div className="flex flex-col gap-1 border p-1 rounded-lg w-[225px]">
+            <Label className="font-normal text-xs">Select Bank Note</Label>
+            <div className="flex flex-col gap-1 rounded-lg">
               {Object.keys(usDenominations).map((key) => (
                 <div
                   key={key}
-                  className="flex justify-between w-[225px] items-center px-4"
+                  className="flex justify-between w-[160px] items-center px-4"
                 >
-                  <Label>x ${usDenominations[key]}</Label>
+                  <Label className="font-normal text-xs">
+                    x ${usDenominations[key]}
+                  </Label>
                   <Input
                     type="number"
                     name={key}
                     value={banknote[key] || 0}
                     onChange={handleBanknoteChange}
-                    className="w-[80px] h-[30px]"
+                    className="w-[60px] h-[25px]"
                     min={0}
                   />
                 </div>
@@ -223,29 +213,20 @@ const OpenShift = ({ setShift }) => {
         </div>
         <div className="flex justify-between my-1">
           <div className="flex flex-col gap-2">
-            <Label>Shift code*</Label>
+            <Label className="font-normal text-xs">Staff Name*</Label>
             <Input
-              value={`SHIRFT-00${data?.shift_code}`}
-              name="shift_code"
-              className="w-[225px]"
-            />
-          </div>
-          <div className="flex flex-col gap-2">
-            <Label>Staff Name*</Label>
-            <Input
-              // onChange={handleChange}
               name="product_code"
               type="text"
               value="Suon Phanun"
               disabled
-              className="w-[225px]"
+              className="w-[150px]"
             />
           </div>
         </div>
         <AlertDialogFooter className="mt-3">
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={() => setShift()} className="p-0">
-            <Button type="submit" className="w-full">
+          <AlertDialogCancel className="h-7">Cancel</AlertDialogCancel>
+          <AlertDialogAction className="p-0 h-7">
+            <Button type="submit" className="w-full h-7">
               Start Open
             </Button>
           </AlertDialogAction>

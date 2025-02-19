@@ -28,10 +28,11 @@ import {
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
-import { defimg, local } from "@/utils/resize-crop-image";
+import { defimg } from "@/utils/resize-crop-image";
 import { useDispatch } from "react-redux";
 import { getEmployees } from "@/app/reducer/employee-slice";
 import { dateFormat } from "@/utils/dec-format";
+import { apiUrl } from "@/providers/api";
 import axiosAuth from "@/providers/axios-auth";
 
 export const EmployeeActions = () => {
@@ -105,7 +106,7 @@ export const EmployeeColumns = [
       const picture = row.original.info?.picture;
       return (
         <img
-          src={`${local}/uploads/employee/${picture}`}
+          src={`${apiUrl}/uploads/employee/${picture}`}
           alt="profile"
           onError={(e) => (e.target.src = defimg)}
           className="h-[80px] rounded-lg"

@@ -1,11 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useMemo } from "react";
 import { getDepartments } from "@/app/reducer/department-slice";
+import { DepartmentColumns } from "./components/department-columns";
+import { toNumber } from "@/utils/dec-format";
 import Layout from "@/components/app/layout";
 import AppDataTable from "@/components/app/table/app-data-table";
 import DepartmentAdd from "./components/department-add";
-import { DepartmentColumns } from "./components/department-columns";
-import { toNumber } from "@/utils/dec-format";
 
 const Department = () => {
   const dispatch = useDispatch();

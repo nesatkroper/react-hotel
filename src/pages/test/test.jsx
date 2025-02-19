@@ -38,6 +38,7 @@ import ChatSound from "@/components/app/sound/chat-sound";
 import QRCode from "react-qr-code";
 
 const DownloadExcel = () => {
+  console.log(import.meta.env.VITE_API_URL);
   // const play = useSound(chatSound);
   const play = useRef();
   const handlePlay = () => {

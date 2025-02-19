@@ -9,14 +9,14 @@
     "access": "public"
   },
   "scripts": {
-  "start": "serve -s dist",
+    "start": "serve -s dist",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "postinstall": "npx husky install",
     "format": "prettier --write .",
-    "git": "git add . && git commit -m \"modify state management\" &&   git push && npm run dev"
+    "git": "git add . && git commit -m \"modify shift\" &&   git push && npm run dev"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",

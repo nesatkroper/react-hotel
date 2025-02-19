@@ -42,7 +42,7 @@ const FormSelect = (props) => {
       {isLabel ? <Label className={labelClass}>{label}</Label> : ""}
       <Select onValueChange={handleSelect}>
         <SelectTrigger className={`w-[${size}px]`}>
-          <SelectValue placeholder={`Select ${label}`} />
+          <SelectValue placeholder={`Set ${label}`} />
         </SelectTrigger>
         <SelectContent>
           {item?.map((d, i) => (

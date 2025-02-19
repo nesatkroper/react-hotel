@@ -26,11 +26,11 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
-import axiosInstance from "@/providers/axios-instance";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { useDispatch } from "react-redux";
 import { getDepartments } from "@/app/reducer/department-slice";
+import axiosInstance from "@/providers/axios-instance";
 import DepartmentUpdate from "./department-update";
 
 export const DepartmentActions = () => {

@@ -10,18 +10,18 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { getPcategory } from "@/app/reducer/product-category-slice";
-import { local } from "@/utils/resize-crop-image";
+import { apiUrl } from "@/providers/api";
 import axiosInstance from "@/providers/axios-instance";
 import FormInput from "@/components/app/form/form-input";
 import PropTypes from "prop-types";
 import FormTextArea from "@/components/app/form/form-textarea";
-import CropImageUploader from "@/components/app/utils/crop-image-uploader";
 import FormImagePreview from "@/components/app/form/form-image-preview";
+import FormImageResize from "@/components/app/form/form-image-resize";
 
 const ProductCategoryUpdate = ({ items }) => {
   const dispatch = useDispatch();
   const [imagePreview, setImagePreview] = useState(
-    `${local}/uploads/category/${items.picture}`
+    `${apiUrl}/uploads/category/${items.picture}`
   );
 
   const [formData, setFormData] = useState(() => {
@@ -111,7 +111,7 @@ const ProductCategoryUpdate = ({ items }) => {
         <div className="flex justify-between my-3">
           <div className="flex flex-col gap-2">
             <Label>Choose Image*</Label>
-            <CropImageUploader
+            <FormImageResize
               onCallbackFormData={handleFormData}
               resolution={600}
             />

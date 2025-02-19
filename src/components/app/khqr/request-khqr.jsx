@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { useRef } from "react";
 import { cDollar, dollarToRiel } from "@/utils/dec-format";
+import { io } from "socket.io-client";
+import { apiUrl } from "@/providers/api";
 import QRCode from "react-qr-code";
 import axiosAuth from "@/providers/axios-auth";
 import PropTypes from "prop-types";
@@ -9,10 +11,8 @@ import riel from "@/assets/images/riel.png";
 import dollar from "@/assets/images/dollar.png";
 import paymentSuccessSound from "@/assets/mp3/success.mp3";
 import axios from "axios";
-import { io } from "socket.io-client";
-import { local } from "@/utils/resize-crop-image";
 
-const SOCKET = io(local);
+const SOCKET = io(apiUrl);
 
 const RequestKHQR = (props) => {
   const { amount = null, currency = "usd" } = props;

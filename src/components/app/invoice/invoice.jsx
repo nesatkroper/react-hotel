@@ -2,6 +2,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { useRef } from "react";
+import { logo } from "@/utils/resize-crop-image";
 import InvoiceHeader from "./components/inv-header";
 import InvoiceContent from "./components/inv-content";
 import InvoiceTable from "./components/inv-table";
@@ -9,7 +10,6 @@ import InvoiceFooter from "./components/inv-footer";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 
-import { logo } from "@/utils/resize-crop-image";
 import axiosInstance from "@/providers/axios-instance";
 import PropTypes from "prop-types";
 

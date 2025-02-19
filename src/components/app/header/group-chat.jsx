@@ -9,11 +9,11 @@ import { io } from "socket.io-client";
 import { dateFormat } from "@/utils/dec-format";
 import { useDispatch } from "react-redux";
 import { getUser } from "@/app/reducer/user-slice";
+import { apiUrl } from "@/providers/api";
 import Cookies from "js-cookie";
 import axiosAuth from "@/providers/axios-auth";
-import { local } from "@/utils/resize-crop-image";
 
-const SOCKET = io(local, {
+const SOCKET = io(apiUrl, {
   transports: ["websocket", "polling"],
   withCredentials: true,
 });

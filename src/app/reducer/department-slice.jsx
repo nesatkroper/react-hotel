@@ -4,7 +4,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 export const getDepartments = createAsyncThunk(
   "getDepartments",
   async (
-    { id, order = "desc", positions = false, employees = false } = {},
+    { id, order = "desc", positions, employees } = {},
     { rejectWithValue }
   ) => {
     try {

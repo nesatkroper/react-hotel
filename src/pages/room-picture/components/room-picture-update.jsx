@@ -11,16 +11,16 @@ import { useState } from "react";
 import axios from "@/providers/axios-instance";
 import { useDispatch } from "react-redux";
 import { getRpicture } from "@/app/reducer/room-picture-slice";
-import { local } from "@/utils/resize-crop-image";
 import PropTypes from "prop-types";
 import FormInput from "@/components/app/form/form-input";
 import FormImageOriginal from "@/components/app/form/form-image-ori";
 import FormImagePreview from "@/components/app/form/form-image-preview";
+import { apiUrl } from "@/providers/api";
 
 const RoomPictureUpdate = ({ item }) => {
   const dispatch = useDispatch();
   const [imagePreview, setImagePreview] = useState(
-    `${local}/uploads/room-picture/${item.picture}`
+    `${apiUrl}/uploads/room-picture/${item.picture}`
   );
   const [formData] = useState(() => {
     const form = new FormData();
