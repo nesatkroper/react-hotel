@@ -1,22 +1,24 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { useRef } from "react";
-import { cDollar, dollarToRiel } from "@/utils/dec-format";
+import { cDollar } from "@/utils/dec-format";
 import { io } from "socket.io-client";
 import { apiUrl } from "@/providers/api";
 import QRCode from "react-qr-code";
 import axiosAuth from "@/providers/axios-auth";
 import PropTypes from "prop-types";
-import riel from "@/assets/images/riel.png";
 import dollar from "@/assets/images/dollar.png";
 import paymentSuccessSound from "@/assets/mp3/success.mp3";
 import axios from "axios";
+import jsCookie from "js-cookie";
 
 const SOCKET = io(apiUrl);
 
-const RequestKHQR = (props) => {
-  const { amount = null, currency = "usd" } = props;
+const RequestKHQR = () => {
   const audioRef = useRef(null);
+  const [amount, setAmount] = useState(
+    parseFloat(jsCookie.get("finalAmount")) || 0
+  );
   const [qrData, setQrData] = useState(null);
   const [msg, setMsg] = useState("");
   const [form] = useState({
@@ -24,7 +26,7 @@ const RequestKHQR = (props) => {
     name: "PHANUN SUON",
     city: "Siem Reap",
     amount: amount,
-    currency: currency,
+    currency: "usd",
   });
 
   const handleSendMessage = (data) => {
@@ -34,6 +36,15 @@ const RequestKHQR = (props) => {
     });
     setMsg("");
   };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const newAmount = parseFloat(jsCookie.get("finalAmount")) || 0;
+      setAmount(newAmount);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     const validAmount = amount ?? 0;
@@ -123,19 +134,13 @@ const RequestKHQR = (props) => {
           <div className="p-4 text-center">
             <p className="text-gray-700 font-medium">{form.name}</p>
             <p className="text-2xl font-bold text-gray-800">
-              {currency === "usd"
-                ? cDollar(form.amount)
-                : dollarToRiel(form.amount, 1)}
+              {cDollar(amount)}
             </p>
             {qrData ? (
               <div className="mt-4 flex flex-col items-center relative">
                 <QRCode value={qrData} size={256} className="rounded-xl" />
                 <div className="absolute inset-0 flex items-center justify-center">
-                  {currency === "khr" ? (
-                    <img src={riel} alt="Logo" className="w-12 h-12" />
-                  ) : (
-                    <img src={dollar} alt="Logo" className="w-12 h-12" />
-                  )}
+                  <img src={dollar} alt="Logo" className="w-12 h-12" />
                 </div>
                 <p className="mt-2 text-sm text-gray-500">
                   Scan the QR code above

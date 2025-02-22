@@ -13,23 +13,23 @@ import { Separator } from "@/components/ui/separator";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getBanknote } from "@/app/reducer/bank-note-slice";
-import axiosAuth from "@/providers/axios-auth";
-import { useCode } from "@/providers/shift-provider";
 import { getShift } from "@/app/reducer/shift-slice";
+import axiosAuth from "@/providers/axios-auth";
+import jsCookie from "js-cookie";
+import { getCode } from "@/app/reducer/code-slice";
 
-const OpenShift = () => {
+const CloseShift = () => {
   const dispatch = useDispatch();
-  const { shiData } = useSelector((state) => state?.shifts) || 0;
-  const { banData } = useSelector((state) => state?.banknotes) || 0;
-  const { code, setCode } = useCode();
+  const userInfo = jsCookie.get("user-info")
+    ? JSON.parse(jsCookie.get("user-info"))
+    : {};
+  const { codData } = useSelector((state) => state.code);
   const [data, setData] = useState({
-    open_khmer_riel: 0,
-    open_us_dollar: 0,
-    shift_code: 0,
-    employee_id: 1,
-    bank_note_id: 0,
+    close_khmer_riel: 0,
+    close_us_dollar: 0,
   });
   const [banknote, setBanknote] = useState({
+    shift_id: parseInt(codData.shift_id, 10),
     khmer_200K: 0,
     khmer_100K: 0,
     khmer_50K: 0,
@@ -77,6 +77,7 @@ const OpenShift = () => {
   useEffect(() => {
     dispatch(getShift());
     dispatch(getBanknote());
+    dispatch(getCode());
   }, [dispatch]);
 
   const calculateTotal = (notes, denominations) => {
@@ -97,28 +98,58 @@ const OpenShift = () => {
       const totalUS = calculateTotal(updatedBanknote, usDenominations);
 
       setData({
-        open_khmer_riel: totalKhmer,
-        open_us_dollar: totalUS,
-        shift_code: shiData[0]?.open_shift_id + 1,
-        bank_note_id: banData[0]?.bank_note_id + 1,
-        employee_id: 1,
+        close_khmer_riel: totalKhmer,
+        close_us_dollar: totalUS,
       });
 
       return updatedBanknote;
     });
   };
 
+  const handleClearData = () => {
+    setData({
+      close_khmer_riel: 0,
+      close_us_dollar: 0,
+    });
+
+    setBanknote({
+      shift_id: 0,
+      khmer_200K: 0,
+      khmer_100K: 0,
+      khmer_50K: 0,
+      khmer_30K: 0,
+      khmer_20K: 0,
+      khmer_15K: 0,
+      khmer_10K: 0,
+      khmer_5K: 0,
+      khmer_2K: 0,
+      khmer_1K: 0,
+      khmer_500: 0,
+      khmer_100: 0,
+      us_100: 0,
+      us_50: 0,
+      us_20: 0,
+      us_10: 0,
+      us_5: 0,
+      us_1: 0,
+    });
+
+    console.log("Data cleared successfully!");
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axiosAuth.post("/open", data);
-      await axiosAuth.post("/banknote", banknote);
+      await axiosAuth.put(`/shift/${codData.shift_id}`, data);
+      jsCookie.remove("shift-info");
     } catch (err) {
       console.log(err);
+    } finally {
+      handleClearData();
+      dispatch(getCode());
     }
 
     console.log(banknote);
-    setCode(shiData[0]?.open_shift_id + 1);
   };
 
   return (
@@ -126,13 +157,15 @@ const OpenShift = () => {
       <form onSubmit={handleSubmit}>
         <AlertDialogHeader>
           <AlertDialogTitle className="text-base">
-            Shift Opening Details
+            Shift Closing Details
           </AlertDialogTitle>
           <Separator />
         </AlertDialogHeader>
         <div className="flex justify-between my-2 gap-3">
           <div className="flex flex-col gap-2">
-            <Label className="font-normal text-xs">Open Money Khmer (៛)*</Label>
+            <Label className="font-normal text-xs">
+              Close Money Khmer (៛)*
+            </Label>
             <div className="flex gap-1">
               <Input value="៛" readOnly className="w-[25px] p-0 text-center" />
               <Input
@@ -142,7 +175,7 @@ const OpenShift = () => {
                     style: "decimal",
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2,
-                  }).format(data?.open_khmer_riel)}` || "$ 0"
+                  }).format(data?.close_khmer_riel)}` || "$ 0"
                 }
                 className="w-[150px]"
               />
@@ -171,7 +204,7 @@ const OpenShift = () => {
           </div>
           <div className="flex flex-col gap-2">
             <Label className="font-normal text-xs">
-              Open Money Dollar ($)*
+              Close Money Dollar ($)*
             </Label>
             <div className="flex gap-1">
               <Input value="$" readOnly className="w-[25px] p-0 text-center" />
@@ -182,7 +215,7 @@ const OpenShift = () => {
                     style: "decimal",
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2,
-                  }).format(data?.open_us_dollar)}` || ""
+                  }).format(data?.close_us_dollar)}` || ""
                 }
                 className="w-[180px]"
               />
@@ -213,16 +246,20 @@ const OpenShift = () => {
         <div className="flex justify-between my-1">
           <div className="flex flex-col gap-2">
             <Label className="font-normal text-xs">Shift code*</Label>
-            <Input value={code} name="shift_code" className="w-[150px]" />
+            <Input
+              value={codData.shift_code}
+              name="shift_code"
+              className="w-[190px]"
+            />
           </div>
           <div className="flex flex-col gap-2">
             <Label className="font-normal text-xs">Staff Name*</Label>
             <Input
               name="product_code"
               type="text"
-              value="Suon Phanun"
+              value={`${userInfo?.employee?.first_name} ${userInfo?.employee?.last_name}`}
               disabled
-              className="w-[150px]"
+              className="w-[190px]"
             />
           </div>
         </div>
@@ -230,7 +267,7 @@ const OpenShift = () => {
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction className="p-0">
             <Button type="submit" className="w-full">
-              Start Open
+              Start close
             </Button>
           </AlertDialogAction>
         </AlertDialogFooter>
@@ -239,4 +276,4 @@ const OpenShift = () => {
   );
 };
 
-export default OpenShift;
+export default CloseShift;

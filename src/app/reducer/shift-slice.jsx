@@ -3,7 +3,10 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 export const getShift = createAsyncThunk(
   "getShift",
-  async ({ id, banknotes, employee } = {}, { rejectWithValue }) => {
+  async (
+    { id, banknotes = true, employee = true } = {},
+    { rejectWithValue }
+  ) => {
     try {
       const queryParams = new URLSearchParams({
         banknotes: banknotes.toString(),

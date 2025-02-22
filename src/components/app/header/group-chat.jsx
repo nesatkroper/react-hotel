@@ -20,7 +20,7 @@ const SOCKET = io(apiUrl, {
 
 const GroupChat = () => {
   const dispatch = useDispatch();
-  const emp = Cookies.get("employee");
+  const user = JSON.parse(Cookies.get("user-info"));
   const [messages, setMessages] = useState([]);
   const [msg, setMsg] = useState("");
   const scrollRef = useRef(null);
@@ -55,7 +55,7 @@ const GroupChat = () => {
   const handleSendMessage = () => {
     if (!msg.trim()) return;
     SOCKET.emit("sendGroup", {
-      sender: emp,
+      sender: user.employee?.employee_name || "Admin",
       content: msg,
       time: new Date(),
     });

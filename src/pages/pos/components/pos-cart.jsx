@@ -8,39 +8,33 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import {
-  afterPerDollar,
-  cDollar,
-  dollarToRiel,
-  toUnit,
-} from "@/utils/dec-format";
+import { afterPerDollar, cDollar, toUnit } from "@/utils/dec-format";
 import { Card, CardContent } from "@/components/ui/card";
+4;
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 import { defimg } from "@/utils/resize-crop-image";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { getCart } from "@/app/reducer/cart-slice";
 import { apiUrl } from "@/providers/api";
 import Cookies from "js-cookie";
 import axiosAuth from "@/providers/axios-auth";
 import Invoice from "@/components/app/invoice/invoice";
 import RequestKHQR from "@/components/app/khqr/request-khqr";
-import FormSelect from "@/components/app/form/form-select";
 import PropTypes from "prop-types";
 
-const AuthID = Cookies.get("auth_id");
+const userInfo = Cookies.get("user-info")
+  ? JSON.parse(Cookies.get("user-info"))
+  : {};
+
+const AuthID = userInfo.auth_id;
 const TaxRate = 10;
-const CurrencyOptions = [
-  { value: "usd", data: "US Dollar" },
-  { value: "khr", data: "Khmer Riel" },
-];
 
 const POSCart = () => {
   const dispatch = useDispatch();
   const { cartData } = useSelector((state) => state.cart);
-  const [currency, setCurrency] = useState("usd");
 
   useEffect(() => {
     if (AuthID) {
@@ -48,20 +42,34 @@ const POSCart = () => {
     }
   }, [dispatch]);
 
-  const { total, discount, amount } = useMemo(() => {
+  const { total, discount, finalAmount } = useMemo(() => {
     const total =
       cartData?.reduce(
         (sum, item) => sum + item.product.price * item.quantity,
         0
       ) || 0;
-    const discount = cartData?.reduce(
-      (sum, item) =>
-        sum +
-        (item.product.price * item.quantity * item.product.discount_rate) / 100,
-      0
-    );
-    const amount = total - discount;
-    return { total, discount, amount };
+
+    const discount =
+      cartData?.reduce(
+        (sum, item) =>
+          sum +
+          (item.product.price *
+            item.quantity *
+            (item.product.discount_rate || 0)) /
+            100,
+        0
+      ) || 0;
+
+    const tax = total * (TaxRate / 100);
+    const finalAmount = total + tax - discount;
+
+    Cookies.set("finalAmount", finalAmount, {
+      expires: 1,
+    });
+
+    console.log({ total, discount, tax, finalAmount });
+
+    return { total, tax, discount, finalAmount };
   }, [cartData]);
 
   const handleQuantityChange = async (cart_id, action) => {
@@ -120,47 +128,27 @@ const POSCart = () => {
 
   const renderSummary = () => (
     <div className="w-full">
-      {["usd", "khr"].map((cur) => (
-        <div key={cur} className={`${currency !== cur ? "hidden" : ""}`}>
-          <SummaryRow
-            label="Total"
-            value={cur === "usd" ? cDollar(total) : dollarToRiel(total)}
-          />
-          <SummaryRow
-            label={`Tax (${toUnit(TaxRate, 0, "%")})`}
-            value={
-              cur === "usd"
-                ? cDollar(total, TaxRate)
-                : dollarToRiel(total, 4000, TaxRate)
-            }
-          />
-          <SummaryRow
-            label="Discount"
-            value={cur === "usd" ? cDollar(discount) : dollarToRiel(discount)}
-          />
-          <Separator className="my-1" />
-          <SummaryRow
-            label="Amount"
-            value={
-              cur === "usd"
-                ? afterPerDollar(amount, -TaxRate)
-                : dollarToRiel(amount * (1 + TaxRate / 100))
-            }
-            isTotal
-          />
-        </div>
-      ))}
+      <SummaryRow label="Total" value={cDollar(total)} />
+      <SummaryRow
+        label={`Tax (${TaxRate}%)`}
+        value={`+ ${cDollar(total, TaxRate)}`}
+      />
+      <SummaryRow label="Discount" value={`- ${cDollar(discount)}`} />
+      <Separator className="my-1" />
+      <SummaryRow label="Amount" value={cDollar(finalAmount)} isTotal />
     </div>
   );
 
   const SummaryRow = ({ label, value, isTotal }) => (
     <div
-      className={`flex justify-between w-full text-md font-semibold ${
+      className={`flex justify-between w-full text-sm font-semibold ${
         isTotal ? "" : ""
       }`}
     >
       <p className="text-sm">{label} :</p>
-      <p className={`text-red-700 ${isTotal ? "font-bold" : ""}`}>{value}</p>
+      <p className={`text-sm text-red-700 ${isTotal ? "font-bold" : ""}`}>
+        {value}
+      </p>
     </div>
   );
 
@@ -170,13 +158,6 @@ const POSCart = () => {
         <CardContent className="p-2 pt-1">
           <div className="flex justify-between items-center">
             <p className="font-semibold text-sm">Cart Order</p>
-            <FormSelect
-              onCallbackSelect={setCurrency}
-              item={CurrencyOptions}
-              isLabel={false}
-              size={130}
-              label="Currency"
-            />
           </div>
           <Separator className="my-2" />
           <div className="flex flex-col gap-2">
@@ -184,14 +165,14 @@ const POSCart = () => {
           </div>
           <Separator className="my-2" />
           {renderSummary()}
-          <CheckoutDialog currency={currency} amount={amount} />
+          <CheckoutDialog amount={finalAmount} />
         </CardContent>
       </Card>
     </div>
   );
 };
 
-const CheckoutDialog = ({ currency, amount }) => (
+const CheckoutDialog = ({ amount }) => (
   <AlertDialog>
     <AlertDialogTrigger className="w-full">
       <Button className="w-full mt-2">Check Out</Button>
@@ -203,18 +184,16 @@ const CheckoutDialog = ({ currency, amount }) => (
         </AlertDialogTitle>
       </AlertDialogHeader>
       <Separator />
-      <Invoice currency={currency} />
+      <Invoice />
       <AlertDialogFooter>
         <AlertDialogCancel>Cancel</AlertDialogCancel>
-        <ConfirmDialog currency={currency} amount={amount} />
+        <ConfirmDialog amount={amount} />
       </AlertDialogFooter>
     </AlertDialogContent>
   </AlertDialog>
 );
 
-const ConfirmDialog = ({ currency, amount }) => {
-  const finalAmount = amount || 0;
-
+const ConfirmDialog = () => {
   return (
     <AlertDialog>
       <AlertDialogTrigger>
@@ -224,11 +203,7 @@ const ConfirmDialog = ({ currency, amount }) => {
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
         </AlertDialogHeader>
-        <RequestKHQR
-          amount={currency === "usd" ? finalAmount : finalAmount * 4000}
-          // amount={100}
-          currency={currency}
-        />
+        <RequestKHQR />
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction>Success</AlertDialogAction>
@@ -245,13 +220,7 @@ POSCart.propTypes = {
 };
 
 CheckoutDialog.propTypes = {
-  currency: PropTypes.string,
-  amount: PropTypes.number,
-};
-
-ConfirmDialog.propTypes = {
-  currency: PropTypes.string,
-  amount: PropTypes.number,
+  amount: PropTypes.string,
 };
 
 export default POSCart;

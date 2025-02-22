@@ -10,7 +10,6 @@ export const getCart = createAsyncThunk(
         : await axiosAuth.get(`/cart`);
 
       const sorted = res.data?.sort((a, b) => a.cart_id - b.cart_id);
-      console.log(sorted);
       return sorted;
     } catch (error) {
       return rejectWithValue(error.response?.data || "Something went wrong");

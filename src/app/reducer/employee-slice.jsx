@@ -7,13 +7,13 @@ export const getEmployees = createAsyncThunk(
     {
       id,
       order = "desc",
-      position,
-      department,
-      reservedetails,
-      sales,
-      opens,
-      closes,
-      info,
+      position = true,
+      department = true,
+      reservedetails = true,
+      sales = true,
+      opens = true,
+      closes = true,
+      info = true,
     } = {},
     { rejectWithValue }
   ) => {

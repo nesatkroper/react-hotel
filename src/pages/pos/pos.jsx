@@ -3,31 +3,40 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProduct } from "@/app/reducer/product-slice";
+import { getCode } from "@/app/reducer/code-slice";
 import Layout from "@/components/app/layout";
 import POSSearch from "./components/pos-search";
 import POSCart from "./components/pos-cart";
 import AppLoading from "@/components/app/utils/app-loading";
 import POSList from "./components/pos-list";
-import { useCode } from "@/providers/shift-provider";
 
 const POS = () => {
   const dispatch = useDispatch();
-  const { code } = useCode();
-  const { proData, proLoading } = useSelector((state) => state?.products);
+  const { proData, proLoading } = useSelector((state) => state.products);
+  const { codData } = useSelector((state) => state.code);
   const [shift, setShift] = useState(false);
 
   useEffect(() => {
-    dispatch(getProduct({ category: true }));
-  }, [dispatch]);
+    if (!codData || typeof codData !== "object") {
+      setShift(false);
+    } else if (Object.keys(codData).length === 0) {
+      setShift(false);
+    } else if (codData?.shift_code) {
+      setShift(true);
+    } else {
+      setShift(false);
+    }
+  }, [codData]);
 
   useEffect(() => {
-    setShift(!!code);
-  }, [code]);
+    dispatch(getProduct({ category: true }));
+    dispatch(getCode());
+  }, [dispatch]);
 
   return (
     <Layout>
       <div className="p-2">
-        <POSSearch />
+        <POSSearch shift={shift} />
         <Separator className="my-2" />
         {shift ? (
           <div className="grid 2xl:grid-cols-6 lg:grid-cols-4 md:grid-cols-5 grid-cols-2 gap-3">

@@ -18,6 +18,7 @@ import searchCateReduce from "@/app/reducer/search-category-slice";
 import banknoteRduce from "@/app/reducer/bank-note-slice";
 import shiftReduce from "@/app/reducer/shift-slice";
 import cartReduce from "@/app/reducer/cart-slice";
+import codeReduce from "@/app/reducer/code-slice";
 
 export default configureStore({
   reducer: {
@@ -38,6 +39,7 @@ export default configureStore({
     searchCates: searchCateReduce,
     banknotes: banknoteRduce,
     shifts: shiftReduce,
+    code: codeReduce,
     counters: counterReduce,
   },
 });

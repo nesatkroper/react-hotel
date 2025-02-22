@@ -1,45 +1,15 @@
-// import axiosAuth from "@/providers/axios-auth";
-
-// const DownloadExcel = () => {
-//   const downloadExcel = async () => {
-//     try {
-//       const response = await axiosAuth.get("/cart/export", {
-//         responseType: "blob",
-//       });
-
-//       const url = window.URL.createObjectURL(new Blob([response.data]));
-//       const link = document.createElement("a");
-//       link.href = url;
-//       link.setAttribute("download", "users.xlsx");
-//       document.body.appendChild(link);
-//       link.click();
-//       link.remove();
-//     } catch (error) {
-//       console.error("Error downloading the Excel file", error);
-//     }
-//   };
-
-//   return (
-//     <button
-//       onClick={downloadExcel}
-//       className="bg-blue-500 text-white px-4 py-2 rounded"
-//     >
-//       Download Excel
-//     </button>
-//   );
-// };
-
-// export default DownloadExcel;
 import useSound from "@/components/app/sound/use-sound";
 import axiosAuth from "@/providers/axios-auth";
 import chatSound from "@/assets/mp3/chat.wav";
 import { useRef } from "react";
 import ChatSound from "@/components/app/sound/chat-sound";
 import QRCode from "react-qr-code";
+import Cookies from "js-cookie";
 
 const DownloadExcel = () => {
-  console.log(import.meta.env.VITE_API_URL);
-  // const play = useSound(chatSound);
+  const user = Cookies.get("user");
+  console.log(JSON.parse(user));
+
   const play = useRef();
   const handlePlay = () => {
     if (play.current) play.current();

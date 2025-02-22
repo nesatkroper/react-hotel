@@ -3,7 +3,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 export const getReservation = createAsyncThunk(
   "getReservation",
-  async ({ id, details } = {}, { rejectWithValue }) => {
+  async ({ id, details = true } = {}, { rejectWithValue }) => {
     try {
       const queryParams = new URLSearchParams({
         details: details.toString(),

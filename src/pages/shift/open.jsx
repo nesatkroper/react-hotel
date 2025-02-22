@@ -14,22 +14,23 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getShift } from "@/app/reducer/shift-slice";
 import { getBanknote } from "@/app/reducer/bank-note-slice";
+import { getCode } from "@/app/reducer/code-slice";
+import Cookie from "js-cookie";
 import axiosAuth from "@/providers/axios-auth";
-import { useCode } from "@/providers/shift-provider";
 
-const OpenShift = () => {
+const CloseShift = () => {
   const dispatch = useDispatch();
-  const { shiData } = useSelector((state) => state?.shifts) || 0;
-  const { banData } = useSelector((state) => state?.banknotes) || 0;
-  const { setCode } = useCode();
+  const userInfo = Cookie.get("user-info")
+    ? JSON.parse(Cookie.get("user-info"))
+    : {};
+  const { codData } = useSelector((state) => state.code);
   const [data, setData] = useState({
     open_khmer_riel: 0,
     open_us_dollar: 0,
-    shift_code: 0,
     employee_id: 1,
-    bank_note_id: 0,
   });
   const [banknote, setBanknote] = useState({
+    shift_id: parseInt(codData.shift_id, 10),
     khmer_200K: 0,
     khmer_100K: 0,
     khmer_50K: 0,
@@ -77,6 +78,7 @@ const OpenShift = () => {
   useEffect(() => {
     dispatch(getShift());
     dispatch(getBanknote());
+    dispatch(getCode());
   }, [dispatch]);
 
   const calculateTotal = (notes, denominations) => {
@@ -91,35 +93,86 @@ const OpenShift = () => {
     const updatedValue = parseInt(value) || 0;
 
     setBanknote((prev) => {
-      const updatedBanknote = { ...prev, [name]: updatedValue };
+      const updatedBanknote = {
+        ...prev,
+        shift_id: parseInt(codData.shift_id, 10),
+        [name]: updatedValue,
+      };
 
       const totalKhmer = calculateTotal(updatedBanknote, khmerDenominations);
       const totalUS = calculateTotal(updatedBanknote, usDenominations);
 
       setData({
+        employee_id: userInfo.employee_id,
         open_khmer_riel: totalKhmer,
         open_us_dollar: totalUS,
-        shift_code: shiData[0]?.open_shift_id + 1,
-        bank_note_id: banData[0]?.bank_note_id + 1,
-        employee_id: 1,
       });
 
       return updatedBanknote;
     });
   };
 
+  const handleClearData = () => {
+    setData({
+      open_khmer_riel: 0,
+      open_us_dollar: 0,
+      employee_id: 0,
+    });
+
+    setBanknote({
+      shift_id: 0,
+      khmer_200K: 0,
+      khmer_100K: 0,
+      khmer_50K: 0,
+      khmer_30K: 0,
+      khmer_20K: 0,
+      khmer_15K: 0,
+      khmer_10K: 0,
+      khmer_5K: 0,
+      khmer_2K: 0,
+      khmer_1K: 0,
+      khmer_500: 0,
+      khmer_100: 0,
+      us_100: 0,
+      us_50: 0,
+      us_20: 0,
+      us_10: 0,
+      us_5: 0,
+      us_1: 0,
+    });
+
+    console.log("Data cleared successfully!");
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // await axiosAuth.post("/banknote", banknote);
-      // await axiosAuth.post("/open", data);
+      const shift = await axiosAuth.post("/shift", data);
       console.log(banknote);
-      console.log(data);
+
+      if (shift?.data) {
+        console.log(shift);
+        Cookie.set("shift-info", JSON.stringify(shift.data), { expires: 1 });
+
+        const newShiftId = shift.data.shift_id;
+
+        setBanknote((prev) => ({
+          ...prev,
+          shift_id: newShiftId,
+        }));
+
+        const note = await axiosAuth.post("/banknote", {
+          ...banknote,
+          shift_id: newShiftId,
+        });
+        console.log(note);
+      }
     } catch (err) {
       console.log(err);
+    } finally {
+      handleClearData();
+      dispatch(getCode());
     }
-
-    setCode(shiData[0]?.open_shift_id + 1);
   };
 
   return (
@@ -217,9 +270,9 @@ const OpenShift = () => {
             <Input
               name="product_code"
               type="text"
-              value="Suon Phanun"
+              value={`${userInfo.employee?.first_name} ${userInfo.employee?.last_name}`}
               disabled
-              className="w-[150px]"
+              className="w-[190px]"
             />
           </div>
         </div>
@@ -236,4 +289,4 @@ const OpenShift = () => {
   );
 };
 
-export default OpenShift;
+export default CloseShift;

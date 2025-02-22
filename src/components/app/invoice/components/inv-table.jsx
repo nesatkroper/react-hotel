@@ -8,13 +8,7 @@ import {
 } from "@/components/ui/table";
 import { Separator } from "@/components/ui/separator";
 import PropTypes from "prop-types";
-import {
-  afterPerDollar,
-  cDollar,
-  datetimeNow,
-  dollarToRiel,
-  toUnit,
-} from "@/utils/dec-format";
+import { cDollar, datetimeNow, dollarToRiel, toUnit } from "@/utils/dec-format";
 import { useDispatch, useSelector } from "react-redux";
 import { getCart } from "@/app/reducer/cart-slice";
 import { useEffect, useMemo } from "react";
@@ -44,7 +38,8 @@ const InvoiceTable = (props) => {
       0
     );
 
-    const amount = total - discount;
+    const tax = total * 0.1;
+    const amount = total + tax - discount;
 
     return { total, discount, amount };
   }, [cartData]);
@@ -138,7 +133,7 @@ const InvoiceTable = (props) => {
           <p className="text-sm">Amount :</p>
           <p className="font-bold text-red-600">
             {currency === "usd"
-              ? afterPerDollar(amount, -Tax)
+              ? cDollar(amount)
               : dollarToRiel(amount, 4000, (1 + Tax) * 10)}
           </p>
         </div>

@@ -79,10 +79,7 @@ const Signup = () => {
       .then((res) => {
         console.log(res);
 
-        setToken(res.data.token);
-        dispatch(setAuthData({ role: res.data.auth.role }));
-        dispatch(getUser());
-        navigate("/", { replace: true });
+        navigate("/auth", { replace: true });
       })
       .catch((error) => {
         console.log(error);

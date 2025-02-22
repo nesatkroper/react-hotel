@@ -3,7 +3,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 export const getBanknote = createAsyncThunk(
   "getBanknote",
-  async ({ id, open, close } = {}, { rejectWithValue }) => {
+  async ({ id, open = true, close = true } = {}, { rejectWithValue }) => {
     try {
       const queryParams = new URLSearchParams({
         close: close.toString(),

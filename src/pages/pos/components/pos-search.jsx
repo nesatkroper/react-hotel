@@ -21,15 +21,13 @@ import { Input } from "@/components/ui/input";
 import { useSelector, useDispatch } from "react-redux";
 import { getPcategory } from "@/app/reducer/product-category-slice";
 import { getSearchCate } from "@/app/reducer/search-category-slice";
-import { useCode } from "@/providers/shift-provider";
 import OpenShift from "../../shift/open";
 import CloseShift from "../../shift/close";
+import PropTypes from "prop-types";
 
-const POSSearch = () => {
+const POSSearch = ({ shift }) => {
   const dispatch = useDispatch();
   const { pcaData } = useSelector((state) => state?.pcategories);
-  const { code } = useCode();
-  const [shift, setShift] = useState(false);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
@@ -37,10 +35,6 @@ const POSSearch = () => {
   useEffect(() => {
     dispatch(getPcategory());
   }, [dispatch]);
-
-  useEffect(() => {
-    setShift(!!code);
-  }, [code]);
 
   return (
     <div className="flex justify-between">
@@ -140,6 +134,10 @@ const POSSearch = () => {
       </div>
     </div>
   );
+};
+
+POSSearch.propTypes = {
+  shift: PropTypes.bool,
 };
 
 export default POSSearch;

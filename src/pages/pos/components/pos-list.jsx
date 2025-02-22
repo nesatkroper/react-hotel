@@ -4,15 +4,21 @@ import { apiUrl } from "@/providers/api";
 import { Button } from "@/components/ui/button";
 import { useDispatch, useSelector } from "react-redux";
 import { getCart } from "@/app/reducer/cart-slice";
+import { Plus } from "lucide-react";
+import { cDollar } from "@/utils/dec-format";
 import Cookies from "js-cookie";
 import PropTypes from "prop-types";
 import axiosAuth from "@/providers/axios-auth";
-import { Plus } from "lucide-react";
 
-const AuthID = Cookies.get("auth_id") || null;
+const userInfo = Cookies.get("user-info")
+  ? JSON.parse(Cookies.get("user-info"))
+  : {};
+
+const AuthID = userInfo?.auth_id;
 
 const POSList = (props) => {
   const { data } = props;
+  console.log(data);
 
   const dispatch = useDispatch();
   const { cartData } = useSelector((state) => state.cart);
@@ -68,10 +74,15 @@ const POSList = (props) => {
             />
             <div className="px-3 pt-1 flex justify-between">
               <p className="font-semibold text-md">{item?.product_name}</p>
-              <p className="font-bold text-red-500">${item?.price}</p>
+              <p className="font-bold text-red-500">{cDollar(item?.price)}</p>
             </div>
             <div className="px-3 pb-2 flex justify-between text-xs">
               <p>{item?.category?.category_name ?? "Uncategorized"}</p>
+              <p className="font-bold text-red-500">
+                {item?.discount_rate <= 0
+                  ? ""
+                  : `- ${cDollar(item?.price, item?.discount_rate)}`}
+              </p>
             </div>
           </CardContent>
         </Card>

@@ -3,7 +3,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 export const getPcategory = createAsyncThunk(
   "getPcategory",
-  async ({ id, order = "desc", products } = {}, { rejectWithValue }) => {
+  async ({ id, order = "desc", products = true } = {}, { rejectWithValue }) => {
     try {
       const queryParams = new URLSearchParams({
         order: order,

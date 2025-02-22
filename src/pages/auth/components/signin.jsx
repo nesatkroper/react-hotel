@@ -3,17 +3,15 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/providers/auth-provider";
-import { setAuthData } from "@/app/reducer/role-slice";
-import { useDispatch } from "react-redux";
 import { Loader2 } from "lucide-react";
 import FormInput from "@/components/app/form/form-input";
 import axiosAuth from "@/providers/axios-auth";
+import Cookies from "js-cookie";
 
 const Signin = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const { setToken } = useAuth();
-  const [issend, setIssend] = useState(false);
+  const [isSend, setIsSend] = useState(false);
   const [show, setShow] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
@@ -30,24 +28,54 @@ const Signin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIssend(true);
+    setIsSend(true);
+
+    let timeoutId;
+    let isTimedOut = false;
+
+    const timeoutPromise = new Promise((resolve) => {
+      timeoutId = setTimeout(() => {
+        isTimedOut = true;
+        alert("Something went wrong! Login took too long. Please try again.");
+        resetForm();
+        resolve();
+      }, 5000);
+    });
 
     try {
-      const res = await axiosAuth.post("/login", formData);
+      const res = await Promise.race([
+        axiosAuth.post("/login", formData),
+        timeoutPromise,
+      ]);
+
+      if (isTimedOut) return;
+
+      clearTimeout(timeoutId);
 
       setToken(res.data.token);
-
-      dispatch(
-        setAuthData({
-          role: res.data.auth.role,
-          auth_id: res.data.auth.auth_id,
-        })
-      );
+      Cookies.set("user-info", JSON.stringify(res.data.auth), { expires: 1 });
 
       navigate("/", { replace: true });
     } catch (err) {
       console.log(err);
+      resetForm();
+      setIsSend(false);
+      if (!isTimedOut) {
+        console.log("Login error:", err);
+        alert("Login failed! Please check your credentials and try again.");
+      }
+    } finally {
+      clearTimeout(timeoutId);
+      setIsSend(false);
     }
+  };
+
+  const resetForm = () => {
+    setFormData({
+      email: "",
+      password: "",
+    });
+    setIsSend(false);
   };
 
   return (
@@ -79,7 +107,7 @@ const Signin = () => {
         </label>
       </div>
       <Button type="submit" className="w-full">
-        {issend ? <Loader2 className="animate-spin" /> : "Sign In"}
+        {isSend ? <Loader2 className="animate-spin" /> : "Sign In"}
       </Button>
     </form>
   );
