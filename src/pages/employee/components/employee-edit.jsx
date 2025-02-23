@@ -19,7 +19,7 @@ import FormDatePicker from "@/components/app/form/form-date-picker";
 import FormComboBox from "@/components/app/form/form-combobox";
 import axiosAuth from "@/providers/axios-auth";
 
-const EmployeeAdd = ({ lastCode }) => {
+const EmployeeEdit = ({ lastCode }) => {
   const dispatch = useDispatch();
   const { depData } = useSelector((state) => state.departments);
   const { posData } = useSelector((state) => state.positions);
@@ -169,8 +169,8 @@ const EmployeeAdd = ({ lastCode }) => {
   );
 };
 
-EmployeeAdd.propTypes = {
+EmployeeEdit.propTypes = {
   lastCode: PropTypes.number,
 };
 
-export default EmployeeAdd;
+export default EmployeeEdit;

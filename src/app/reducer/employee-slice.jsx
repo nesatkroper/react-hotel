@@ -7,13 +7,14 @@ export const getEmployees = createAsyncThunk(
     {
       id,
       order = "desc",
-      position = true,
-      department = true,
-      reservedetails = true,
-      sales = true,
-      opens = true,
-      closes = true,
-      info = true,
+      position = false,
+      department = false,
+      reservedetails = false,
+      sales = false,
+      shift = false,
+      attendances = false,
+      groupchat = false,
+      payment = false,
     } = {},
     { rejectWithValue }
   ) => {
@@ -24,14 +25,16 @@ export const getEmployees = createAsyncThunk(
         department: department.toString(),
         reservedetails: reservedetails.toString(),
         sales: sales.toString(),
-        opens: opens.toString(),
-        closes: closes.toString(),
-        info: info.toString(),
+        shift: shift.toString(),
+        attendances: attendances.toString(),
+        groupchat: groupchat.toString(),
+        payment: payment.toString(),
       }).toString();
 
       const res = id
         ? await axios.get(`/employee/${id}?${queryParams}`)
         : await axios.get(`/employee?${queryParams}`);
+
       return res?.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || "Something went wrong");

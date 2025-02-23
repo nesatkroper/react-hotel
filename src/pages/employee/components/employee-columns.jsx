@@ -1,53 +1,23 @@
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-  ArrowUpDown,
-  Copy,
-  FilePenLine,
-  Fullscreen,
-  MoreHorizontal,
-  Trash2,
-} from "lucide-react";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import { ArrowUpDown } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { defimg } from "@/utils/resize-crop-image";
 import { useDispatch } from "react-redux";
 import { getEmployees } from "@/app/reducer/employee-slice";
-import { dateFormat } from "@/utils/dec-format";
+import { cDollar, dateFormat, formatPhoneNumber } from "@/utils/dec-format";
 import { apiUrl } from "@/providers/api";
 import axiosAuth from "@/providers/axios-auth";
+import OptionDailog from "@/components/app/table/option-dailog";
+import EmployeeEdit from "./employee-edit";
 
 export const EmployeeActions = () => {
   const dispatch = useDispatch();
 
   const handleDelete = async (id) => {
     try {
-      await axiosAuth
-        .delete(`/employee/${id}`)
-        .then(() => {
-          dispatch(getEmployees());
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      await axiosAuth.delete(`/employee/${id}`).then(() => {
+        dispatch(getEmployees());
+      });
     } catch (err) {
       console.log(err);
     }
@@ -115,7 +85,7 @@ export const EmployeeColumns = [
     },
   },
   {
-    accessorKey: "name",
+    accessorKey: "employee_name",
     header: () => <div className="text-center">Name</div>,
     cell: ({ row }) => {
       const name = `${row.original.first_name} ${row.original.last_name}`;
@@ -137,7 +107,7 @@ export const EmployeeColumns = [
       );
     },
     cell: ({ row }) => (
-      <div className="capitalize text-center">
+      <div className="capitalize text-start">
         {row.getValue("employee_code")}
       </div>
     ),
@@ -147,12 +117,12 @@ export const EmployeeColumns = [
     header: () => <div className="text-center">Position</div>,
     cell: ({ row }) => {
       const pos = row.original.position?.position_name;
-      return <div className="text-center capitalize">{pos}</div>;
+      return <div className="text-start capitalize">{pos}</div>;
     },
   },
   {
     accessorKey: "gender",
-    header: () => <div className="text-start">Gender</div>,
+    header: () => <div className="text-center">Gender</div>,
     cell: ({ row }) => {
       return (
         <div className="text-start capitalize">
@@ -166,7 +136,7 @@ export const EmployeeColumns = [
     header: () => <div className="text-center">DOB</div>,
     cell: ({ row }) => {
       return (
-        <div className="text-center capitalize">
+        <div className="text-start capitalize">
           {dateFormat(row.getValue("dob"))}
         </div>
       );
@@ -177,7 +147,18 @@ export const EmployeeColumns = [
     header: () => <div className="text-center">Phone</div>,
     cell: ({ row }) => {
       return (
-        <div className="text-center capitalize">{row.getValue("phone")}</div>
+        <div className="text-start capitalize">
+          {formatPhoneNumber(row.getValue("phone"))}
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "salary",
+    header: () => <div className="text-center">Salary</div>,
+    cell: ({ row }) => {
+      return (
+        <p className="text-start capitalize">{cDollar(row.original?.salary)}</p>
       );
     },
   },
@@ -189,72 +170,11 @@ export const EmployeeColumns = [
       const { handleDelete } = EmployeeActions();
 
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal />
-            </Button>
-          </DropdownMenuTrigger>
-          <Dialog>
-            {/* // */}
-            {/* <ProductCategoryUpdate items={item} /> */}
-            <AlertDialog>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>
-                    Are you absolutely sure to Delete this?
-                  </AlertDialogTitle>
-                  <AlertDialogDescription>
-                    This action cannot be undone. This will permanently delete
-                    your data and remove your data from our servers.
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction
-                    onClick={() => handleDelete(item.employee_id)}
-                    className="bg-red-500"
-                  >
-                    Continue
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-              <DropdownMenuContent align="end">
-                <DropdownMenuLabel className="text-center">
-                  Actions
-                </DropdownMenuLabel>
-                <DropdownMenuItem
-                  onClick={() =>
-                    navigator.clipboard.writeText(item.product_category_id)
-                  }
-                >
-                  <Copy className="me-1" />
-                  Copy ID
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  onClick={() => console.log(item.category_name)}
-                >
-                  <Fullscreen className="me-1" />
-                  View Item
-                </DropdownMenuItem>
-                <div className="flex flex-col">
-                  <DialogTrigger>
-                    <DropdownMenuItem>
-                      <FilePenLine className="me-1" /> Edit Item
-                    </DropdownMenuItem>
-                  </DialogTrigger>
-                  <AlertDialogTrigger>
-                    <DropdownMenuItem className="text-red-500">
-                      <Trash2 className="me-1" /> Delete Item
-                    </DropdownMenuItem>
-                  </AlertDialogTrigger>
-                </div>
-              </DropdownMenuContent>
-            </AlertDialog>
-          </Dialog>
-        </DropdownMenu>
+        <OptionDailog
+          item={item}
+          deleteItem={() => handleDelete(item.employee_id)}
+          EditElement={<EmployeeEdit />}
+        />
       );
     },
   },

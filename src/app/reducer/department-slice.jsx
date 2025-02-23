@@ -1,22 +1,23 @@
-import axios from "@/providers/axios-instance";
+import axiosAuth from "@/providers/axios-auth";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 export const getDepartments = createAsyncThunk(
   "getDepartments",
   async (
-    { id, order = "desc", positions = true, employees = true } = {},
+    { id, order = "desc", positions = false, employees = false } = {},
     { rejectWithValue }
   ) => {
     try {
       const queryParams = new URLSearchParams({
         order: order,
-        positions: positions.tiString(),
+        positions: positions.toString(),
         employees: employees.toString(),
       }).toString();
 
       const res = id
-        ? await axios.get(`/department/${id}?${queryParams}`)
-        : await axios.get(`/department?${queryParams}`);
+        ? await axiosAuth.get(`/department/${id}?${queryParams}`)
+        : await axiosAuth.get(`/department?${queryParams}`);
+
       return res?.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || "Something went wrong");

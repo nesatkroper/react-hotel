@@ -73,39 +73,32 @@ const AppHeader = () => {
       </div>
       <div className="flex gap-1">
         <Dialog>
-          <DialogTrigger className="relative">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+          <DialogTrigger asChild>
             <Button
               variant="outline"
               className="ps-8 text-muted-foreground h-[32px]"
             >
+              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
               Search something ...
             </Button>
           </DialogTrigger>
+
           <AppSearchBar />
         </Dialog>
         <Sheet
           onOpenChange={(open) => (open ? handleChatOpen() : handleChatClose())}
         >
           <GroupChat messages={unreadMessages} />
-          <SheetTrigger>
-            <div className="relative">
-              <Button variant="icon" className="p-2">
-                <Mail />
-              </Button>
-              {chatcount > 0 && (
-                <span className="absolute top-2 right-1 flex h-3 w-3 items-center justify-center rounded-full bg-red-600 text-xs font-bold text-white -translate-y-2 translate-x-2">
-                  {chatcount}
-                </span>
-              )}
-            </div>
+          <SheetTrigger asChild>
+            <Button variant="icon" className="p-2">
+              <Mail />
+            </Button>
           </SheetTrigger>
         </Sheet>
 
-        {/* Notification Sheet */}
         <Sheet>
           <NotificationSheet />
-          <SheetTrigger>
+          <SheetTrigger asChild>
             <div className="relative">
               <Button variant="icon" className="p-2">
                 <BellRing size={28} />

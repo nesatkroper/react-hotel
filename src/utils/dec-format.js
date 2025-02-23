@@ -87,9 +87,42 @@ export const datetimeNow = (
 export const dateFormat = (dateString) => {
   const date = new Date(dateString);
   return date.toLocaleString("en-US", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+};
+
+export const dateTimeFormat = (dateString) => {
+  const date = new Date(dateString);
+  return date.toLocaleString("en-US", {
     month: "2-digit",
     day: "2-digit",
     hour: "2-digit",
     minute: "2-digit",
   });
+};
+
+export const formatPhoneNumber = (phoneNumber) => {
+  const cleanNumber = phoneNumber.toString().replace(/\D/g, "");
+
+  if (cleanNumber.startsWith("855") && cleanNumber.length === 11) {
+    const operator = cleanNumber.slice(3, 5);
+    const subscriber =
+      cleanNumber
+        .slice(5)
+        .match(/.{1,3}/g)
+        ?.join(" ") || cleanNumber.slice(5);
+    return `+855 ${operator} ${subscriber}`;
+  } else if (cleanNumber.startsWith("01") && cleanNumber.length === 9) {
+    const countryCode = "+855";
+    const operator = cleanNumber.slice(2, 4);
+    const subscriber =
+      cleanNumber
+        .slice(4)
+        .match(/.{1,3}/g)
+        ?.join(" ") || cleanNumber.slice(4);
+    return `${countryCode} ${operator} ${subscriber}`;
+  }
+  return phoneNumber;
 };

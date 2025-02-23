@@ -45,8 +45,16 @@ import PropTypes from "prop-types";
 import AppLoading from "../utils/app-loading";
 
 const AppDataTable = (props) => {
-  const { data, columns, main, btnSize, addElement, title, des, loading } =
-    props;
+  const {
+    data = demo,
+    columns = column,
+    main = "name",
+    btnSize = 200,
+    addElement = null,
+    title = "Defualt Title",
+    des = "Defualt Description",
+    loading = false,
+  } = props;
 
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
@@ -254,18 +262,6 @@ AppDataTable.propTypes = {
   title: PropTypes.string,
   des: PropTypes.string,
   loading: PropTypes.bool,
-};
-
-AppDataTable.defaultProps = {
-  data: demo,
-  columns: column,
-  main: "name",
-  btnSize: 200,
-  addElement: null,
-  editElement: null,
-  title: "Default Title",
-  des: "Default Description",
-  loading: false,
 };
 
 export default AppDataTable;

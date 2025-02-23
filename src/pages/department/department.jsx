@@ -9,11 +9,13 @@ import DepartmentAdd from "./components/department-add";
 
 const Department = () => {
   const dispatch = useDispatch();
-  const { depData, depLoading } = useSelector((state) => state?.departments);
+  const { depData, depLoading } = useSelector((state) => state.departments);
 
   useEffect(() => {
     dispatch(getDepartments());
   }, [dispatch]);
+
+  console.log(depData);
 
   const lastCode = useMemo(() => {
     const code = toNumber(depData[0]?.department_code, "-");

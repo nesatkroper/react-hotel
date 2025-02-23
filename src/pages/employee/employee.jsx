@@ -12,7 +12,7 @@ const Employee = () => {
   const { empData, empLoading } = useSelector((state) => state?.employees);
 
   useEffect(() => {
-    dispatch(getEmployees());
+    dispatch(getEmployees({ position: true }));
   }, [dispatch]);
 
   const lastCode = useMemo(() => {
@@ -26,7 +26,9 @@ const Employee = () => {
         data={empData}
         loading={empLoading}
         columns={EmployeeColumns}
-        addElement={<EmployeeAdd key={lastCode} lastCode={lastCode} />}
+        addElement={
+          <EmployeeAdd key={lastCode} name="Name" lastCode={lastCode} />
+        }
         title="Employeese"
         add="Add Employee"
         main="employee_name"

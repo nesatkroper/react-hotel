@@ -16,7 +16,7 @@
     "preview": "vite preview",
     "postinstall": "npx husky install",
     "format": "prettier --write .",
-    "git": "git add . && git commit -m \"modify shift\" &&   git push && npm run dev"
+    "git": "git add . && git commit -m \"modify api key\" &&   git push && npm run dev"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
