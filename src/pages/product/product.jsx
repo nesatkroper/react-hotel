@@ -15,6 +15,8 @@ const Product = () => {
     dispatch(getProduct({ category: true }));
   }, [dispatch]);
 
+  console.log(proData);
+
   const lastCode = useMemo(() => {
     if (!proData || proData.length === 0) return 0;
     const code = toNumber(proData[0]?.product_code, "-");
@@ -26,7 +28,7 @@ const Product = () => {
       <AppDataTable
         data={proData}
         columns={ProductColumns}
-        title="Product Table"
+        title="Product"
         main="product_name"
         loading={proLoading}
         add="Add Product"

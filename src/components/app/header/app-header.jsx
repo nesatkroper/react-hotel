@@ -76,13 +76,12 @@ const AppHeader = () => {
           <DialogTrigger asChild>
             <Button
               variant="outline"
-              className="ps-8 text-muted-foreground h-[32px]"
+              className="ps-8 text-muted-foreground h-[32px] relative"
             >
               <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
               Search something ...
             </Button>
           </DialogTrigger>
-
           <AppSearchBar />
         </Dialog>
         <Sheet
