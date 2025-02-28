@@ -10,7 +10,7 @@
   },
   "scripts": {
     "start": "serve -s dist",
-     "dev": "vite --port=5173",
+    "dev": "vite --host",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
