@@ -3,7 +3,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
 
 export const getUser = createAsyncThunk("getUser", async () => {
-  const res = await axiosAuth.get("/me");
+  const res = await axiosAuth.get("/auth/me");
   Cookies.set(
     "employee",
     res.data?.employee

@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { getDepartments } from "@/app/reducer/department-slice";
 import PropTypes from "prop-types";
@@ -18,7 +18,6 @@ const DepartmentAdd = ({ lastCode }) => {
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     department_name: "",
-    department_code: parseInt(lastCode, 10) + 1,
     memo: "",
   });
 
@@ -40,7 +39,6 @@ const DepartmentAdd = ({ lastCode }) => {
           dispatch(getDepartments());
           setFormData({
             department_name: "",
-            department_code: lastCode + 1,
             memo: "",
           });
         })
@@ -53,44 +51,40 @@ const DepartmentAdd = ({ lastCode }) => {
   };
 
   return (
-    <>
-      <DialogContent>
-        <form onSubmit={handleSubmit}>
-          <DialogHeader>
-            <DialogTitle>Department Details Information.</DialogTitle>
-          </DialogHeader>
-          <Separator className="my-3" />
-          <div className="flex justify-between mb-3">
-            <FormInput
-              onCallbackInput={handleChange}
-              name="department_name"
-              value={formData.department_name}
-              label="Department Name*"
-              type="text"
-              placeholder="IT, Finance, ..."
-              required={true}
-            />
-            <FormInput
-              label="Department Code*"
-              value={`DEP-${formData.department_code
-                .toString()
-                .padStart(3, "0")}`}
-            />
-          </div>
-          <FormTextArea
+    <DialogContent>
+      <form onSubmit={handleSubmit}>
+        <DialogHeader>
+          <DialogTitle>Department Details Information.</DialogTitle>
+        </DialogHeader>
+        <Separator className="my-3" />
+        <div className="flex justify-between mb-3">
+          <FormInput
             onCallbackInput={handleChange}
-            label="Decription"
-            name="memo"
-            placeholder="N/A"
+            name="department_name"
+            value={formData.department_name}
+            label="Department Name*"
+            type="text"
+            placeholder="IT, Finance, ..."
+            required={true}
           />
-          <DialogClose>
-            <Button type="submit" className="w-full">
-              Submit
-            </Button>
-          </DialogClose>
-        </form>
-      </DialogContent>
-    </>
+          <FormInput
+            label="Department Code*"
+            value={`DEP-${(lastCode + 1).toString().padStart(3, "0")}`}
+          />
+        </div>
+        <FormTextArea
+          onCallbackInput={handleChange}
+          label="Decription"
+          name="memo"
+          placeholder="N/A"
+        />
+        <DialogClose>
+          <Button type="submit" className="w-full">
+            Submit
+          </Button>
+        </DialogClose>
+      </form>
+    </DialogContent>
   );
 };
 

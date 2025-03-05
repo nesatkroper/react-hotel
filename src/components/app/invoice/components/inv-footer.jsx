@@ -1,5 +1,6 @@
 import { Separator } from "@/components/ui/separator";
 import PropTypes from "prop-types";
+import React from "react";
 
 const InvoiceFooter = (props) => {
   const { method } = props;

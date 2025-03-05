@@ -1,70 +1,12 @@
-import axios from "@/providers/axios-instance";
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import {
+  createApiThunk,
+  createGenericSlice,
+} from "../utils/create-async-slice";
 
-export const getEmployees = createAsyncThunk(
-  "getEmployees",
-  async (
-    {
-      id,
-      order = "desc",
-      position = false,
-      department = false,
-      reservedetails = false,
-      sales = false,
-      shift = false,
-      attendances = false,
-      groupchat = false,
-      payment = false,
-    } = {},
-    { rejectWithValue }
-  ) => {
-    try {
-      const queryParams = new URLSearchParams({
-        order: order,
-        position: position.toString(),
-        department: department.toString(),
-        reservedetails: reservedetails.toString(),
-        sales: sales.toString(),
-        shift: shift.toString(),
-        attendances: attendances.toString(),
-        groupchat: groupchat.toString(),
-        payment: payment.toString(),
-      }).toString();
-
-      const res = id
-        ? await axios.get(`/employee/${id}?${queryParams}`)
-        : await axios.get(`/employee?${queryParams}`);
-
-      return res?.data;
-    } catch (error) {
-      return rejectWithValue(error.response?.data || "Something went wrong");
-    }
-  }
+export const getEmployees = createApiThunk(
+  "employees/getEmployees",
+  "/employee"
 );
 
-const employeeSlice = createSlice({
-  name: "employees",
-  initialState: {
-    empData: [],
-    empLoading: false,
-    empError: null,
-  },
-  reducers: {},
-  extraReducers: (builder) => {
-    builder
-      .addCase(getEmployees.pending, (state) => {
-        state.empLoading = true;
-        state.empError = null;
-      })
-      .addCase(getEmployees.fulfilled, (state, action) => {
-        state.empLoading = false;
-        state.empData = action.payload;
-      })
-      .addCase(getEmployees.rejected, (state, action) => {
-        state.empLoading = false;
-        state.empError = action.payload;
-      });
-  },
-});
-
+const employeeSlice = createGenericSlice("employees", getEmployees);
 export default employeeSlice.reducer;

@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/sidebar";
 import axiosAuth from "@/providers/axios-auth";
 import { useDispatch } from "react-redux";
-import { clearAuthData } from "@/app/reducer/role-slice";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 const image =

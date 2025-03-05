@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { getDepartments } from "@/app/reducer/department-slice";
 import { DepartmentColumns } from "./components/department-columns";
 import { toNumber } from "@/utils/dec-format";
@@ -9,7 +9,9 @@ import DepartmentAdd from "./components/department-add";
 
 const Department = () => {
   const dispatch = useDispatch();
-  const { depData, depLoading } = useSelector((state) => state.departments);
+  const { data: depData, depLoading } = useSelector(
+    (state) => state.departments
+  );
 
   useEffect(() => {
     dispatch(getDepartments());
@@ -18,6 +20,7 @@ const Department = () => {
   console.log(depData);
 
   const lastCode = useMemo(() => {
+    if (!depData || !depData.length) return 0;
     const code = toNumber(depData[0]?.department_code, "-");
     return Number.isNaN(code) || code == null ? 0 : code;
   }, [depData]);

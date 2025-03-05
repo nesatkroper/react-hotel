@@ -16,6 +16,7 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 import PropTypes from "prop-types";
+import React from "react";
 
 export function NavMain({ items }) {
   return (

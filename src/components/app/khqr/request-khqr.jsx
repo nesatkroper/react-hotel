@@ -11,6 +11,7 @@ import dollar from "@/assets/images/dollar.png";
 import paymentSuccessSound from "@/assets/mp3/success.mp3";
 import axios from "axios";
 import jsCookie from "js-cookie";
+import React from "react";
 
 const SOCKET = io(apiUrl);
 

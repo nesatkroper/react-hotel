@@ -1,6 +1,7 @@
 import { CardHeader, CardTitle } from "@/components/ui/card";
 import { defimg } from "@/utils/resize-crop-image";
 import { PropTypes } from "prop-types";
+import React from "react";
 
 const InvoiceHeader = (props) => {
   const { logo, brand } = props;

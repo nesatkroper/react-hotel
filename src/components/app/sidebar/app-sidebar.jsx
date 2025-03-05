@@ -22,6 +22,7 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { useSelector } from "react-redux";
+import React from "react";
 
 // This is sample data.
 const data = {

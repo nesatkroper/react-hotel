@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
@@ -44,7 +44,7 @@ const Signin = () => {
 
     try {
       const res = await Promise.race([
-        axiosAuth.post("/login", formData),
+        axiosAuth.post("/auth/login", formData),
         timeoutPromise,
       ]);
 

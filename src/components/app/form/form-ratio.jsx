@@ -1,19 +1,16 @@
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import PropTypes from "prop-types";
+import React from "react";
 
 const demo = [
   {
-    value: "male",
-    data: "Male",
+    data: "True",
+    value: true,
   },
   {
-    value: "female",
-    data: "Female",
-  },
-  {
-    value: "others",
-    data: "Others",
+    data: "False",
+    value: false,
   },
 ];
 
@@ -35,7 +32,7 @@ const FormRatio = (props) => {
       <Label className={labelClass}>{label}</Label>
       <RadioGroup
         onValueChange={handleSelect}
-        defaultValue="true"
+        defaultValue={item[0].value}
         className={`flex pt-2 ${mainClass}`}
       >
         {item?.map((d, i) => (

@@ -16,6 +16,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
+import React from "react";
 
 export function NavProjects({ projects }) {
   const { isMobile } = useSidebar();

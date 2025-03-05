@@ -10,13 +10,12 @@ import {
 } from "@/components/ui/alert-dialog";
 import { afterPerDollar, cDollar, toUnit } from "@/utils/dec-format";
 import { Card, CardContent } from "@/components/ui/card";
-4;
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 import { defimg } from "@/utils/resize-crop-image";
-import { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { getCart } from "@/app/reducer/cart-slice";
 import { apiUrl } from "@/providers/api";
 import Cookies from "js-cookie";

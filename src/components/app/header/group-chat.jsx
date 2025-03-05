@@ -3,6 +3,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import React from "react";
 import { useEffect, useRef, useState } from "react";
 import { Send, ArrowDown } from "lucide-react";
 import { io } from "socket.io-client";
@@ -28,7 +29,7 @@ const GroupChat = () => {
 
   const fetchOldMessages = async () => {
     try {
-      const response = await axiosAuth.get("/message/group?emp=true");
+      const response = await axiosAuth.get("/group-message/group?emp=true");
       setMessages(response.data);
     } catch (error) {
       console.error("Error fetching old messages:", error);
@@ -53,7 +54,7 @@ const GroupChat = () => {
   }, [messages]);
 
   const handleSendMessage = () => {
-    if (!msg.trim()) return;
+    if (!msg.trim() || !user) return;
     SOCKET.emit("sendGroup", {
       sender: user.employee?.employee_name || "Admin",
       content: msg,

@@ -6,6 +6,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import React from "react";
 import { Separator } from "@/components/ui/separator";
 import PropTypes from "prop-types";
 import { cDollar, datetimeNow, dollarToRiel, toUnit } from "@/utils/dec-format";

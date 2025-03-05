@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { getEmployees } from "@/app/reducer/employee-slice";
-import { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { EmployeeColumns } from "./components/employee-columns";
 import { toNumber } from "@/utils/dec-format";
 import Layout from "@/components/app/layout";

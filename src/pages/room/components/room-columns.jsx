@@ -1,38 +1,13 @@
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-  ArrowUpDown,
-  Copy,
-  FilePenLine,
-  Fullscreen,
-  MoreHorizontal,
-  Trash2,
-} from "lucide-react";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+import { ArrowUpDown } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import axiosInstance from "@/providers/axios-instance";
 import { Button } from "@/components/ui/button";
 import { defimg } from "@/utils/resize-crop-image";
 import { useDispatch } from "react-redux";
 import { getProduct } from "@/app/reducer/product-slice";
 import { apiUrl } from "@/providers/api";
+import OptionDailog from "@/components/app/table/option-dailog";
+import React from "react";
 
 export const RoomActions = () => {
   const dispatch = useDispatch();
@@ -86,11 +61,9 @@ export const RoomColumns = [
       return (
         <div
           className={`capitalize ${
-            status == "available"
-              ? "text-green-600"
-              : status == "maintenance"
-              ? "text-yellow-600"
-              : "text-red-600"
+            status == "active"
+              ? "text-green-600 font-semibold"
+              : "text-red-600 font-semibold"
           }`}
         >
           {row.getValue("status")}
@@ -102,10 +75,11 @@ export const RoomColumns = [
     accessorKey: "picture",
     header: () => <div className="text-start">Picture</div>,
     cell: ({ row }) => {
-      const img = row.original.room_pictures[0]?.picture;
+      const img = row.original.pictures[0]?.picture;
+      console.log(img);
       return (
         <img
-          src={`${apiUrl}/images/rooms/${img}`}
+          src={`${apiUrl}/uploads/${img}`}
           alt="product"
           onError={(e) => (e.target.src = defimg)}
           className="h-[80px] rounded-lg"
@@ -216,72 +190,10 @@ export const RoomColumns = [
       const { handleDelete } = RoomActions();
 
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal />
-            </Button>
-          </DropdownMenuTrigger>
-          <Dialog>
-            {/* // */}
-            {/* <ProductCategoryUpdate items={item} /> */}
-            <AlertDialog>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>
-                    Are you absolutely sure to Delete this?
-                  </AlertDialogTitle>
-                  <AlertDialogDescription>
-                    This action cannot be undone. This will permanently delete
-                    your data and remove your data from our servers.
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction
-                    onClick={() => handleDelete(item.room_id)}
-                    className="bg-red-500"
-                  >
-                    Continue
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-              <DropdownMenuContent align="end">
-                <DropdownMenuLabel className="text-center">
-                  Actions
-                </DropdownMenuLabel>
-                <DropdownMenuItem
-                  onClick={() =>
-                    navigator.clipboard.writeText(item.product_category_id)
-                  }
-                >
-                  <Copy className="me-1" />
-                  Copy ID
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  onClick={() => console.log(item.category_name)}
-                >
-                  <Fullscreen className="me-1" />
-                  View Item
-                </DropdownMenuItem>
-                <div className="flex flex-col">
-                  <DialogTrigger>
-                    <DropdownMenuItem>
-                      <FilePenLine className="me-1" /> Edit Item
-                    </DropdownMenuItem>
-                  </DialogTrigger>
-                  <AlertDialogTrigger>
-                    <DropdownMenuItem className="text-red-500">
-                      <Trash2 className="me-1" /> Delete Item
-                    </DropdownMenuItem>
-                  </AlertDialogTrigger>
-                </div>
-              </DropdownMenuContent>
-            </AlertDialog>
-          </Dialog>
-        </DropdownMenu>
+        <OptionDailog
+          item={item}
+          deleteItem={() => handleDelete(item.room_id)}
+        />
       );
     },
   },

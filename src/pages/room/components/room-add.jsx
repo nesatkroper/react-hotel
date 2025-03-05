@@ -6,60 +6,50 @@ import {
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { getRoomTypes } from "@/app/reducer/room-type-slice";
+import { useDispatch, useSelector } from "react-redux";
 import { getRooms } from "@/app/reducer/room-slice";
-import axiosInstance from "@/providers/axios-instance";
+import React, { useEffect, useState } from "react";
 import FormInput from "@/components/app/form/form-input";
-import FormSelect from "@/components/app/form/form-select";
 import FormRatio from "@/components/app/form/form-ratio";
-
-const roomType = [
-  { value: "single", data: "Single Room" },
-  { value: "double", data: "Double Room" },
-  { value: "suite", data: "Suite Room" },
-];
+import FormComboBox from "@/components/app/form/form-combobox";
+import axiosAuth from "@/providers/axios-auth";
 
 const RoomAdd = () => {
   const dispatch = useDispatch();
-  const [formData] = useState(() => {
-    const form = new FormData();
-    form.append("room_name", "");
-    form.append("room_type", "single");
-    form.append("is_ac", true);
-    form.append("size", 25);
-    form.append("price", 0);
-    form.append("capacity", 4);
-    form.append("is_booked", false);
-    form.append("discount_rate", 0);
-    form.append("status", "available");
-    return form;
+  const { typData } = useSelector((state) => state.roomtypes);
+  const [formData, setFormData] = useState({
+    room_name: 100,
+    room_type_id: 1,
+    is_ac: true,
+    size: 25,
+    capacity: 4,
+    is_booked: false,
+    discount_rate: 0,
   });
 
-  const handleFormData = (event) => {
-    if (event instanceof FormData) {
-      for (let [key, value] of event.entries()) {
-        formData.set(key, value);
-      }
-    } else if (event?.target) {
-      const { name, value } = event.target;
-      formData.set(name, value);
-    } else if (event) {
-      console.log(event);
-      formData.set("room_type", event);
-    } else {
-      console.log("Unexpected event structure:", event);
-    }
+  useEffect(() => {
+    dispatch(getRoomTypes());
+  }, [dispatch]);
 
-    return formData;
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleDataChange = (name, value) => {
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    await axiosInstance
+    await axiosAuth
       .post("/room", formData)
       .then(() => {
-        dispatch(getRooms());
+        dispatch(getRooms({ roomtype: true, pictures: true }));
       })
       .catch((error) => {
         console.error(error);
@@ -76,29 +66,33 @@ const RoomAdd = () => {
           <Separator />
           <div className="flex justify-between mb-2 mt-2">
             <FormInput
-              onCallbackInput={handleFormData}
+              onCallbackInput={handleChange}
               name="room_name"
               type="number"
               placeholder="Room-101"
               label="Room Number*"
             />
-            <FormSelect
-              onCallbackSelect={handleFormData}
-              item={roomType}
+            <FormComboBox
+              onCallbackSelect={(event) =>
+                handleDataChange("room_type_id", event)
+              }
+              item={typData}
+              optID="room_type_id"
+              optLabel="type_name"
               label="Room Type"
               placeholder="Select Room Type"
             />
           </div>
           <div className="flex justify-between mb-2">
             <FormInput
-              onCallbackInput={handleFormData}
+              onCallbackInput={handleChange}
               name="price"
               type="number"
               placeholder="$39,99"
               label="Price*"
             />
             <FormInput
-              onCallbackInput={handleFormData}
+              onCallbackInput={handleChange}
               name="discount_rate"
               type="number"
               placeholder="5 %"
@@ -108,7 +102,7 @@ const RoomAdd = () => {
           </div>
           <div className="flex justify-between mb-2">
             <FormInput
-              onCallbackInput={handleFormData}
+              onCallbackInput={handleChange}
               name="size"
               type="number"
               placeholder="25 m²"
@@ -116,7 +110,7 @@ const RoomAdd = () => {
               step={1}
             />
             <FormInput
-              onCallbackInput={handleFormData}
+              onCallbackInput={handleChange}
               name="capacity"
               type="number"
               placeholder="4 people"
@@ -125,7 +119,7 @@ const RoomAdd = () => {
             />
           </div>
           <div className="flex justify-between mb-2">
-            <FormRatio onCallbackSelect={handleFormData} />
+            <FormRatio onCallbackSelect={handleChange} />
           </div>
           <DialogClose className="mt-2">
             <Button type="submit">Submit</Button>

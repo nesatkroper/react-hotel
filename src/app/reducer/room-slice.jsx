@@ -1,34 +1,9 @@
-import axios from "@/providers/axios-instance";
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import {
+  createApiThunk,
+  createGenericSlice,
+} from "../utils/create-async-slice";
 
-export const getRooms = createAsyncThunk("getRooms", async () => {
-  const res = await axios.get("/room");
-  return res?.data;
-});
+export const getRooms = createApiThunk("rooms/getRooms", "/room");
 
-const roomSlice = createSlice({
-  name: "rooms",
-  initialState: {
-    rooData: [],
-    rooLoading: false,
-    rooError: null,
-  },
-  reducers: {},
-  extraReducers: (builder) => {
-    builder
-      .addCase(getRooms.pending, (state) => {
-        state.rooLoading = true;
-        state.rooError = null;
-      })
-      .addCase(getRooms.fulfilled, (state, action) => {
-        state.rooLoading = false;
-        state.rooData = action.payload;
-      })
-      .addCase(getRooms.rejected, (state, action) => {
-        state.rooLoading = false;
-        state.rooError = action.payload;
-      });
-  },
-});
-
+const roomSlice = createGenericSlice("rooms", getRooms);
 export default roomSlice.reducer;

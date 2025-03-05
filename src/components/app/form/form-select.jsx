@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import PropTypes from "prop-types";
+import React from "react";
 
 const demo = [
   {
@@ -17,10 +18,6 @@ const demo = [
     value: "female",
     data: "Female",
   },
-  {
-    value: "others",
-    data: "Others",
-  },
 ];
 
 const FormSelect = (props) => {
@@ -28,11 +25,18 @@ const FormSelect = (props) => {
     onCallbackSelect,
     mainClass,
     labelClass,
+    optID,
+    optLabel,
     size = 250,
     label = "Gender",
     item = demo,
     isLabel = true,
   } = props;
+
+  const filter = (item || []).map((d) => ({
+    value: d[optID],
+    label: d[optLabel],
+  }));
 
   const handleSelect = (event) => {
     onCallbackSelect(event);
@@ -45,9 +49,9 @@ const FormSelect = (props) => {
           <SelectValue placeholder={`Set ${label}`} />
         </SelectTrigger>
         <SelectContent>
-          {item?.map((d, i) => (
+          {filter?.map((d, i) => (
             <SelectItem key={i} value={d.value}>
-              {d.data}
+              {d.label}
             </SelectItem>
           ))}
         </SelectContent>
@@ -60,6 +64,8 @@ FormSelect.propTypes = {
   onCallbackSelect: PropTypes.func,
   mainClass: PropTypes.string,
   labelClass: PropTypes.string,
+  optID: PropTypes.string,
+  optLabel: PropTypes.string,
   placeholder: PropTypes.string,
   size: PropTypes.number,
   label: PropTypes.string,

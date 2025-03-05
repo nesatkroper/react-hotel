@@ -1,3 +1,4 @@
+import React from "react";
 import { useState, useMemo } from "react";
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 import {
