@@ -2,12 +2,14 @@ import Layout from "@/components/app/layout";
 import AppDataTable from "@/components/app/table/app-data-table";
 import { useDispatch, useSelector } from "react-redux";
 import { CustomerColumns } from "./components/customer-columns";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { getCustomers } from "@/app/reducer/customer-slice";
 
 const Customer = () => {
   const dispatch = useDispatch();
-  const { cusData, cusLoading } = useSelector((state) => state.customers);
+  const { data: cusData, loading: cusLoading } = useSelector(
+    (state) => state.customers
+  );
 
   useEffect(() => {
     dispatch(getCustomers());

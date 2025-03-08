@@ -27,6 +27,7 @@ export const createGenericSlice = (name, apiThunk) => {
       data: [],
       loading: false,
       error: null,
+      lastFetched: null, // ✅ Add a timestamp to track the last fetch
     },
     reducers: {},
     extraReducers: (builder) => {
@@ -38,6 +39,7 @@ export const createGenericSlice = (name, apiThunk) => {
         .addCase(apiThunk.fulfilled, (state, action) => {
           state.loading = false;
           state.data = action.payload || [];
+          state.lastFetched = Date.now(); // ✅ Store the last fetch time
         })
         .addCase(apiThunk.rejected, (state, action) => {
           state.loading = false;
@@ -46,3 +48,30 @@ export const createGenericSlice = (name, apiThunk) => {
     },
   });
 };
+
+// export const createGenericSlice = (name, apiThunk) => {
+//   return createSlice({
+//     name,
+//     initialState: {
+//       data: [],
+//       loading: false,
+//       error: null,
+//     },
+//     reducers: {},
+//     extraReducers: (builder) => {
+//       builder
+//         .addCase(apiThunk.pending, (state) => {
+//           state.loading = true;
+//           state.error = null;
+//         })
+//         .addCase(apiThunk.fulfilled, (state, action) => {
+//           state.loading = false;
+//           state.data = action.payload || [];
+//         })
+//         .addCase(apiThunk.rejected, (state, action) => {
+//           state.loading = false;
+//           state.error = action.payload;
+//         });
+//     },
+//   });
+// };

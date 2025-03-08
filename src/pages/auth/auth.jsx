@@ -2,6 +2,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import Signin from "./components/signin";
 import Signup from "./components/signup";
+import React from "react";
 
 const Auth = () => {
   return (

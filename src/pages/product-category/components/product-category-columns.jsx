@@ -31,9 +31,10 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { defimg } from "@/utils/resize-crop-image";
 import { useDispatch } from "react-redux";
-import { getPcategory } from "@/app/reducer/product-category-slice";
-import ProductCategoryUpdate from "./product-category-update";
 import { apiUrl } from "@/providers/api";
+import ProductCategoryUpdate from "./product-category-update";
+import React from "react";
+import { getCategorys } from "@/app/reducer/product-category-slice";
 
 export const ProductCategoryActions = () => {
   const dispatch = useDispatch();
@@ -43,7 +44,7 @@ export const ProductCategoryActions = () => {
       await axiosInstance
         .delete(`/category/${id}`)
         .then(() => {
-          dispatch(getPcategory());
+          dispatch(getCategorys());
         })
         .catch((error) => {
           console.log(error);

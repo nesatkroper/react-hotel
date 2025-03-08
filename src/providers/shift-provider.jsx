@@ -1,6 +1,12 @@
 import Cookies from "js-cookie";
 import PropTypes from "prop-types";
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 
 const CodeContext = createContext();
 

@@ -9,11 +9,15 @@ import AppDataTable from "@/components/app/table/app-data-table";
 
 const Employee = () => {
   const dispatch = useDispatch();
-  const { empData, empLoading } = useSelector((state) => state?.employees);
+  const { data: empData, loading: empLoading } = useSelector(
+    (state) => state?.employees
+  );
 
   useEffect(() => {
-    dispatch(getEmployees({ position: true }));
+    dispatch(getEmployees({ info: true, position: true, department: true }));
   }, [dispatch]);
+
+  console.log(empData);
 
   const lastCode = useMemo(() => {
     const code = toNumber(empData[0]?.employee_code, "-");

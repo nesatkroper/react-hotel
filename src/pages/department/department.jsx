@@ -1,23 +1,31 @@
-import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect, useMemo } from "react";
-import { getDepartments } from "@/app/reducer/department-slice";
-import { DepartmentColumns } from "./components/department-columns";
-import { toNumber } from "@/utils/dec-format";
 import Layout from "@/components/app/layout";
 import AppDataTable from "@/components/app/table/app-data-table";
 import DepartmentAdd from "./components/department-add";
+import { getDepartments } from "@/app/reducer/department-slice";
+import { DepartmentColumns } from "./components/department-columns";
+import { toNumber } from "@/utils/dec-format";
+import { useDispatch, useSelector } from "react-redux";
 
 const Department = () => {
   const dispatch = useDispatch();
-  const { data: depData, depLoading } = useSelector(
-    (state) => state.departments
-  );
+  const {
+    data: depData,
+    loading: depLoading,
+    lastFetched,
+  } = useSelector((state) => state.departments);
 
   useEffect(() => {
-    dispatch(getDepartments());
-  }, [dispatch]);
+    const STALE_TIME = 5 * 60 * 1000;
 
-  console.log(depData);
+    if (
+      !depData ||
+      depData.length === 0 ||
+      (lastFetched && Date.now() - lastFetched > STALE_TIME)
+    ) {
+      dispatch(getDepartments({ status: "all" }));
+    }
+  }, [dispatch, depData, lastFetched]);
 
   const lastCode = useMemo(() => {
     if (!depData || !depData.length) return 0;

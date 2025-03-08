@@ -7,9 +7,8 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { getPcategory } from "@/app/reducer/product-category-slice";
 import { apiUrl } from "@/providers/api";
 import axiosInstance from "@/providers/axios-instance";
 import FormInput from "@/components/app/form/form-input";
@@ -17,6 +16,7 @@ import PropTypes from "prop-types";
 import FormTextArea from "@/components/app/form/form-textarea";
 import FormImagePreview from "@/components/app/form/form-image-preview";
 import FormImageResize from "@/components/app/form/form-image-resize";
+import { getCategorys } from "@/app/reducer/product-category-slice";
 
 const ProductCategoryUpdate = ({ items }) => {
   const dispatch = useDispatch();
@@ -70,7 +70,7 @@ const ProductCategoryUpdate = ({ items }) => {
         .put(`/category/${items.product_category_id}`, formData)
         .then((res) => {
           console.log(res);
-          dispatch(getPcategory());
+          dispatch(getCategorys());
         })
         .catch((err) => {
           console.log(err);

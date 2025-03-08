@@ -16,7 +16,7 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 import { defimg } from "@/utils/resize-crop-image";
 import React, { useEffect, useMemo } from "react";
-import { getCart } from "@/app/reducer/cart-slice";
+import { getCarts } from "@/app/reducer/cart-slice";
 import { apiUrl } from "@/providers/api";
 import Cookies from "js-cookie";
 import axiosAuth from "@/providers/axios-auth";
@@ -37,7 +37,7 @@ const POSCart = () => {
 
   useEffect(() => {
     if (AuthID) {
-      dispatch(getCart({ id: AuthID }));
+      dispatch(getCarts({ id: AuthID }));
     }
   }, [dispatch]);
 
@@ -76,7 +76,7 @@ const POSCart = () => {
       const url =
         action === "up" ? `/cart/inc/${cart_id}` : `/cart/dec/${cart_id}`;
       await axiosAuth.put(url);
-      dispatch(getCart({ id: AuthID }));
+      dispatch(getCarts({ id: AuthID }));
     } catch (error) {
       console.error(error);
     }

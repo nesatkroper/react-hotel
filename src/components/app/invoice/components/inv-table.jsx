@@ -11,7 +11,7 @@ import { Separator } from "@/components/ui/separator";
 import PropTypes from "prop-types";
 import { cDollar, datetimeNow, dollarToRiel, toUnit } from "@/utils/dec-format";
 import { useDispatch, useSelector } from "react-redux";
-import { getCart } from "@/app/reducer/cart-slice";
+import { getCarts } from "@/app/reducer/cart-slice";
 import { useEffect, useMemo } from "react";
 
 const Tax = 10;
@@ -23,7 +23,7 @@ const InvoiceTable = (props) => {
   const { cartData } = useSelector((state) => state.cart);
 
   useEffect(() => {
-    dispatch(getCart());
+    dispatch(getCarts());
   }, [dispatch]);
 
   const { total, discount, amount } = useMemo(() => {

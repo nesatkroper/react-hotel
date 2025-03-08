@@ -53,7 +53,7 @@ const Signin = () => {
       clearTimeout(timeoutId);
 
       setToken(res.data.token);
-      Cookies.set("user-info", JSON.stringify(res.data.auth), { expires: 1 });
+      Cookies.set("user-info", JSON.stringify(res.data.auth), { expires: 0.4 });
 
       navigate("/", { replace: true });
     } catch (err) {

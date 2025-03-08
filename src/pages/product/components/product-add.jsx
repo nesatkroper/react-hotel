@@ -7,11 +7,11 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getProduct } from "@/app/reducer/product-slice";
-import { getPcategory } from "@/app/reducer/product-category-slice";
+import { getProducts } from "@/app/reducer/product-slice";
 import { defimg } from "@/utils/resize-crop-image";
+import { getCategorys } from "@/app/reducer/product-category-slice";
 import PropTypes from "prop-types";
 import FormInput from "@/components/app/form/form-input";
 import FormComboBox from "@/components/app/form/form-combobox";
@@ -37,7 +37,7 @@ const ProductAdd = ({ lastCode }) => {
   });
 
   useEffect(() => {
-    dispatch(getPcategory());
+    dispatch(getCategorys());
   }, [dispatch]);
 
   const handleFormData = (event) => {
@@ -69,7 +69,7 @@ const ProductAdd = ({ lastCode }) => {
         })
         .then((res) => {
           console.log(res);
-          dispatch(getProduct());
+          dispatch(getProducts());
         })
         .catch((error) => {
           console.log("Error submitting form:", error);

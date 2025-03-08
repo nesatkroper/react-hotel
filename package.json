@@ -16,7 +16,7 @@
     "preview": "vite preview",
     "postinstall": "npx husky install",
     "format": "prettier --write .",
-    "git": "git add . && git commit -m \"modify reduc state management\" &&   git push && npm run dev"
+    "git": "git add . && git commit -m \"post to other pc\" &&   git push && npm run dev"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
@@ -57,6 +57,7 @@
     "cropperjs": "^1.6.2",
     "crypto": "^1.0.1",
     "date-fns": "^3.6.0",
+    "framer-motion": "^12.4.10",
     "html2canvas": "^1.4.1",
     "input-otp": "^1.4.2",
     "js-cookie": "^3.0.5",
@@ -80,6 +81,7 @@
     "react-spreadsheet": "^0.9.5",
     "react-to-print": "^3.0.4",
     "recharts": "^2.15.0",
+    "redux-persist": "^6.0.0",
     "serve": "^14.2.4",
     "socket.io": "^4.8.1",
     "socket.io-client": "^4.8.1",

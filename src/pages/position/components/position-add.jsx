@@ -4,11 +4,11 @@ import {
   DialogTitle,
   DialogClose,
 } from "@/components/ui/dialog";
+import React, { useEffect, useState } from "react";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { getPositions } from "@/app/reducer/position-slice";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
 import { getDepartments } from "@/app/reducer/department-slice";
 import PropTypes from "prop-types";
 import FormInput from "@/components/app/form/form-input";
@@ -18,19 +18,16 @@ import axiosAuth from "@/providers/axios-auth";
 
 const PositionAdd = ({ lastCode }) => {
   const dispatch = useDispatch();
-  const { depData } = useSelector((state) => state.departments);
+  const { data: depData } = useSelector((state) => state.departments);
   const [formData, setFormData] = useState({
     department_id: 0,
     position_name: "",
-    position_code: parseInt(lastCode, 10) + 1,
     memo: "",
   });
 
   useEffect(() => {
     dispatch(getDepartments());
   }, [dispatch]);
-
-  // console.log(formData);
 
   const handleChange = (event) => {
     if (typeof event === "string") formData.department_id = event;
@@ -48,11 +45,10 @@ const PositionAdd = ({ lastCode }) => {
       .post("/position", formData)
       .then((res) => {
         console.log(res);
-        dispatch(getPositions());
+        dispatch(getPositions({ department: true }));
         setFormData({
           department_id: 0,
           position_name: "",
-          position_code: lastCode + 1,
           memo: "",
         });
       })
@@ -78,7 +74,7 @@ const PositionAdd = ({ lastCode }) => {
           />
           <FormInput
             label="Position Code"
-            value={`POS-${formData.position_code.toString().padStart(3, "0")}`}
+            value={`POS-${(lastCode + 1).toString().padStart(4, "0")}`}
           />
         </div>
         <div className="flex justify-between mb-3">

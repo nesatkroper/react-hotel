@@ -1,7 +1,13 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 import PropTypes from "prop-types";
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 
 const AuthContext = createContext();
 
@@ -15,7 +21,7 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     if (token) {
       axios.defaults.headers.common["Authorization"] = "Bearer " + token;
-      Cookies.set("token", token, { expires: 0.5, path: "/" });
+      Cookies.set("token", token, { expires: 0.4, path: "/" });
     } else {
       delete axios.defaults.headers.common["Authorization"];
       Cookies.remove("token");

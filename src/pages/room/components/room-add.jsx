@@ -6,7 +6,6 @@ import {
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { getRoomTypes } from "@/app/reducer/room-type-slice";
 import { useDispatch, useSelector } from "react-redux";
 import { getRooms } from "@/app/reducer/room-slice";
 import React, { useEffect, useState } from "react";
@@ -14,6 +13,7 @@ import FormInput from "@/components/app/form/form-input";
 import FormRatio from "@/components/app/form/form-ratio";
 import FormComboBox from "@/components/app/form/form-combobox";
 import axiosAuth from "@/providers/axios-auth";
+import { getRoomtypes } from "@/app/reducer/room-type-slice";
 
 const RoomAdd = () => {
   const dispatch = useDispatch();
@@ -29,7 +29,7 @@ const RoomAdd = () => {
   });
 
   useEffect(() => {
-    dispatch(getRoomTypes());
+    dispatch(getRoomtypes());
   }, [dispatch]);
 
   const handleChange = (event) => {

@@ -1,8 +1,8 @@
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getProduct } from "@/app/reducer/product-slice";
+import { getProducts } from "@/app/reducer/product-slice";
 import { getCode } from "@/app/reducer/code-slice";
 import Layout from "@/components/app/layout";
 import POSSearch from "./components/pos-search";
@@ -29,7 +29,7 @@ const POS = () => {
   }, [codData]);
 
   useEffect(() => {
-    dispatch(getProduct({ category: true }));
+    dispatch(getProducts({ category: true }));
     dispatch(getCode());
   }, [dispatch]);
 

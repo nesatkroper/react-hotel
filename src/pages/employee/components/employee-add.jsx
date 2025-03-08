@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getPositions } from "@/app/reducer/position-slice";
 import { getEmployees } from "@/app/reducer/employee-slice";
@@ -14,18 +14,17 @@ import { getDepartments } from "@/app/reducer/department-slice";
 import { Loader2 } from "lucide-react";
 import PropTypes from "prop-types";
 import FormInput from "@/components/app/form/form-input";
-import FormSelect from "@/components/app/form/form-select";
 import FormDatePicker from "@/components/app/form/form-date-picker";
 import FormComboBox from "@/components/app/form/form-combobox";
 import axiosAuth from "@/providers/axios-auth";
+import { GENDER } from "@/utils/default-data";
 
 const EmployeeAdd = ({ lastCode }) => {
   const dispatch = useDispatch();
-  const { depData } = useSelector((state) => state.departments);
-  const { posData } = useSelector((state) => state.positions);
+  const { data: depData } = useSelector((state) => state.departments);
+  const { data: posData } = useSelector((state) => state.positions);
   const [issend, setIssend] = useState(false);
   const [formData, setFormData] = useState({
-    employee_code: parseInt(lastCode, 10) + 1,
     status: "active",
     first_name: "",
     last_name: "",
@@ -56,7 +55,6 @@ const EmployeeAdd = ({ lastCode }) => {
   };
 
   const validateForm = () => {
-    if (!formData.employee_code) return "Employee code is required.";
     if (!formData.first_name) return "First name is required.";
     if (!formData.last_name) return "Last name is required.";
     if (!formData.gender) return "Gender is required.";
@@ -111,8 +109,12 @@ const EmployeeAdd = ({ lastCode }) => {
             label="Employee Code*"
             value={`EMP-${(lastCode + 1).toString().padStart(4, "0")}`}
           />
-          <FormSelect
+          <FormComboBox
+            item={GENDER}
+            optID="value"
+            optLabel="label"
             name="gender"
+            label="Gender"
             onCallbackSelect={(event) => handleDataChange("gender", event)}
           />
         </div>

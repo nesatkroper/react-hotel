@@ -8,13 +8,13 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { getPositions } from "@/app/reducer/position-slice";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { getDepartments } from "@/app/reducer/department-slice";
 import PropTypes from "prop-types";
 import FormInput from "@/components/app/form/form-input";
 import FormComboBox from "@/components/app/form/form-combobox";
 import FormTextArea from "@/components/app/form/form-textarea";
 import axiosAuth from "@/providers/axios-auth";
-import { getDepartments } from "@/app/reducer/department-slice";
 
 const PositionUpdate = ({ items }) => {
   const dispatch = useDispatch();
@@ -22,7 +22,6 @@ const PositionUpdate = ({ items }) => {
   const [formData, setFormData] = useState({
     department_id: items.department_id,
     position_name: items.position_name,
-    position_code: items.position_code,
     memo: items.memo,
   });
 
@@ -44,15 +43,9 @@ const PositionUpdate = ({ items }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await axiosAuth
-      .put(`/position/${items.position_id}`, formData)
-      .then((res) => {
-        console.log(res);
-        dispatch(getPositions());
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    await axiosAuth.put(`/position/${items.position_id}`, formData);
+
+    dispatch(getPositions());
   };
   return (
     <DialogContent>
@@ -70,7 +63,7 @@ const PositionUpdate = ({ items }) => {
             placeholder="IT, Finance, ..."
             required={true}
           />
-          <FormInput label="Position Code" value={formData.position_code} />
+          <FormInput label="Position Code" value={items.position_code} />
         </div>
         <div className="flex justify-between mb-3">
           <FormComboBox

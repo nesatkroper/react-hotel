@@ -30,10 +30,11 @@ import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { defimg } from "@/utils/resize-crop-image";
 import { useDispatch } from "react-redux";
-import { getProduct } from "@/app/reducer/product-slice";
+import { getProducts } from "@/app/reducer/product-slice";
+import { apiUrl } from "@/providers/api";
 import axiosInstance from "@/providers/axios-instance";
 import RoomPictureUpdate from "./room-picture-update";
-import { apiUrl } from "@/providers/api";
+import React from "react";
 
 export const RoomPictureActions = () => {
   const dispatch = useDispatch();
@@ -43,7 +44,7 @@ export const RoomPictureActions = () => {
       await axiosInstance
         .delete(`/room-picture/${id}`)
         .then(() => {
-          dispatch(getProduct());
+          dispatch(getProducts());
         })
         .catch((error) => {
           console.log(error);

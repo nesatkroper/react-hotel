@@ -1,11 +1,11 @@
 import { ArrowUpDown } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
-import axiosInstance from "@/providers/axios-instance";
 import { Button } from "@/components/ui/button";
 import { defimg } from "@/utils/resize-crop-image";
 import { useDispatch } from "react-redux";
-import { getProduct } from "@/app/reducer/product-slice";
 import { apiUrl } from "@/providers/api";
+import { getProducts } from "@/app/reducer/product-slice";
+import axiosInstance from "@/providers/axios-instance";
 import OptionDailog from "@/components/app/table/option-dailog";
 import React from "react";
 
@@ -17,7 +17,7 @@ export const RoomActions = () => {
       await axiosInstance
         .delete(`/room/${id}`)
         .then(() => {
-          dispatch(getProduct());
+          dispatch(getProducts());
         })
         .catch((error) => {
           console.log(error);

@@ -10,10 +10,10 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getShift } from "@/app/reducer/shift-slice";
-import { getBanknote } from "@/app/reducer/bank-note-slice";
+import { getShifts } from "@/app/reducer/shift-slice";
+import { getBanknotes } from "@/app/reducer/bank-note-slice";
 import { getCode } from "@/app/reducer/code-slice";
 import Cookie from "js-cookie";
 import axiosAuth from "@/providers/axios-auth";
@@ -76,8 +76,8 @@ const CloseShift = () => {
   };
 
   useEffect(() => {
-    dispatch(getShift());
-    dispatch(getBanknote());
+    dispatch(getShifts());
+    dispatch(getBanknotes());
     dispatch(getCode());
   }, [dispatch]);
 

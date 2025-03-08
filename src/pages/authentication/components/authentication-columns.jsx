@@ -30,7 +30,8 @@ import axiosInstance from "@/providers/axios-instance";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { useDispatch } from "react-redux";
-import { getProduct } from "@/app/reducer/product-slice";
+import { getProducts } from "@/app/reducer/product-slice";
+import React from "react";
 
 export const AuthenticationActions = () => {
   const dispatch = useDispatch();
@@ -40,7 +41,7 @@ export const AuthenticationActions = () => {
       await axiosInstance
         .delete(`/products/${id}`)
         .then(() => {
-          dispatch(getProduct());
+          dispatch(getProducts());
         })
         .catch((error) => {
           console.log(error);

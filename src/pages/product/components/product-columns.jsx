@@ -31,8 +31,9 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { defimg } from "@/utils/resize-crop-image";
 import { useDispatch } from "react-redux";
-import { getProduct } from "@/app/reducer/product-slice";
+import { getProducts } from "@/app/reducer/product-slice";
 import { apiUrl } from "@/providers/api";
+import React from "react";
 
 export const ProductActions = () => {
   const dispatch = useDispatch();
@@ -42,7 +43,7 @@ export const ProductActions = () => {
       await axiosInstance
         .delete(`/products/${id}`)
         .then(() => {
-          dispatch(getProduct());
+          dispatch(getProducts());
         })
         .catch((error) => {
           console.log(error);

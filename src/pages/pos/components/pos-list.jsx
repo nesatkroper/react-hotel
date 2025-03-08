@@ -3,12 +3,13 @@ import { defimg } from "@/utils/resize-crop-image";
 import { apiUrl } from "@/providers/api";
 import { Button } from "@/components/ui/button";
 import { useDispatch, useSelector } from "react-redux";
-import { getCart } from "@/app/reducer/cart-slice";
+import { getCarts } from "@/app/reducer/cart-slice";
 import { Plus } from "lucide-react";
 import { cDollar } from "@/utils/dec-format";
 import Cookies from "js-cookie";
 import PropTypes from "prop-types";
 import axiosAuth from "@/providers/axios-auth";
+import React from "react";
 
 const userInfo = Cookies.get("user-info")
   ? JSON.parse(Cookies.get("user-info"))
@@ -33,7 +34,7 @@ const POSList = (props) => {
       if (!isAlreadyAdd) {
         const newItem = { auth_id: AuthID, product_id: item.product_id };
         const response = await axiosAuth.post("/cart", newItem);
-        dispatch(getCart({ id: AuthID }));
+        dispatch(getCarts({ id: AuthID }));
         console.log("Cart submitted successfully:", response.data);
       } else {
         try {
@@ -43,7 +44,7 @@ const POSList = (props) => {
 
           const cartID = cartItem ? cartItem.cart_id : null;
           const inc = await axiosAuth.put(`/cart/inc/${cartID}`);
-          dispatch(getCart({ id: AuthID }));
+          dispatch(getCarts({ id: AuthID }));
           console.log("Item is already in the cart.", inc);
         } catch (err) {
           console.log(err);

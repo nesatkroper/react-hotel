@@ -14,13 +14,13 @@ import {
 import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Check, ChevronsUpDown, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useSelector, useDispatch } from "react-redux";
-import { getPcategory } from "@/app/reducer/product-category-slice";
 import { getSearchCate } from "@/app/reducer/search-category-slice";
+import { getCategorys } from "@/app/reducer/product-category-slice";
 import OpenShift from "../../shift/open";
 import CloseShift from "../../shift/close";
 import PropTypes from "prop-types";
@@ -33,7 +33,7 @@ const POSSearch = ({ shift }) => {
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    dispatch(getPcategory());
+    dispatch(getCategorys());
   }, [dispatch]);
 
   return (

@@ -7,9 +7,8 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { getPcategory } from "@/app/reducer/product-category-slice";
 import { defimg } from "@/utils/resize-crop-image";
 import { getRooms } from "@/app/reducer/room-slice";
 import FormInput from "@/components/app/form/form-input";
@@ -18,6 +17,7 @@ import FormImagePreview from "@/components/app/form/form-image-preview";
 import PropTypes from "prop-types";
 import FormImageResize from "@/components/app/form/form-image-resize";
 import axiosInstance from "@/providers/axios-instance";
+import { getCategorys } from "@/app/reducer/product-category-slice";
 
 const ProductCategoryAdd = ({ lastCode }) => {
   const dispatch = useDispatch();
@@ -72,7 +72,7 @@ const ProductCategoryAdd = ({ lastCode }) => {
         })
         .then((res) => {
           console.log(res);
-          dispatch(getPcategory());
+          dispatch(getCategorys());
         })
         .catch((error) => {
           console.log("Error submitting form:", error);

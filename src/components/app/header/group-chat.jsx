@@ -24,8 +24,8 @@ const GroupChat = () => {
   const user = JSON.parse(Cookies.get("user-info"));
   const [messages, setMessages] = useState([]);
   const [msg, setMsg] = useState("");
-  const scrollRef = useRef(null);
   const [isAtBottom, setIsAtBottom] = useState(true);
+  const scrollRef = useRef(null);
 
   const fetchOldMessages = async () => {
     try {

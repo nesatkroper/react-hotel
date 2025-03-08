@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useMemo } from "react";
-import { getProduct } from "@/app/reducer/product-slice.jsx";
+import React, { useEffect, useMemo } from "react";
+import { getProducts } from "@/app/reducer/product-slice.jsx";
 import { ProductColumns } from "./components/product-columns.jsx";
 import { toNumber } from "@/utils/dec-format.js";
 import Layout from "@/components/app/layout";
@@ -12,7 +12,7 @@ const Product = () => {
   const { proData, proLoading } = useSelector((state) => state?.products);
 
   useEffect(() => {
-    dispatch(getProduct({ category: true }));
+    dispatch(getProducts({ category: true }));
   }, [dispatch]);
 
   console.log(proData);
