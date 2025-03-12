@@ -9,23 +9,15 @@ import { useDispatch, useSelector } from "react-redux";
 
 const Department = () => {
   const dispatch = useDispatch();
-  const {
-    data: depData,
-    loading: depLoading,
-    lastFetched,
-  } = useSelector((state) => state.departments);
+  const { data: depData, loading: depLoading } = useSelector(
+    (state) => state.departments
+  );
 
   useEffect(() => {
-    const STALE_TIME = 5 * 60 * 1000;
+    dispatch(getDepartments({ status: "all" }));
+  }, [dispatch]);
 
-    if (
-      !depData ||
-      depData.length === 0 ||
-      (lastFetched && Date.now() - lastFetched > STALE_TIME)
-    ) {
-      dispatch(getDepartments({ status: "all" }));
-    }
-  }, [dispatch, depData, lastFetched]);
+  console.log(depData);
 
   const lastCode = useMemo(() => {
     if (!depData || !depData.length) return 0;

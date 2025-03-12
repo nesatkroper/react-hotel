@@ -5,7 +5,6 @@ import EmployeeEdit from "./employee-edit";
 import PropTypes from "prop-types";
 
 const employeeFields = [
-  { key: "status", label: "" },
   { key: "info.picture", label: "Picture" },
   { key: "full_name", label: "Name" },
   { key: "employee_code", label: "Code" },
@@ -14,6 +13,7 @@ const employeeFields = [
   { key: "dob", label: "DOB" },
   { key: "phone", label: "Phone" },
   { key: "salary", label: "Salary" },
+  { key: "status", label: "S" },
 ];
 
 const EmployeeEditWrapper = ({ item }) => {
@@ -27,8 +27,7 @@ export const EmployeeColumns = (() => {
     employeeFields,
     createEditComponent,
     "employee",
-    getEmployees,
-    { status: "all" }
+    getEmployees
   );
 })();
 

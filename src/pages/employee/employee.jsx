@@ -1,6 +1,6 @@
-import { useDispatch, useSelector } from "react-redux";
-import { getEmployees } from "@/app/reducer/employee-slice";
 import React, { useEffect, useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { clearCache, getEmployees } from "@/app/reducer/employee-slice";
 import { EmployeeColumns } from "./components/employee-columns";
 import { toNumber } from "@/utils/dec-format";
 import Layout from "@/components/app/layout";
@@ -14,10 +14,13 @@ const Employee = () => {
   );
 
   useEffect(() => {
-    dispatch(getEmployees({ info: true, position: true, department: true }));
+    dispatch(getEmployees({ info: true, position: true }));
   }, [dispatch]);
 
-  console.log(empData);
+  const refresh = () => {
+    dispatch(clearCache());
+    dispatch(getEmployees({ info: true, position: true }));
+  };
 
   const lastCode = useMemo(() => {
     const code = toNumber(empData[0]?.employee_code, "-");
@@ -36,6 +39,7 @@ const Employee = () => {
         title="Employeese"
         add="Add Employee"
         main="employee_name"
+        refresh={refresh}
       />
     </Layout>
   );

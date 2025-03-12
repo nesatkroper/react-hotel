@@ -59,7 +59,7 @@ const rowVariants = {
 
 const headerVariants = {
   hidden: { opacity: 0, y: -10 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.2, ease: "easeOut" } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut" } },
 };
 
 const cardVariants = {
@@ -67,7 +67,7 @@ const cardVariants = {
   visible: {
     opacity: 1,
     scale: 1,
-    transition: { duration: 0.5, ease: "easeOut" },
+    transition: { duration: 0.3, ease: "easeOut" },
   },
 };
 
@@ -86,7 +86,7 @@ const rowNumberColumn = {
   enableHiding: false,
 };
 
-const AppDataTable = (props) => {
+const AppPaginationTable = (props) => {
   const {
     data = demo,
     columns = column,
@@ -96,6 +96,8 @@ const AppDataTable = (props) => {
     title = "Default Title",
     des = "Default Description",
     loading = false,
+    next,
+    previous,
     refresh,
   } = props;
 
@@ -125,7 +127,7 @@ const AppDataTable = (props) => {
     },
     initialState: {
       pagination: {
-        pageSize: 5,
+        pageSize: 10,
       },
     },
   });
@@ -149,7 +151,7 @@ const AppDataTable = (props) => {
                 <motion.button
                   whileHover={{ scale: 1.01 }}
                   whileTap={{ scale: 0.95 }}
-                  className={`w-[${btnSize}px] h-8 inline-flex items-center justify-center rounded-md text-sm font-medium bg-primary text-primary-foreground  px-4 py-2`}
+                  className={`w-[${btnSize}px] h-8 inline-flex items-center justify-center rounded-md text-sm font-medium bg-primary text-primary-foreground px-4 py-2`}
                 >
                   <Plus className="mr-2" /> {title}
                 </motion.button>
@@ -171,7 +173,7 @@ const AppDataTable = (props) => {
                 onChange={(event) =>
                   table.getColumn(main)?.setFilterValue(event.target.value)
                 }
-                className=" w-64"
+                className="w-64"
               />
               <Select
                 onValueChange={(event) => table.setPageSize(Number(event))}
@@ -180,12 +182,9 @@ const AppDataTable = (props) => {
                   <SelectValue placeholder="5 Rows" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value={5}>5 Rows</SelectItem>
                   <SelectItem value={10}>10 Rows</SelectItem>
                   <SelectItem value={15}>15 Rows</SelectItem>
-                  <SelectItem value={25}>25 Rows</SelectItem>
-                  <SelectItem value={50}>50 Rows</SelectItem>
-                  <SelectItem value={100}>100 Rows</SelectItem>
+                  <SelectItem value={20}>20 Rows</SelectItem>
                 </SelectContent>
               </Select>
               <Button onClick={handleRefresh} variant="outline" type="button">
@@ -311,7 +310,7 @@ const AppDataTable = (props) => {
                     ) : (
                       <TableRow>
                         <TableCell
-                          colSpan={columns.length}
+                          colSpan={columns.length + 1}
                           className="h-24 text-center"
                         >
                           No results.
@@ -329,19 +328,19 @@ const AppDataTable = (props) => {
               </div>
               <div className="space-x-2">
                 <motion.button
-                  whileHover={{ scale: 1.05 }}
+                  whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.95 }}
                   className="inline-flex items-center justify-center rounded-md text-sm font-medium border h-8 px-4 py-2"
-                  onClick={() => table.previousPage()}
+                  onClick={previous}
                   disabled={!table.getCanPreviousPage()}
                 >
                   Previous
                 </motion.button>
                 <motion.button
-                  whileHover={{ scale: 1.05 }}
+                  whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.95 }}
                   className="inline-flex items-center justify-center rounded-md text-sm font-medium border h-8 px-4 py-2"
-                  onClick={() => table.nextPage()}
+                  onClick={next}
                   disabled={!table.getCanNextPage()}
                 >
                   Next
@@ -355,7 +354,7 @@ const AppDataTable = (props) => {
   );
 };
 
-AppDataTable.propTypes = {
+AppPaginationTable.propTypes = {
   data: PropTypes.arrayOf(PropTypes.object),
   columns: PropTypes.arrayOf(PropTypes.object),
   main: PropTypes.string,
@@ -364,7 +363,9 @@ AppDataTable.propTypes = {
   title: PropTypes.string,
   des: PropTypes.string,
   loading: PropTypes.bool,
+  next: PropTypes.func,
+  previous: PropTypes.func,
   refresh: PropTypes.func,
 };
 
-export default AppDataTable;
+export default AppPaginationTable;

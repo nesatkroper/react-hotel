@@ -29,7 +29,7 @@ const PositionUpdate = ({ items }) => {
     dispatch(getDepartments());
   }, [dispatch]);
 
-  console.log(formData);
+  // console.log(formData);
 
   const handleChange = (event) => {
     if (typeof event === "string") formData.department_id = event;

@@ -28,6 +28,7 @@ const FormComboBox = (props) => {
     label,
     item,
     defaultValue,
+    error,
   } = props;
 
   const [open, setOpen] = useState(false);
@@ -90,6 +91,7 @@ const FormComboBox = (props) => {
           </Command>
         </PopoverContent>
       </Popover>
+      {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
     </div>
   );
 };
@@ -101,6 +103,7 @@ FormComboBox.propTypes = {
   labelClass: PropTypes.string,
   size: PropTypes.number,
   label: PropTypes.string,
+  error: PropTypes.string,
   item: PropTypes.arrayOf(
     PropTypes.shape({
       [PropTypes.string]: PropTypes.any,

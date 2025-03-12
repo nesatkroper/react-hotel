@@ -9,4 +9,6 @@ export const getDepartments = createApiThunk(
 );
 
 const departmentSlice = createGenericSlice("departments", getDepartments);
+
+export const { clearCache } = departmentSlice.actions;
 export default departmentSlice.reducer;

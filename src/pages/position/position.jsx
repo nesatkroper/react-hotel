@@ -2,7 +2,7 @@ import React, { useEffect, useMemo } from "react";
 import Layout from "@/components/app/layout";
 import AppDataTable from "@/components/app/table/app-data-table";
 import PositionAdd from "./components/position-add";
-import { getPositions } from "@/app/reducer/position-slice";
+import { clearCache, getPositions } from "@/app/reducer/position-slice";
 import { PositionColumns } from "./components/positon-columns";
 import { toNumber } from "@/utils/dec-format";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,10 +14,13 @@ const Position = () => {
   );
 
   useEffect(() => {
-    dispatch(getPositions({ department: true, status: "all" }));
+    dispatch(getPositions({ status: "all", department: true }));
   }, [dispatch]);
 
-  console.log(posData);
+  const refresh = () => {
+    dispatch(clearCache());
+    dispatch(getPositions({ status: "all", department: true }));
+  };
 
   const lastCode = useMemo(() => {
     if (!posData || !posData.length) return 0;
@@ -34,6 +37,7 @@ const Position = () => {
         addElement={<PositionAdd key={lastCode} lastCode={lastCode} />}
         title="Positions"
         main="position_name"
+        refresh={refresh}
       />
     </Layout>
   );

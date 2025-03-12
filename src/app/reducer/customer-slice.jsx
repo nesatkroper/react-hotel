@@ -9,4 +9,6 @@ export const getCustomers = createApiThunk(
 );
 
 const customerSlice = createGenericSlice("customers", getCustomers);
+
+export const { clearCache } = customerSlice.actions;
 export default customerSlice.reducer;
