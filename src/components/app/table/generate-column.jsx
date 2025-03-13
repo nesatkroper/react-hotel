@@ -30,16 +30,18 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { useDispatch } from "react-redux";
 import { Check, X } from "lucide-react";
-import axiosAuth from "@/providers/axios-auth";
 import { toast } from "sonner";
 import { defimg } from "@/utils/resize-crop-image";
 import { apiUrl } from "@/providers/api";
 import { cDollar } from "@/utils/dec-format";
+import axiosAuth from "@/providers/axios-auth";
+import AppDetailViewer from "./app-detail-viewer";
 
 export const generateColumns = (
   fields,
   editComponentCreator,
   model,
+  clearCach,
   fetchFunc,
   params = {}
 ) => {
@@ -149,9 +151,10 @@ export const generateColumns = (
       const status = item.status === "active";
       const date = new Date();
 
-      const editComponent = editComponentCreator
-        ? editComponentCreator(item)
-        : null;
+      const editComponent =
+        typeof editComponentCreator === "function"
+          ? editComponentCreator(item)
+          : null;
 
       const showToast = () => {
         toast.success("Status Update Successfully", {
@@ -171,11 +174,15 @@ export const generateColumns = (
                 `/${model}/${item[`${model}_id`]}?type=restore`
               );
           showToast();
+          dispatch(clearCach());
           dispatch(fetchFunc(params));
         } catch (e) {
           console.log(e);
         }
       };
+
+      const [isViewOpen, setIsViewOpen] = React.useState(false);
+      const [isRemoveOpen, setIsRemoveOpen] = React.useState(false);
 
       return (
         <div className="flex justify-end">
@@ -186,55 +193,94 @@ export const generateColumns = (
                 <MoreHorizontal />
               </Button>
             </DropdownMenuTrigger>
-            <Dialog>
-              {editComponent}
-              <AlertDialog>
+
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel className="text-center">
+                Actions
+              </DropdownMenuLabel>
+
+              {/* View dialog */}
+              <AlertDialog open={isViewOpen} onOpenChange={setIsViewOpen}>
+                <AlertDialogTrigger asChild>
+                  <DropdownMenuItem
+                    onSelect={(e) => {
+                      e.preventDefault();
+                      setIsViewOpen(true);
+                    }}
+                  >
+                    <Fullscreen className="me-1" />
+                    View Item
+                  </DropdownMenuItem>
+                </AlertDialogTrigger>
+
+                <AlertDialogContent className="w-[700px]">
+                  <AlertDialogHeader>
+                    <AlertDialogTitle className=" font-semibold">
+                      Information Details
+                    </AlertDialogTitle>
+
+                    <AppDetailViewer item={item} />
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel onClick={() => setIsViewOpen(false)}>
+                      Close
+                    </AlertDialogCancel>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+
+              {editComponent && (
+                <Dialog>
+                  {editComponent}
+                  <DialogTrigger asChild>
+                    <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                      <FilePenLine className="me-1" /> Edit Item
+                    </DropdownMenuItem>
+                  </DialogTrigger>
+                </Dialog>
+              )}
+
+              <AlertDialog open={isRemoveOpen} onOpenChange={setIsRemoveOpen}>
+                <AlertDialogTrigger asChild>
+                  <DropdownMenuItem
+                    onSelect={(e) => {
+                      e.preventDefault();
+                      setIsRemoveOpen(true);
+                    }}
+                    className={status ? "text-red-500" : "text-yellow-500"}
+                  >
+                    <Trash2 className="me-1" />
+                    {status ? "Remove" : "Restore"} Item
+                  </DropdownMenuItem>
+                </AlertDialogTrigger>
                 <AlertDialogContent className="w-[400px]">
                   <AlertDialogHeader>
                     <AlertDialogTitle>
-                      Are you sure to Delete this?
+                      Are you sure to {status ? "Remove" : "Restore"} this?
                     </AlertDialogTitle>
                     <AlertDialogDescription>
-                      This action cannot be undone. This will permanently delete
-                      your data and remove your data from our servers.
+                      {status
+                        ? "This will permanently delete your data from our servers."
+                        : "This will restore your data to active status."}
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogCancel onClick={() => setIsRemoveOpen(false)}>
+                      Cancel
+                    </AlertDialogCancel>
                     <AlertDialogAction
-                      onClick={() => handleDelete()}
-                      className="bg-red-500"
+                      onClick={() => {
+                        handleDelete();
+                        setIsRemoveOpen(false);
+                      }}
+                      className={status ? "bg-red-500" : "bg-green-500"}
                     >
                       Continue
                     </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuLabel className="text-center">
-                    Actions
-                  </DropdownMenuLabel>
-                  <DropdownMenuItem onClick={() => console.log(item)}>
-                    <Fullscreen className="me-1" />
-                    View Item
-                  </DropdownMenuItem>
-                  <div className="flex flex-col">
-                    <DialogTrigger>
-                      <DropdownMenuItem>
-                        <FilePenLine className="me-1" /> Edit Item
-                      </DropdownMenuItem>
-                    </DialogTrigger>
-                    <AlertDialogTrigger>
-                      <DropdownMenuItem
-                        className={status ? "text-red-500" : "text-yellow-500"}
-                      >
-                        <Trash2 className="me-1" />
-                        {status === "active" ? "Remove" : "Restore"} Item
-                      </DropdownMenuItem>
-                    </AlertDialogTrigger>
-                  </div>
-                </DropdownMenuContent>
               </AlertDialog>
-            </Dialog>
+            </DropdownMenuContent>
           </DropdownMenu>
         </div>
       );

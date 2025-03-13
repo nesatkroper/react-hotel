@@ -2,7 +2,7 @@ import React, { useEffect, useMemo } from "react";
 import Layout from "@/components/app/layout";
 import AppDataTable from "@/components/app/table/app-data-table";
 import DepartmentAdd from "./components/department-add";
-import { getDepartments } from "@/app/reducer/department-slice";
+import { clearCache, getDepartments } from "@/app/reducer/department-slice";
 import { DepartmentColumns } from "./components/department-columns";
 import { toNumber } from "@/utils/dec-format";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,7 +17,10 @@ const Department = () => {
     dispatch(getDepartments({ status: "all" }));
   }, [dispatch]);
 
-  console.log(depData);
+  const refresh = () => {
+    dispatch(clearCache());
+    dispatch(getDepartments({ status: "all" }));
+  };
 
   const lastCode = useMemo(() => {
     if (!depData || !depData.length) return 0;
@@ -34,6 +37,7 @@ const Department = () => {
         addElement={<DepartmentAdd key={lastCode} lastCode={lastCode} />}
         title="Departments"
         main="department_name"
+        refresh={refresh}
       />
     </Layout>
   );

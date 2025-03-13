@@ -1,5 +1,5 @@
 import { generateColumns } from "@/components/app/table/generate-column";
-import { getEmployees } from "@/app/reducer/employee-slice";
+import { clearCache, getEmployees } from "@/app/reducer/employee-slice";
 import React from "react";
 import EmployeeEdit from "./employee-edit";
 import PropTypes from "prop-types";
@@ -27,6 +27,7 @@ export const EmployeeColumns = (() => {
     employeeFields,
     createEditComponent,
     "employee",
+    clearCache,
     getEmployees
   );
 })();

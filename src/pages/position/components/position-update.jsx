@@ -4,48 +4,41 @@ import {
   DialogTitle,
   DialogClose,
 } from "@/components/ui/dialog";
+import React, { useEffect } from "react";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { getPositions } from "@/app/reducer/position-slice";
+import { clearCache, getPositions } from "@/app/reducer/position-slice";
 import { useDispatch, useSelector } from "react-redux";
-import React, { useEffect, useState } from "react";
 import { getDepartments } from "@/app/reducer/department-slice";
 import PropTypes from "prop-types";
 import FormInput from "@/components/app/form/form-input";
 import FormComboBox from "@/components/app/form/form-combobox";
 import FormTextArea from "@/components/app/form/form-textarea";
 import axiosAuth from "@/providers/axios-auth";
+import { useFormHandler } from "@/components/hooks/use-form-handler";
 
 const PositionUpdate = ({ items }) => {
   const dispatch = useDispatch();
-  const { depData } = useSelector((state) => state.departments);
-  const [formData, setFormData] = useState({
-    department_id: items.department_id,
-    position_name: items.position_name,
-    memo: items.memo,
+  const { data: depData } = useSelector((state) => state.departments);
+
+  const { formData, handleChange } = useFormHandler({
+    department_id:
+      items?.department_id ||
+      (depData.length > 0 ? depData[0].department_id : ""),
+    position_name: items?.position_name || "",
+    memo: items?.memo || "",
   });
 
   useEffect(() => {
     dispatch(getDepartments());
   }, [dispatch]);
 
-  // console.log(formData);
-
-  const handleChange = (event) => {
-    if (typeof event === "string") formData.department_id = event;
-
-    const { name, value } = event.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     await axiosAuth.put(`/position/${items.position_id}`, formData);
 
-    dispatch(getPositions());
+    dispatch(clearCache());
+    dispatch(getPositions({ status: "all", department: true }));
   };
   return (
     <DialogContent>
@@ -67,13 +60,15 @@ const PositionUpdate = ({ items }) => {
         </div>
         <div className="flex justify-between mb-3">
           <FormComboBox
-            onCallbackSelect={handleChange}
+            onCallbackSelect={(val) => handleChange("department_id", val)}
             name="department_id"
             label="Department"
-            item={depData}
+            item={depData || []}
             optID="department_id"
             optLabel="department_name"
+            defaultValue={items?.department_id || ""}
           />
+
           <FormTextArea
             onCallbackInput={handleChange}
             label="Decription"

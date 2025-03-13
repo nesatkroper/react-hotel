@@ -20,8 +20,7 @@ export const PositionColumns = (() => {
     ],
     createEditComponent,
     "position",
-    getPositions,
-    { status: "all", department: true }
+    getPositions
   );
 
   return columns;

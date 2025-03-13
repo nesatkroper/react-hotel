@@ -27,10 +27,6 @@ const FormInput = (props) => {
     onCallbackInput(name, value);
   };
 
-  // const handleChange = (event) => {
-  //   onCallbackInput(event);
-  // };
-
   return (
     <div className={`flex flex-col gap-2 ${mainClass}`}>
       <Label className={`${labelClass}`}>{label}</Label>

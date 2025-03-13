@@ -18,12 +18,8 @@ const Signin = () => {
     password: "",
   });
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+  const handleChange = (name, value) => {
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
@@ -47,6 +43,8 @@ const Signin = () => {
         axiosAuth.post("/auth/login", formData),
         timeoutPromise,
       ]);
+
+      console.log(formData);
 
       if (isTimedOut) return;
 

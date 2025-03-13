@@ -14,12 +14,12 @@ const Employee = () => {
   );
 
   useEffect(() => {
-    dispatch(getEmployees({ info: true, position: true }));
+    dispatch(getEmployees({ status: "all", info: true, position: true }));
   }, [dispatch]);
 
   const refresh = () => {
     dispatch(clearCache());
-    dispatch(getEmployees({ info: true, position: true }));
+    dispatch(getEmployees({ status: "all", info: true, position: true }));
   };
 
   const lastCode = useMemo(() => {

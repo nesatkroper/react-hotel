@@ -1,13 +1,37 @@
 import axiosInstance from "@/providers/axios-instance";
+import CryptoJS from "crypto-js";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-const getFromLocalStorage = (key) => {
-  const stored = localStorage.getItem(key);
-  return stored ? JSON.parse(stored) : null;
+const SECRET_KEY = import.meta.env.VITE_APP_CACHE_KEY;
+
+const saveToSessionStorage = (key, value) => {
+  try {
+    const dataString = JSON.stringify(value);
+
+    const encryptedData = CryptoJS.AES.encrypt(
+      dataString,
+      SECRET_KEY
+    ).toString();
+
+    sessionStorage.setItem(key, encryptedData);
+  } catch (e) {
+    console.error("Error saving to sessionStorage:", e);
+  }
 };
 
-const saveToLocalStorage = (key, value) => {
-  localStorage.setItem(key, JSON.stringify(value));
+const getFromSessionStorage = (key) => {
+  try {
+    const encryptedData = sessionStorage.getItem(key);
+    if (!encryptedData) return null;
+
+    const bytes = CryptoJS.AES.decrypt(encryptedData, SECRET_KEY);
+    const decryptedData = bytes.toString(CryptoJS.enc.Utf8);
+
+    return JSON.parse(decryptedData);
+  } catch (e) {
+    console.error("Error reading from sessionStorage:", e);
+    return null;
+  }
 };
 
 export const createApiThunk = (name, endpoint) => {
@@ -15,8 +39,8 @@ export const createApiThunk = (name, endpoint) => {
     name,
     async ({ id, ...params } = {}, { rejectWithValue }) => {
       const storageKey = `${name}_data`;
-      const storedData = getFromLocalStorage(storageKey);
-      const cacheExpiration = 5 * 60 * 1000;
+      const storedData = getFromSessionStorage(storageKey);
+      const cacheExpiration = 24 * 60 * 60 * 1000;
 
       if (
         storedData &&
@@ -24,10 +48,6 @@ export const createApiThunk = (name, endpoint) => {
         storedData.data.length > 0 &&
         Date.now() - storedData.lastFetched < cacheExpiration
       ) {
-        return { data: storedData.data, meta: storedData.meta };
-      }
-
-      if (storedData && storedData.data && storedData.data.length > 0) {
         return { data: storedData.data, meta: storedData.meta };
       }
 
@@ -40,7 +60,12 @@ export const createApiThunk = (name, endpoint) => {
         const response = await axiosInstance.get(url);
         const { data, meta } = response.data;
 
-        saveToLocalStorage(storageKey, { data, meta, lastFetched: Date.now() });
+        saveToSessionStorage(storageKey, {
+          data,
+          meta,
+          lastFetched: Date.now(),
+        });
+
         return { data, meta };
       } catch (error) {
         return rejectWithValue(error.response?.data || "Something went wrong");
@@ -51,7 +76,7 @@ export const createApiThunk = (name, endpoint) => {
 
 export const createGenericSlice = (name, apiThunk) => {
   const storageKey = `${apiThunk.typePrefix}_data`;
-  const storedData = getFromLocalStorage(storageKey);
+  const storedData = getFromSessionStorage(storageKey);
 
   return createSlice({
     name,
@@ -67,7 +92,7 @@ export const createGenericSlice = (name, apiThunk) => {
         state.data = [];
         state.meta = { total: 0, page: 1, limit: 0, totalPages: 0 };
         state.lastFetched = null;
-        localStorage.removeItem(storageKey);
+        sessionStorage.removeItem(storageKey);
       },
     },
     extraReducers: (builder) => {

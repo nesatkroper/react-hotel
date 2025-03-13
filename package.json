@@ -16,7 +16,7 @@
     "preview": "vite preview",
     "postinstall": "npx husky install",
     "format": "prettier --write .",
-    "git": "git add . && git commit -m \"modify redux to use pagination\" &&   git push && npm run dev"
+    "git": "git add . && git commit -m \"custome view dialog\" &&   git push"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
@@ -51,14 +51,17 @@
     "@tanstack/react-table": "^8.20.6",
     "axios": "^1.7.9",
     "bakong-khqr": "^1.0.17",
+    "bcryptjs": "^3.0.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
     "cropperjs": "^1.6.2",
     "crypto": "^1.0.1",
+    "crypto-js": "^4.2.0",
     "date-fns": "^3.6.0",
     "framer-motion": "^12.4.10",
     "html2canvas": "^1.4.1",
+    "idb-keyval": "^6.2.1",
     "input-otp": "^1.4.2",
     "js-cookie": "^3.0.5",
     "jspdf": "^2.5.2",
