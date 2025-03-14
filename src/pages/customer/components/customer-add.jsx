@@ -3,24 +3,24 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  FormComboBox,
+  FormImagePreview,
+  FormImageResize,
+  FormInput,
+} from "@/components/app/form";
+import React, { useState } from "react";
+import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getPositions } from "@/app/reducer/position-slice";
-import { getDepartments } from "@/app/reducer/department-slice";
 import { Loader2 } from "lucide-react";
 import { GENDER } from "@/utils/default-data";
 import { z } from "zod";
-import PropTypes from "prop-types";
-import FormInput from "@/components/app/form/form-input";
-import FormDatePicker from "@/components/app/form/form-date-picker";
-import FormComboBox from "@/components/app/form/form-combobox";
-import { useFormHandler } from "@/components/hooks/use-form-handler";
-import axiosInstance from "@/providers/axios-instance";
 import { clearCache, getCustomers } from "@/app/reducer/customer-slice";
-import FormImageResize from "@/components/app/form/form-image-resize";
-import FormImagePreview from "@/components/app/form/form-image-preview";
+import { useFormHandler } from "@/components/hooks/use-form-handler";
+import PropTypes from "prop-types";
+import axiosInstance from "@/providers/axios-instance";
 
 const schema = z.object({
   first_name: z.string().nonempty("Required"),
@@ -32,15 +32,19 @@ const CustomerAdd = () => {
   const dispatch = useDispatch();
   const [error, setError] = useState({});
   const { data: depData } = useSelector((state) => state.departments);
-  const { data: posData } = useSelector((state) => state.positions);
   const [issend, setIssend] = useState(false);
-  const { formData, setFormData, handleChange } = useFormHandler({
+  const {
+    formData,
+    resetForm,
+    handleChange,
+    handleImageData,
+    getFormDataForSubmission,
+  } = useFormHandler({
     status: "active",
-    picture: "",
+    picture: null,
     first_name: "",
     last_name: "",
     gender: "",
-    dob: "",
     phone: "",
     email: "",
     address: "",
@@ -67,21 +71,11 @@ const CustomerAdd = () => {
     }
 
     try {
+      const submissionData = getFormDataForSubmission();
       setIssend(true);
-      await axiosInstance.post("/customer", formData);
-      setFormData({
-        status: "active",
-        picture: "",
-        first_name: "",
-        last_name: "",
-        gender: "",
-        dob: "",
-        phone: "",
-        email: "",
-        address: "",
-        city: "",
-        state: "",
-      });
+      await axiosInstance.post("/customer", submissionData);
+
+      resetForm();
       dispatch(clearCache());
       dispatch(getCustomers());
     } catch (e) {
@@ -90,15 +84,6 @@ const CustomerAdd = () => {
       setIssend(false);
     }
   };
-
-  useEffect(() => {
-    dispatch(getDepartments());
-    dispatch(getPositions());
-  }, [dispatch]);
-
-  const filteredPositions = posData.filter(
-    (position) => position.department_id === Number(formData.department_id)
-  );
 
   return (
     <DialogContent>
@@ -170,14 +155,16 @@ const CustomerAdd = () => {
           <FormComboBox
             onCallbackSelect={(event) => handleChange("position_id", event)}
             label="Position*"
-            item={filteredPositions}
             optID="position_id"
             optLabel="position_name"
           />
         </div>
         <div className="flex justify-between mb-2 mt-3">
-          <FormImageResize />
-          <FormImagePreview />
+          <div className="flex flex-col gap-2">
+            <Label>Choose Image</Label>
+            <FormImageResize onCallbackFormData={handleImageData} />
+          </div>
+          {/* <FormImagePreview imgSrc={URL.createObjectURL(formData.picture)} /> */}
         </div>
         <div className="flex justify-end mt-4">
           <Button type="submit" disabled={issend}>

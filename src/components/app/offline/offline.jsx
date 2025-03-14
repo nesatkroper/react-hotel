@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import useOnlineStatus from "../connection/use-online-status";
+import useOnlineStatus from "../../hooks/use-online-status";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const OfflinePage = () => {

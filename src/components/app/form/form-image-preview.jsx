@@ -1,6 +1,7 @@
 import { Label } from "@/components/ui/label";
 import { defimg } from "@/utils/resize-crop-image";
 import { PropTypes } from "prop-types";
+import React from "react";
 
 const FormImagePreview = (props) => {
   const { imgSrc, labelClass, imgClass, size, label } = props;
