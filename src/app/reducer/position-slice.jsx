@@ -9,4 +9,6 @@ export const getPositions = createApiThunk(
 );
 
 const positionSlice = createGenericSlice("positions", getPositions);
+
+export const { clearCache } = positionSlice.actions;
 export default positionSlice.reducer;

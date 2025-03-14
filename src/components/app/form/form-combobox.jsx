@@ -28,15 +28,18 @@ const FormComboBox = (props) => {
     label,
     item,
     defaultValue,
+    error,
   } = props;
 
-  const [open, setOpen] = useState(false);
-  const [data, setData] = useState(defaultValue);
-
   const filter = (item || []).map((d) => ({
-    value: d[optID],
+    value: String(d[optID]),
     label: d[optLabel],
   }));
+
+  const [open, setOpen] = useState(false);
+  const [data, setData] = useState(
+    defaultValue || (filter.length > 0 ? filter[0].value : "")
+  );
 
   return (
     <div className="flex flex-col gap-2">
@@ -51,25 +54,34 @@ const FormComboBox = (props) => {
             className="justify-between"
           >
             {data
-              ? filter?.find((d) => String(d.value) === data)?.label
+              ? filter.find((d) => d.value === data)?.label ||
+                `Select ${label}...`
               : `Select ${label}...`}
             <ChevronsUpDown className="opacity-50" />
           </Button>
         </PopoverTrigger>
         <PopoverContent style={{ width: `${size}px` }} className="p-0">
-          <Command>
+          <Command
+            filter={(value, search) => {
+              const item = filter.find((f) => f.value === value);
+              if (!item) return 0;
+              return item.label.toLowerCase().includes(search.toLowerCase())
+                ? 1
+                : 0;
+            }}
+          >
             <CommandInput
-              placeholder={label}
+              placeholder={`Search ${label}...`}
               className="h-9"
               aria-label={`Search for ${label}`}
             />
             <CommandList>
               <CommandEmpty>No {label} found.</CommandEmpty>
               <CommandGroup>
-                {filter?.map((d) => (
+                {filter.map((d) => (
                   <CommandItem
                     key={d.value}
-                    value={String(d.value)}
+                    value={d.value}
                     onSelect={(currentValue) => {
                       setData(currentValue);
                       setOpen(false);
@@ -90,6 +102,7 @@ const FormComboBox = (props) => {
           </Command>
         </PopoverContent>
       </Popover>
+      {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
     </div>
   );
 };
@@ -101,11 +114,8 @@ FormComboBox.propTypes = {
   labelClass: PropTypes.string,
   size: PropTypes.number,
   label: PropTypes.string,
-  item: PropTypes.arrayOf(
-    PropTypes.shape({
-      [PropTypes.string]: PropTypes.any,
-    })
-  ),
+  error: PropTypes.string,
+  item: PropTypes.arrayOf(PropTypes.shape({}).isRequired),
   defaultValue: PropTypes.string,
 };
 
@@ -128,5 +138,29 @@ FormComboBox.defaultProps = {
   ],
   defaultValue: "",
 };
+
+const propTypeItemShape = (props, propName, componentName) => {
+  const optID = props.optID || "time";
+  const optLabel = props.optLabel || "less";
+  if (!Array.isArray(props[propName])) {
+    return new Error(
+      `Invalid prop \`${propName}\` supplied to \`${componentName}\`. Expected an array.`
+    );
+  }
+  for (const item of props[propName] || []) {
+    if (
+      typeof item !== "object" ||
+      item === null ||
+      !(optID in item) ||
+      !(optLabel in item)
+    ) {
+      return new Error(
+        `Invalid prop \`${propName}\` supplied to \`${componentName}\`. Each item must be an object containing \`${optID}\` and \`${optLabel}\` properties.`
+      );
+    }
+  }
+};
+
+FormComboBox.propTypes.item = propTypeItemShape;
 
 export default FormComboBox;

@@ -1,13 +1,20 @@
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/providers/auth-provider";
-import React from "react";
+import React, { useEffect } from "react";
 import useOnlineStatus from "@/components/app/connection/use-online-status";
 
 export const ProtectedRoute = () => {
   const { token } = useAuth();
   const isOnline = useOnlineStatus();
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  if (!isOnline) return <Navigate to="/offline" />;
+  useEffect(() => {
+    if (!isOnline) {
+      localStorage.setItem("lastRoute", location.pathname);
+      navigate("/offline", { replace: true });
+    }
+  }, [isOnline, location.pathname, navigate]);
 
   if (!token) return <Navigate to="/auth" />;
 

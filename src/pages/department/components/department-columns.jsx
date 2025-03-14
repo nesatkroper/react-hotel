@@ -5,10 +5,10 @@ import DepartmentUpdate from "./department-update";
 import PropTypes from "prop-types";
 
 const departmentFields = [
-  { key: "status", label: "Status" },
   { key: "department_name", label: "Department Name" },
   { key: "department_code", label: "Department Code" },
   { key: "memo", label: "Description" },
+  { key: "status", label: "Status" },
 ];
 
 const DepartmentUpdateWrapper = ({ item }) => {

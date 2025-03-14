@@ -1,6 +1,7 @@
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import PropTypes from "prop-types";
+import React from "react";
 
 const FormTextArea = (props) => {
   const {
@@ -15,8 +16,10 @@ const FormTextArea = (props) => {
   } = props;
 
   const handleChange = (event) => {
-    onCallbackInput(event);
+    const { name, value } = event.target;
+    onCallbackInput(name, value);
   };
+
   return (
     <div className={`lex flex-col gap-2 justify-between mb-2 ${mainClass}`}>
       <Label className={`${labelClass}`}>{label}</Label>

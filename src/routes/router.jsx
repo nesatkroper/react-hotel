@@ -22,16 +22,10 @@ import Authentication from "@/pages/authentication/authentication";
 import Home from "@/pages/home/home";
 import Auth from "@/pages/auth/auth";
 import Test from "./../pages/test/test";
-import useOnlineStatus from "@/components/app/connection/use-online-status";
 import OfflinePage from "@/components/app/offline/offline";
 
 const Routes = () => {
   const { token } = useAuth();
-  const isOnline = useOnlineStatus();
-
-  if (!isOnline) return <Navigate to="/offline" replace />;
-
-  console.log(isOnline);
 
   const routesForPublic = [
     {
@@ -44,7 +38,7 @@ const Routes = () => {
     },
     {
       path: "/offline",
-      element: <OfflinePage />, // Show Offline Page when offline
+      element: <OfflinePage />,
     },
   ];
 

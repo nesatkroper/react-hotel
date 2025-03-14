@@ -9,4 +9,6 @@ export const getRoomtypes = createApiThunk(
 );
 
 const roomtypeSlice = createGenericSlice("roomtypes", getRoomtypes);
+
+export const { clearCache } = roomtypeSlice.actions;
 export default roomtypeSlice.reducer;

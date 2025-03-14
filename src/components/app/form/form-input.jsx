@@ -1,6 +1,7 @@
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import PropTypes from "prop-types";
+import React from "react";
 
 const FormInput = (props) => {
   const {
@@ -18,11 +19,14 @@ const FormInput = (props) => {
     required = false,
     min = 0,
     step = 0.01,
+    error,
   } = props;
 
   const handleChange = (event) => {
-    onCallbackInput(event);
+    const { name, value } = event.target;
+    onCallbackInput(name, value);
   };
+
   return (
     <div className={`flex flex-col gap-2 ${mainClass}`}>
       <Label className={`${labelClass}`}>{label}</Label>
@@ -38,6 +42,7 @@ const FormInput = (props) => {
         step={step}
         required={required}
       />
+      {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
     </div>
   );
 };
@@ -57,6 +62,7 @@ FormInput.propTypes = {
   min: PropTypes.number,
   step: PropTypes.number,
   required: PropTypes.bool,
+  error: PropTypes.string,
 };
 
 export default FormInput;

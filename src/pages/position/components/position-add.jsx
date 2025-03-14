@@ -4,10 +4,10 @@ import {
   DialogTitle,
   DialogClose,
 } from "@/components/ui/dialog";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { getPositions } from "@/app/reducer/position-slice";
+import { clearCache, getPositions } from "@/app/reducer/position-slice";
 import { useDispatch, useSelector } from "react-redux";
 import { getDepartments } from "@/app/reducer/department-slice";
 import PropTypes from "prop-types";
@@ -15,11 +15,12 @@ import FormInput from "@/components/app/form/form-input";
 import FormComboBox from "@/components/app/form/form-combobox";
 import FormTextArea from "@/components/app/form/form-textarea";
 import axiosAuth from "@/providers/axios-auth";
+import { useFormHandler } from "@/components/hooks/use-form-handler";
 
 const PositionAdd = ({ lastCode }) => {
   const dispatch = useDispatch();
   const { data: depData } = useSelector((state) => state.departments);
-  const [formData, setFormData] = useState({
+  const { formData, setFormData, handleChange } = useFormHandler({
     department_id: 0,
     position_name: "",
     memo: "",
@@ -29,32 +30,22 @@ const PositionAdd = ({ lastCode }) => {
     dispatch(getDepartments());
   }, [dispatch]);
 
-  const handleChange = (event) => {
-    if (typeof event === "string") formData.department_id = event;
-
-    const { name, value } = event.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await axiosAuth
-      .post("/position", formData)
-      .then((res) => {
-        console.log(res);
-        dispatch(getPositions({ department: true }));
-        setFormData({
-          department_id: 0,
-          position_name: "",
-          memo: "",
-        });
-      })
-      .catch((err) => {
-        console.log(err);
+    console.log(formData);
+    try {
+      await axiosAuth.post("/position", formData);
+
+      dispatch(clearCache());
+      dispatch(getPositions({ department: true }));
+      setFormData({
+        department_id: 0,
+        position_name: "",
+        memo: "",
       });
+    } catch (e) {
+      console.log(e);
+    }
   };
   return (
     <DialogContent>
@@ -79,7 +70,7 @@ const PositionAdd = ({ lastCode }) => {
         </div>
         <div className="flex justify-between mb-3">
           <FormComboBox
-            onCallbackSelect={handleChange}
+            onCallbackSelect={(val) => handleChange("department_id", val)}
             name="department_id"
             label="Department"
             item={depData}

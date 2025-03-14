@@ -9,7 +9,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
 import { CalendarIcon, ChevronLeft, ChevronRight } from "lucide-react";
 import { format, addYears, subYears } from "date-fns";
-import { useState } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 
 const FormDatePicker = (props) => {
@@ -21,6 +21,7 @@ const FormDatePicker = (props) => {
     label = "Date of Birth*",
     fromYear = 1900,
     toYear = new Date().getFullYear(),
+    error,
   } = props;
 
   const [date, setDate] = useState(null);
@@ -96,6 +97,7 @@ const FormDatePicker = (props) => {
           />
         </PopoverContent>
       </Popover>
+      {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
     </div>
   );
 };
@@ -108,6 +110,7 @@ FormDatePicker.propTypes = {
   label: PropTypes.string,
   fromYear: PropTypes.number,
   toYear: PropTypes.number,
+  error: PropTypes.string,
 };
 
 export default FormDatePicker;

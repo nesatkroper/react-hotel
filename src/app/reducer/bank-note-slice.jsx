@@ -9,4 +9,6 @@ export const getBanknotes = createApiThunk(
 );
 
 const banknoteSlice = createGenericSlice("banknotes", getBanknotes);
+
+export const { clearCache } = banknoteSlice.actions;
 export default banknoteSlice.reducer;

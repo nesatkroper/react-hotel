@@ -6,28 +6,21 @@ import {
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
-import { getDepartments } from "@/app/reducer/department-slice";
+import { clearCache, getDepartments } from "@/app/reducer/department-slice";
 import PropTypes from "prop-types";
 import FormInput from "@/components/app/form/form-input";
 import FormTextArea from "@/components/app/form/form-textarea";
 import axiosAuth from "@/providers/axios-auth";
+import { useFormHandler } from "@/components/hooks/use-form-handler";
 
 const DepartmentAdd = ({ lastCode }) => {
   const dispatch = useDispatch();
-  const [formData, setFormData] = useState({
+  const { formData, setFormData, handleChange } = useFormHandler({
     department_name: "",
     memo: "",
   });
-
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -36,7 +29,8 @@ const DepartmentAdd = ({ lastCode }) => {
         .post("/department", formData)
         .then((res) => {
           console.log(res);
-          dispatch(getDepartments());
+          dispatch(clearCache());
+          dispatch(getDepartments({ status: "all" }));
           setFormData({
             department_name: "",
             memo: "",

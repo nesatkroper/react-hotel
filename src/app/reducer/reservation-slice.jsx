@@ -9,4 +9,6 @@ export const getReservations = createApiThunk(
 );
 
 const reservationSlice = createGenericSlice("reservations", getReservations);
+
+export const { clearCache } = reservationSlice.actions;
 export default reservationSlice.reducer;
