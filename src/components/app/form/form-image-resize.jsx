@@ -8,15 +8,15 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import React, { useState, useCallback } from "react";
+import Cropper from "react-easy-crop";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Separator } from "@/components/ui/separator";
-import React, { useState, useCallback } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { getCroppedImg } from "@/utils/crop-image";
 import { defimg } from "@/utils/resize-crop-image";
 import { Button } from "@/components/ui/button";
-import Cropper from "react-easy-crop";
 import { PropTypes } from "prop-types";
 
 const FormImageResize = (props) => {

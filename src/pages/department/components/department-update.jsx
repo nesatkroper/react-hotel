@@ -17,7 +17,7 @@ import { useFormHandler } from "@/components/hooks/use-form-handler";
 
 const DepartmentUpdate = ({ items = {} }) => {
   const dispatch = useDispatch();
-  const { formData, handleChange } = useFormHandler({
+  const { formData, handleChange, resetForm } = useFormHandler({
     department_name: items?.department_name || "",
     memo: items?.memo || "",
   });
@@ -26,7 +26,7 @@ const DepartmentUpdate = ({ items = {} }) => {
     e.preventDefault();
     try {
       await axiosAuth.put(`/department/${items.department_id}`, formData);
-      dispatch(clearCache());
+      resetForm(), dispatch(clearCache());
       dispatch(getDepartments({ status: "all" }));
     } catch (e) {
       console.log(e);

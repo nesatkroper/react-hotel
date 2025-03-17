@@ -7,16 +7,14 @@ export const getCroppedImg = (
   return new Promise((resolve, reject) => {
     const image = new Image();
     image.src = imageSrc;
+    image.crossOrigin = "anonymous"; // Prevent CORS issues
     image.onload = () => {
-      // Create a canvas
       const canvas = document.createElement("canvas");
       const ctx = canvas.getContext("2d");
 
-      // Set the desired output dimensions
       canvas.width = outputWidth;
       canvas.height = outputHeight;
 
-      // Draw the cropped image to the canvas and resize it
       ctx.drawImage(
         image,
         croppedAreaPixels.x,
@@ -29,7 +27,6 @@ export const getCroppedImg = (
         canvas.height
       );
 
-      // Convert the canvas to a blob or data URL
       canvas.toBlob(
         (blob) => {
           if (blob) {
@@ -41,7 +38,7 @@ export const getCroppedImg = (
           }
         },
         "image/jpeg",
-        1 // Image quality (1 = highest)
+        1
       );
     };
 

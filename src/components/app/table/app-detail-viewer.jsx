@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Separator } from "@/components/ui/separator";
+import { apiUrl } from "@/providers/api";
+import { defimg } from "@/utils/resize-crop-image";
 
 const AppDetailViewer = ({ item }) => {
   const entries = Object.entries(item).filter(
@@ -13,7 +15,14 @@ const AppDetailViewer = ({ item }) => {
   const renderEntry = ([key, value]) => {
     let displayValue;
     if (key === "picture" || key === "info.picture") {
-      displayValue = <img />;
+      displayValue = (
+        <img
+          src={`${apiUrl}/uploads/${value}`}
+          alt={value}
+          onError={(e) => (e.target.src = defimg)}
+          className="h-[80px] rounded-lg"
+        />
+      );
     } else if (
       key === "created_at" ||
       key === "updated_at" ||

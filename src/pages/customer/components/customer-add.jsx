@@ -141,6 +141,7 @@ const CustomerAdd = () => {
         </div>
         <div className="flex justify-between mb-2 mt-2">
           <FormInput
+            onCallbackInput={handleChange}
             label="Email*"
             name="email"
             type="email"

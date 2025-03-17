@@ -22,8 +22,7 @@ export const DepartmentColumns = (() => {
     departmentFields,
     createEditComponent,
     "department",
-    getDepartments,
-    { status: "all" }
+    getDepartments
   );
 })();
 

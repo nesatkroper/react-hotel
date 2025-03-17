@@ -25,8 +25,7 @@ export const CustomerColumns = (() => {
     customerFields,
     createEditComponent,
     "customer",
-    getCustomers,
-    { status: "all" }
+    getCustomers
   );
 })();
 
