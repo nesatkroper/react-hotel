@@ -6,23 +6,23 @@ import {
 } from "react-router-dom";
 import { useAuth } from "@/providers/auth-provider";
 import { ProtectedRoute } from "@/routes/protect-route";
-import Dashboard from "@/pages/dashboard/dashboard";
+import Dashboard from "@/pages/dashboard";
 import Reservation from "@/pages/reservation/reservation";
-import NotFound from "@/components/app/404/not-found";
-import Room from "@/pages/room/room";
-import Department from "@/pages/department/department";
-import Position from "@/pages/position/position";
-import Customer from "@/pages/customer/customer";
-import Employee from "@/pages/employee/employee";
-import POS from "@/pages/pos/pos";
-import Product from "@/pages/product/product";
+import NotFound from "@/components/app/404";
+import Room from "@/pages/room";
+import Department from "@/pages/department";
+import Position from "@/pages/position";
+import Employee from "@/pages/employee";
+import POS from "@/pages/pos";
+import Product from "@/pages/product";
 import ProductCategory from "@/pages/product-category/product-category";
 import RoomPicture from "@/pages/room-picture/room-picture";
 import Authentication from "@/pages/authentication/authentication";
 import Home from "@/pages/home/home";
 import Auth from "@/pages/auth/auth";
-import Test from "./../pages/test/test";
-import OfflinePage from "@/components/app/offline/offline";
+import Test from "../pages/test";
+import OfflinePage from "@/components/app/offline";
+import Customer from "@/pages/customer";
 
 const Routes = () => {
   const { token } = useAuth();

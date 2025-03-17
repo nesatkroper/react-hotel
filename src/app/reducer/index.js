@@ -1,43 +1,31 @@
-import roleReduce from "./role-slice";
-import userReduce from "./user-slice";
-import authReduce from "./auth-slice";
-import roomReduce from "./room-slice";
-import roomTypeReduce from "./room-type-slice";
-import departmentReduce from "./department-slice";
-import positionReduce from "./position-slice";
-import customerReduce from "./customer-slice";
-import employeeReduce from "./employee-slice";
-import rdetailReduce from "./room-detail-slice";
-import reservationReduce from "./reservation-slice";
-import rpictureReduce from "./room-picture-slice";
-import pcategoryReduce from "./product-category-slice";
-import productReduce from "./product-slice";
-import counterReduce from "./cart-slice";
-import searchCateReduce from "./search-category-slice";
-import banknoteReduce from "./bank-note-slice";
-import shiftReduce from "./shift-slice";
-import cartReduce from "./cart-slice";
-import codeReduce from "./code-slice";
+import { getBanknotes } from "./bank-note-slice";
+import { getCarts } from "./cart-slice";
+import { getCities } from "./city-slice";
+import { getCustomers } from "./customer-slice";
+import { getDepartments } from "./department-slice";
+import { getEmployees } from "./employee-slice";
+import { getPositions } from "./position-slice";
+import { getCategorys } from "./product-category-slice";
+import { getProducts } from "./product-slice";
+import { getReservations } from "./reservation-slice";
+import { getRooms } from "./room-slice";
+import { getRoomtypes } from "./room-type-slice";
+import { getShifts } from "./shift-slice";
+import { getStates } from "./state-slice";
 
-export default {
-  role: roleReduce,
-  user: userReduce,
-  auths: authReduce,
-  rooms: roomReduce,
-  roomtypes: roomTypeReduce,
-  departments: departmentReduce,
-  positions: positionReduce,
-  customers: customerReduce,
-  employees: employeeReduce,
-  reserveDetails: rdetailReduce,
-  roomPictures: rpictureReduce,
-  reservations: reservationReduce,
-  pcategories: pcategoryReduce,
-  products: productReduce,
-  cart: cartReduce,
-  searchCates: searchCateReduce,
-  banknotes: banknoteReduce,
-  shifts: shiftReduce,
-  code: codeReduce,
-  counters: counterReduce,
+export {
+  getBanknotes,
+  getCarts,
+  getCities,
+  getCustomers,
+  getDepartments,
+  getEmployees,
+  getPositions,
+  getCategorys,
+  getProducts,
+  getReservations,
+  getRooms,
+  getRoomtypes,
+  getShifts,
+  getStates,
 };

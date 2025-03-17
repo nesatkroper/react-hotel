@@ -4,21 +4,20 @@ import MyAreaChart from "./components/area-chart-gradient";
 import MyBarChart from "./components/bar-chart-multiple";
 import MyPieChart from "./components/pie-chart-donut";
 import MyBigAreaChartInteractive from "./components/big-area-chart-interactive";
+import React from "react";
 
 const Dashboard = () => {
   return (
-    <>
-      <Layout>
-        <MyBigBarChartInteractive />
-        <div className="grid grid-cols-3 gap-3">
-          <MyAreaChart />
-          <MyBarChart />
-          <MyPieChart />
-          {/* <MyBarChart /> */}
-        </div>
-        <MyBigAreaChartInteractive />
-      </Layout>
-    </>
+    <Layout>
+      <MyBigBarChartInteractive />
+      <div className="grid grid-cols-3 gap-3">
+        <MyAreaChart />
+        <MyBarChart />
+        <MyPieChart />
+        {/* <MyBarChart /> */}
+      </div>
+      <MyBigAreaChartInteractive />
+    </Layout>
   );
 };
 

@@ -75,7 +75,7 @@ const FormComboBox = (props) => {
               className="h-9"
               aria-label={`Search for ${label}`}
             />
-            <CommandList>
+            <CommandList className="max-h-[300px] overflow-y-auto">
               <CommandEmpty>No {label} found.</CommandEmpty>
               <CommandGroup>
                 {filter.map((d) => (

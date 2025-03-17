@@ -9,7 +9,7 @@ import {
   FormImageResize,
   FormInput,
 } from "@/components/app/form";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
@@ -21,6 +21,7 @@ import { clearCache, getCustomers } from "@/app/reducer/customer-slice";
 import { useFormHandler } from "@/components/hooks/use-form-handler";
 import PropTypes from "prop-types";
 import axiosInstance from "@/providers/axios-instance";
+import { getCities, getStates } from "@/app/reducer";
 
 const schema = z.object({
   first_name: z.string().nonempty("Required"),
@@ -31,7 +32,8 @@ const schema = z.object({
 const CustomerAdd = () => {
   const dispatch = useDispatch();
   const [error, setError] = useState({});
-  const { data: depData } = useSelector((state) => state.departments);
+  const { data: sttData } = useSelector((state) => state.states);
+  const { data: citData } = useSelector((state) => state.cities);
   const [issend, setIssend] = useState(false);
   const {
     formData,
@@ -48,8 +50,8 @@ const CustomerAdd = () => {
     phone: "",
     email: "",
     address: "",
-    city: "",
-    state: "",
+    city_id: 1,
+    state_id: 1,
   });
 
   const validate = (data) => {
@@ -79,11 +81,20 @@ const CustomerAdd = () => {
       dispatch(clearCache());
       dispatch(getCustomers());
     } catch (e) {
-      console.error("Submission error:", e);
+      console.log("Submission error:", e);
     } finally {
       setIssend(false);
     }
   };
+
+  useEffect(() => {
+    dispatch(getStates({ status: "all" }));
+    dispatch(getCities({ status: "all" }));
+  }, [dispatch]);
+
+  const filteredCity = citData.filter(
+    (city) => city.state_id === Number(formData.state_id)
+  );
 
   return (
     <DialogContent>
@@ -144,19 +155,18 @@ const CustomerAdd = () => {
         </div>
         <div className="flex justify-between mb-2 mt-3">
           <FormComboBox
-            onCallbackSelect={(event) =>
-              handleChange("department_id", Number(event))
-            }
-            label="Department*"
-            item={depData}
-            optID="department_id"
-            optLabel="department_name"
+            onCallbackSelect={(event) => handleChange("state_id", event)}
+            item={sttData}
+            label="State*"
+            optID="state_id"
+            optLabel="state_name"
           />
           <FormComboBox
-            onCallbackSelect={(event) => handleChange("position_id", event)}
-            label="Position*"
-            optID="position_id"
-            optLabel="position_name"
+            onCallbackSelect={(event) => handleChange("city_id", Number(event))}
+            item={filteredCity}
+            label="City*"
+            optID="city_id"
+            optLabel="city_name"
           />
         </div>
         <div className="flex justify-between mb-2 mt-3">
@@ -164,7 +174,11 @@ const CustomerAdd = () => {
             <Label>Choose Image</Label>
             <FormImageResize onCallbackFormData={handleImageData} />
           </div>
-          {/* <FormImagePreview imgSrc={URL.createObjectURL(formData.picture)} /> */}
+          <FormImagePreview
+            imgSrc={
+              formData.picture ? URL.createObjectURL(formData.picture) : null
+            }
+          />
         </div>
         <div className="flex justify-end mt-4">
           <Button type="submit" disabled={issend}>

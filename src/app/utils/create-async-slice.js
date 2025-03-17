@@ -34,13 +34,13 @@ const getFromSessionStorage = (key) => {
   }
 };
 
-export const createApiThunk = (name, endpoint) => {
+export const createApiThunk = (name, endpoint, save = true) => {
   return createAsyncThunk(
     name,
     async ({ id, ...params } = {}, { rejectWithValue }) => {
       const storageKey = `${name}_data`;
       const storedData = getFromSessionStorage(storageKey);
-      const cacheExpiration = 24 * 60 * 60 * 1000;
+      const cacheExpiration = 12 * 60 * 60 * 1000;
 
       if (
         storedData &&
@@ -60,11 +60,12 @@ export const createApiThunk = (name, endpoint) => {
         const response = await axiosInstance.get(url);
         const { data, meta } = response.data;
 
-        saveToSessionStorage(storageKey, {
-          data,
-          meta,
-          lastFetched: Date.now(),
-        });
+        if (save)
+          saveToSessionStorage(storageKey, {
+            data,
+            meta,
+            lastFetched: Date.now(),
+          });
 
         return { data, meta };
       } catch (error) {

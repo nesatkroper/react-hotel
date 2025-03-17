@@ -7,9 +7,6 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getPositions } from "@/app/reducer/position-slice";
-import { getEmployees } from "@/app/reducer/employee-slice";
-import { getDepartments } from "@/app/reducer/department-slice";
 import { Loader2 } from "lucide-react";
 import { GENDER } from "@/utils/default-data";
 import PropTypes from "prop-types";
@@ -18,6 +15,7 @@ import FormDatePicker from "@/components/app/form/form-date-picker";
 import FormComboBox from "@/components/app/form/form-combobox";
 import axiosAuth from "@/providers/axios-auth";
 import { z } from "zod";
+import { getDepartments, getEmployees, getPositions } from "@/app/reducer";
 
 const schema = z.object({
   first_name: z.string().nonempty("Required"),
