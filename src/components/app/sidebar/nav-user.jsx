@@ -5,7 +5,7 @@ import {
   CreditCard,
   LogOut,
 } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,7 +15,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { PropTypes } from "prop-types";
+import {PropTypes} from "prop-types";
 import {
   SidebarMenu,
   SidebarMenuButton,
@@ -23,17 +23,15 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import axiosAuth from "@/lib/axios-auth";
-import { useDispatch } from "react-redux";
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import Cookies from "js-cookie";
 const image =
   "https://scontent.fpnh10-1.fna.fbcdn.net/v/t39.30808-6/469352317_1283607016000100_1286030378446066601_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=6ee11a&_nc_aid=0&_nc_eui2=AeG79Rk1zvUWghTCrIv12dogzDtT2mYYYOfMO1PaZhhg55m2Jw2hyLLaQl2d54ScWrnwyYcYK1ZJTNwaDUc489nj&_nc_ohc=GOXytN4QOAgQ7kNvgE8InN7&_nc_oc=Adh2jRDlY2hr1bmegpdGTseNgeb6vBOXpbwFE7TVy74fhGCuJUzlyrW_aC8_4gt9lv0&_nc_zt=23&_nc_ht=scontent.fpnh10-1.fna&_nc_gid=ALZdhwE0TEIpSPD3FpIoTYy&oh=00_AYClzxVIcga6N7ULINVuFzXSuRtxDufpOwFdrFxE_kPBkw&oe=67B69B27";
 
-export function NavUser({ user }) {
-  const dispatch = useDispatch();
+export function NavUser({user}) {
   const navigate = useNavigate();
-  const { isMobile } = useSidebar();
+  const {isMobile} = useSidebar();
 
   const handleLogout = async () => {
     try {

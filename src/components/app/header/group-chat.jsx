@@ -1,16 +1,16 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Textarea } from "@/components/ui/textarea";
-import { SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
+import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
+import {Textarea} from "@/components/ui/textarea";
+import {SheetContent, SheetHeader, SheetTitle} from "@/components/ui/sheet";
+import {Button} from "@/components/ui/button";
+import {Separator} from "@/components/ui/separator";
 import React from "react";
-import { useEffect, useRef, useState } from "react";
-import { Send, ArrowDown } from "lucide-react";
-import { io } from "socket.io-client";
-import { dateFormat } from "@/utils/dec-format";
-import { useDispatch } from "react-redux";
-import { getUser } from "@/contexts/reducer/user-slice";
-import { apiUrl } from "@/lib/api";
+import {useEffect, useRef, useState} from "react";
+import {Send, ArrowDown} from "lucide-react";
+import {io} from "socket.io-client";
+import {dateFormat} from "@/utils/dec-format";
+import {useDispatch} from "react-redux";
+import {getUser} from "@/contexts/reducer/user-slice";
+import {apiUrl} from "@/lib/api";
 import Cookies from "js-cookie";
 import axiosAuth from "@/lib/axios-auth";
 
@@ -29,8 +29,8 @@ const GroupChat = () => {
 
   const fetchOldMessages = async () => {
     try {
-      const response = await axiosAuth.get("/group-message/group?emp=true");
-      setMessages(response.data);
+      const response = await axiosAuth.get("/groupmessage/group?employee=true");
+      setMessages(response?.data?.data);
     } catch (error) {
       console.error("Error fetching old messages:", error);
     }
@@ -70,7 +70,7 @@ const GroupChat = () => {
   };
 
   const handleScroll = (e) => {
-    const { scrollTop, scrollHeight, clientHeight } = e.target;
+    const {scrollTop, scrollHeight, clientHeight} = e.target;
     const atBottom = scrollTop + clientHeight >= scrollHeight - 10;
     setIsAtBottom(atBottom);
   };

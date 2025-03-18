@@ -1,4 +1,4 @@
-import React, {Suspense} from "react";
+import React, {Suspense, lazy} from "react";
 import {Navigate, RouterProvider, createBrowserRouter} from "react-router-dom";
 import {useAuth} from "@/providers/auth-provider";
 import {ProtectedRoute} from "@/routes/protect-route";
@@ -7,31 +7,39 @@ import {ProtectedRoute} from "@/routes/protect-route";
 import NotFound from "@/components/app/404";
 import OfflinePage from "@/components/app/offline";
 import LoadingSpinner from "@/components/app/loading/spinner";
+import HomeClient from "@/pages/client/home";
 
 // Lazy load all page components
-const Dashboard = React.lazy(() => import("@/pages/dashboard"));
-const Reservation = React.lazy(() => import("@/pages/reservation"));
-const Room = React.lazy(() => import("@/pages/room"));
-const Department = React.lazy(() => import("@/pages/department"));
-const Position = React.lazy(() => import("@/pages/position"));
-const Employee = React.lazy(() => import("@/pages/employee"));
-const POS = React.lazy(() => import("@/pages/pos"));
-const Product = React.lazy(() => import("@/pages/product"));
-const ProductCategory = React.lazy(() => import("@/pages/product-category"));
-const RoomPicture = React.lazy(() => import("@/pages/room-picture"));
-const Authentication = React.lazy(() => import("@/pages/authentication"));
-const Home = React.lazy(() => import("@/pages/home"));
-const Auth = React.lazy(() => import("@/pages/auth/auth"));
-const Test = React.lazy(() => import("@/pages/test"));
-const Customer = React.lazy(() => import("@/pages/customer"));
+const Dashboard = lazy(() => import("@/pages/admin/dashboard"));
+const Reservation = lazy(() => import("@/pages/admin/reservation"));
+const Room = lazy(() => import("@/pages/admin/room"));
+const Department = lazy(() => import("@/pages/admin/department"));
+const Position = lazy(() => import("@/pages/admin/position"));
+const Employee = lazy(() => import("@/pages/admin/employee"));
+const POS = lazy(() => import("@/pages/admin/pos"));
+const Product = lazy(() => import("@/pages/admin/product"));
+const ProductCategory = lazy(() => import("@/pages/admin/product-category"));
+const RoomPicture = lazy(() => import("@/pages/admin/room-picture"));
+const Authentication = lazy(() => import("@/pages/admin/authentication"));
+const Home = lazy(() => import("@/pages/admin/home"));
+const Auth = lazy(() => import("@/pages/admin/auth/auth"));
+const Customer = lazy(() => import("@/pages/admin/customer"));
+const Test = lazy(() => import("@/pages/test"));
 
-// Loading fallback component
-// const LoadingSpinner = () => <div>Loading...</div>;
-
-// LazyLoad wrapper component
 const LazyLoad = (Component) => {
   const WrappedComponent = (props) => (
-    <Suspense fallback={<LoadingSpinner />}>
+    <Suspense
+      fallback={
+        <div className="flex justify-center items-center h-[90vh]">
+          <LoadingSpinner
+            size="xl"
+            variant="circle"
+            color="purple"
+            text="Loading..."
+          />
+        </div>
+      }
+    >
       <Component {...props} />
     </Suspense>
   );
@@ -48,6 +56,7 @@ const Routes = () => {
 
   const routesForPublic = [
     {path: "*", element: <NotFound />},
+    {path: "/", element: <HomeClient />},
     {path: "/test", element: LazyLoad(Test)()},
     {path: "/offline", element: <OfflinePage />},
   ];
@@ -57,7 +66,7 @@ const Routes = () => {
       path: "/",
       element: <ProtectedRoute />,
       children: [
-        {path: "", element: LazyLoad(Home)()},
+        // {path: "", element: LazyLoad(Home)()},
         {path: "auth", element: <Navigate to="/" />},
         {path: "/home", element: LazyLoad(Home)()},
         {path: "/dashboard", element: LazyLoad(Dashboard)()},
@@ -91,134 +100,3 @@ const Routes = () => {
 };
 
 export default Routes;
-
-// import React from "react";
-// import Dashboard from "@/pages/dashboard";
-// import Reservation from "@/pages/reservation";
-// import NotFound from "@/components/app/404";
-// import Room from "@/pages/room";
-// import Department from "@/pages/department";
-// import Position from "@/pages/position";
-// import Employee from "@/pages/employee";
-// import POS from "@/pages/pos";
-// import Product from "@/pages/product";
-// import ProductCategory from "@/pages/product-category";
-// import RoomPicture from "@/pages/room-picture";
-// import Authentication from "@/pages/authentication";
-// import Home from "@/pages/home";
-// import Auth from "@/pages/auth/auth";
-// import Test from "../pages/test";
-// import OfflinePage from "@/components/app/offline";
-// import Customer from "@/pages/customer";
-// import {Navigate, RouterProvider, createBrowserRouter} from "react-router-dom";
-// import {useAuth} from "@/providers/auth-provider";
-// import {ProtectedRoute} from "@/routes/protect-route";
-
-// const Routes = () => {
-//   const {token} = useAuth();
-
-//   const routesForPublic = [
-//     {
-//       path: "*",
-//       element: <NotFound />,
-//     },
-//     {
-//       path: "/test",
-//       element: <Test />,
-//     },
-//     {
-//       path: "/offline",
-//       element: <OfflinePage />,
-//     },
-//   ];
-
-//   const routesForAuthenticatedOnly = [
-//     {
-//       path: "/",
-//       element: <ProtectedRoute />,
-//       children: [
-//         {
-//           path: "",
-//           element: <Home />,
-//         },
-//         {
-//           path: "auth",
-//           element: <Navigate to="/" />,
-//         },
-//         {
-//           path: "/home",
-//           element: <Home />,
-//         },
-//         {
-//           path: "/dashboard",
-//           element: <Dashboard />,
-//         },
-//         {
-//           path: "/reservation",
-//           element: <Reservation />,
-//         },
-//         {
-//           path: "/room",
-//           element: <Room />,
-//         },
-//         {
-//           path: "/department",
-//           element: <Department />,
-//         },
-//         {
-//           path: "/position",
-//           element: <Position />,
-//         },
-//         {
-//           path: "/customer",
-//           element: <Customer />,
-//         },
-//         {
-//           path: "/employee",
-//           element: <Employee />,
-//         },
-//         {
-//           path: "/pos",
-//           element: <POS />,
-//         },
-//         {
-//           path: "/product",
-//           element: <Product />,
-//         },
-//         {
-//           path: "/category",
-//           element: <ProductCategory />,
-//         },
-//         {
-//           path: "/room-picture",
-//           element: <RoomPicture />,
-//         },
-//         {
-//           path: "/authentication",
-//           element: <Authentication />,
-//         },
-//         {
-//           path: "*",
-//           element: <NotFound />,
-//         },
-//       ],
-//     },
-//   ];
-
-//   const routesForNotAuthenticatedOnly = [
-//     {
-//       path: "/auth",
-//       element: <Auth />,
-//     },
-//   ];
-
-//   const router = createBrowserRouter([
-//     ...routesForPublic,
-//     ...(!token ? routesForNotAuthenticatedOnly : []),
-//     ...routesForAuthenticatedOnly,
-//   ]);
-
-//   return <RouterProvider router={router} />;
-// };
-
-// export default Routes;

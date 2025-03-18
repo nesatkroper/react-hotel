@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 export default function LoadingSpinner({
   size = "md",
   variant = "circle",
-  color,
+  color = "gray",
   text,
   className,
 }) {
@@ -15,7 +15,6 @@ export default function LoadingSpinner({
     setMounted(true);
   }, []);
 
-  // Size mappings
   const sizeMap = {
     sm: "h-6 w-6",
     md: "h-10 w-10",
@@ -23,83 +22,83 @@ export default function LoadingSpinner({
     xl: "h-24 w-24",
   };
 
-  // Text size mappings
   const textSizeMap = {
-    sm: "text-xs",
-    md: "text-sm",
-    lg: "text-base",
-    xl: "text-lg",
+    sm: "text-sm",
+    md: "text-base",
+    lg: "text-lg",
+    xl: "text-xl",
   };
 
-  // Default color handling
-  const spinnerColor = color || "border-primary";
-  const spinnerTrackColor = "border-muted";
+  const colorMap = {
+    gray: "border-gray-300 border-t-gray-600",
+    blue: "border-blue-200 border-t-blue-500",
+    purple: "border-purple-200 border-t-purple-500",
+    green: "border-green-200 border-t-green-500",
+  };
+
+  const bgColorMap = {
+    gray: "bg-gray-600",
+    blue: "bg-blue-500",
+    purple: "bg-purple-500",
+    green: "bg-green-500",
+  };
+
+  const spinnerColor = colorMap[color] || colorMap.gray;
+  const spinnerBgColor = bgColorMap[color] || bgColorMap.gray;
 
   if (!mounted) return null;
 
   return (
     <div
       className={cn(
-        "flex flex-col items-center justify-center gap-3",
+        "flex flex-col items-center justify-center gap-4",
         className
       )}
     >
       {variant === "circle" && (
         <div
           className={cn(
-            "relative animate-spin rounded-full border-2 border-solid border-t-transparent",
+            "relative animate-spin rounded-full border-4 border-solid border-t-transparent",
             sizeMap[size],
-            spinnerTrackColor,
-            spinnerColor
+            spinnerColor,
+            "shadow-lg shadow-[inset_0_0_10px_rgba(0,0,0,0.1)]"
           )}
           role="status"
           aria-label="Loading"
         >
+          <div
+            className={cn(
+              "absolute inset-0 rounded-full animate-pulse opacity-20",
+              spinnerBgColor
+            )}
+          />
           <span className="sr-only">Loading...</span>
         </div>
       )}
 
       {variant === "dots" && (
-        <div className="flex space-x-2" role="status" aria-label="Loading">
-          <div
-            className={cn(
-              "h-2 w-2 rounded-full animate-bounce",
-              spinnerColor.replace("border-", "bg-"),
-              {
-                "h-1 w-1": size === "sm",
-                "h-2 w-2": size === "md",
-                "h-3 w-3": size === "lg",
-                "h-4 w-4": size === "xl",
-              }
-            )}
-            style={{animationDelay: "0ms"}}
-          />
-          <div
-            className={cn(
-              "h-2 w-2 rounded-full animate-bounce",
-              spinnerColor.replace("border-", "bg-"),
-              {
-                "h-1 w-1": size === "sm",
-                "h-2 w-2": size === "md",
-                "h-3 w-3": size === "lg",
-                "h-4 w-4": size === "xl",
-              }
-            )}
-            style={{animationDelay: "150ms"}}
-          />
-          <div
-            className={cn(
-              "h-2 w-2 rounded-full animate-bounce",
-              spinnerColor.replace("border-", "bg-"),
-              {
-                "h-1 w-1": size === "sm",
-                "h-2 w-2": size === "md",
-                "h-3 w-3": size === "lg",
-                "h-4 w-4": size === "xl",
-              }
-            )}
-            style={{animationDelay: "300ms"}}
-          />
+        <div
+          className="flex space-x-3 items-end"
+          role="status"
+          aria-label="Loading"
+        >
+          {[0, 1, 2].map((i) => (
+            <div
+              key={i}
+              className={cn(
+                "rounded-full animate-[bounce_0.8s_ease-in-out_infinite]",
+                spinnerBgColor,
+                "shadow-md shadow-[0_2px_4px_rgba(0,0,0,0.2)]",
+                {
+                  "h-2 w-2": size === "sm",
+                  "h-3 w-3": size === "md",
+                  "h-4 w-4": size === "lg",
+                  "h-6 w-6": size === "xl",
+                }
+              )}
+              style={{animationDelay: `${i * 150}ms`}}
+            />
+          ))}
           <span className="sr-only">Loading...</span>
         </div>
       )}
@@ -115,15 +114,16 @@ export default function LoadingSpinner({
         >
           <div
             className={cn(
-              "absolute animate-ping rounded-full opacity-75",
-              spinnerColor.replace("border-", "bg-"),
+              "absolute animate-[ping_1.5s_cubic-bezier(0,0,0.2,1)_infinite] rounded-full opacity-50",
+              spinnerBgColor,
               sizeMap[size]
             )}
           />
           <div
             className={cn(
-              "rounded-full",
-              spinnerColor.replace("border-", "bg-"),
+              "rounded-full animate-pulse",
+              spinnerBgColor,
+              "shadow-lg shadow-[0_0_15px_rgba(0,0,0,0.2)]",
               {
                 "h-3 w-3": size === "sm",
                 "h-5 w-5": size === "md",
@@ -138,7 +138,10 @@ export default function LoadingSpinner({
 
       {text && (
         <p
-          className={cn("text-muted-foreground font-medium", textSizeMap[size])}
+          className={cn(
+            "text-gray-600 font-semibold tracking-wide animate-[fadeIn_0.5s_ease-in]",
+            textSizeMap[size]
+          )}
         >
           {text}
         </p>
@@ -148,9 +151,9 @@ export default function LoadingSpinner({
 }
 
 LoadingSpinner.propTypes = {
-  size: PropTypes.number,
-  variant: PropTypes.string,
-  color: PropTypes.string,
+  size: PropTypes.oneOf(["sm", "md", "lg", "xl"]),
+  variant: PropTypes.oneOf(["circle", "dots", "pulse"]),
+  color: PropTypes.oneOf(["gray", "blue", "purple", "green"]),
   text: PropTypes.string,
   className: PropTypes.string,
 };
