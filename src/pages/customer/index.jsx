@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
-import Layout from "@/components/app/layout";
 import AppDataTable from "@/components/app/table/app-data-table";
 import CustomerAdd from "./components/customer-add";
 import { useDispatch, useSelector } from "react-redux";
 import { CustomerColumns } from "./components/customer-columns";
-import { clearCache, getCustomers } from "@/app/reducer/customer-slice";
+import { clearCache, getCustomers } from "@/contexts/reducer/customer-slice";
+import Layout from "@/layout/layout";
 
 const Customer = () => {
   const dispatch = useDispatch();

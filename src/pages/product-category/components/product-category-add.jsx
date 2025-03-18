@@ -10,14 +10,14 @@ import { Button } from "@/components/ui/button";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { defimg } from "@/utils/resize-crop-image";
-import { getRooms } from "@/app/reducer/room-slice";
+import { getRooms } from "@/contexts/reducer/room-slice";
 import FormInput from "@/components/app/form/form-input";
 import FormTextArea from "@/components/app/form/form-textarea";
 import FormImagePreview from "@/components/app/form/form-image-preview";
 import PropTypes from "prop-types";
 import FormImageResize from "@/components/app/form/form-image-resize";
-import axiosInstance from "@/providers/axios-instance";
-import { getCategorys } from "@/app/reducer/product-category-slice";
+import axiosInstance from "@/lib/axios-instance";
+import { getCategorys } from "@/contexts/reducer/product-category-slice";
 
 const ProductCategoryAdd = ({ lastCode }) => {
   const dispatch = useDispatch();

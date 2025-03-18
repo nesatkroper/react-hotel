@@ -1,11 +1,11 @@
-import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect, useMemo } from "react";
-import { getProducts } from "@/app/reducer/product-slice.jsx";
-import { ProductColumns } from "./components/product-columns.jsx";
-import { toNumber } from "@/utils/dec-format.js";
-import Layout from "@/components/app/layout";
+import Layout from "@/layout/layout";
 import ProductAdd from "./components/product-add.jsx";
 import AppDataTable from "@/components/app/table/app-data-table.jsx";
+import { useDispatch, useSelector } from "react-redux";
+import { getProducts } from "@/contexts/reducer/product-slice.jsx";
+import { ProductColumns } from "./components/product-columns.jsx";
+import { toNumber } from "@/utils/dec-format.js";
 
 const Product = () => {
   const dispatch = useDispatch();

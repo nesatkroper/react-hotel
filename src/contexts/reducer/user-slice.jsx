@@ -1,4 +1,4 @@
-import axiosAuth from "@/providers/axios-auth";
+import axiosAuth from "@/lib/axios-auth";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
 

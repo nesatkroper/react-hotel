@@ -9,14 +9,14 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { apiUrl } from "@/providers/api";
-import axiosInstance from "@/providers/axios-instance";
+import { apiUrl } from "@/lib/api";
+import axiosInstance from "@/lib/axios-instance";
 import FormInput from "@/components/app/form/form-input";
 import PropTypes from "prop-types";
 import FormTextArea from "@/components/app/form/form-textarea";
 import FormImagePreview from "@/components/app/form/form-image-preview";
 import FormImageResize from "@/components/app/form/form-image-resize";
-import { getCategorys } from "@/app/reducer/product-category-slice";
+import { getCategorys } from "@/contexts/reducer/product-category-slice";
 
 const ProductCategoryUpdate = ({ items }) => {
   const dispatch = useDispatch();

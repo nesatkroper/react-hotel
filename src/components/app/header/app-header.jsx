@@ -9,7 +9,7 @@ import { Separator } from "@/components/ui/separator";
 import { useEffect, useState } from "react";
 import { ModeToggle } from "../theme/mode-toggle";
 import { io } from "socket.io-client";
-import { apiUrl } from "@/providers/api";
+import { apiUrl } from "@/lib/api";
 import NotificationSheet from "./notification-sheet";
 import GroupChat from "./group-chat";
 import AppSearchBar from "./app-search-bar";

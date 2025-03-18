@@ -8,11 +8,14 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import React from "react";
 import { useDispatch } from "react-redux";
-import { clearCache, getDepartments } from "@/app/reducer/department-slice";
+import {
+  clearCache,
+  getDepartments,
+} from "@/contexts/reducer/department-slice";
 import PropTypes from "prop-types";
 import FormInput from "@/components/app/form/form-input";
 import FormTextArea from "@/components/app/form/form-textarea";
-import axiosAuth from "@/providers/axios-auth";
+import axiosAuth from "@/lib/axios-auth";
 import { useFormHandler } from "@/components/hooks/use-form-handler";
 
 const DepartmentAdd = ({ lastCode }) => {

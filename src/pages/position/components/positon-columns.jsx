@@ -1,5 +1,5 @@
 import { generateColumns } from "@/components/app/table/generate-column";
-import { getPositions } from "@/app/reducer/position-slice";
+import { getPositions } from "@/contexts/reducer/position-slice";
 import PositionUpdate from "./position-update";
 import React from "react";
 import PropTypes from "prop-types";

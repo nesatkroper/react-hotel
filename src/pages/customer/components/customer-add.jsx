@@ -17,11 +17,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { Loader2 } from "lucide-react";
 import { GENDER } from "@/utils/default-data";
 import { z } from "zod";
-import { clearCache, getCustomers } from "@/app/reducer/customer-slice";
+import { clearCache, getCustomers } from "@/contexts/reducer/customer-slice";
 import { useFormHandler } from "@/components/hooks/use-form-handler";
 import PropTypes from "prop-types";
-import axiosInstance from "@/providers/axios-instance";
-import { getCities, getStates } from "@/app/reducer";
+import axiosInstance from "@/lib/axios-instance";
+import { getCities, getStates } from "@/contexts/reducer";
 
 const schema = z.object({
   first_name: z.string().nonempty("Required"),

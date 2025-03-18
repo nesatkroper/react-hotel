@@ -1,8 +1,11 @@
 import React, { useEffect, useMemo } from "react";
-import Layout from "@/components/app/layout";
+import Layout from "@/layout/layout";
 import AppDataTable from "@/components/app/table/app-data-table";
 import DepartmentAdd from "./components/department-add";
-import { clearCache, getDepartments } from "@/app/reducer/department-slice";
+import {
+  clearCache,
+  getDepartments,
+} from "@/contexts/reducer/department-slice";
 import { DepartmentColumns } from "./components/department-columns";
 import { toNumber } from "@/utils/dec-format";
 import { useDispatch, useSelector } from "react-redux";

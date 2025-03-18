@@ -1,9 +1,9 @@
-import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect } from "react";
-import { getRooms } from "@/app/reducer/room-slice";
-import Layout from "@/components/app/layout";
+import Layout from "@/layout/layout";
 import RoomAdd from "./components/room-add";
 import AppDataTable from "@/components/app/table/app-data-table";
+import { useDispatch, useSelector } from "react-redux";
+import { getRooms } from "@/contexts/reducer/room-slice";
 import { RoomColumns } from "./components/room-columns";
 
 const Room = () => {

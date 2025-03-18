@@ -1,9 +1,9 @@
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import { getRpicture } from "@/app/reducer/room-picture-slice";
-import Layout from "@/components/app/layout";
+import React, { useEffect } from "react";
 import RoomPictureAdd from "./components/room-picture-add";
 import AppDataTable from "@/components/app/table/app-data-table";
+import Layout from "@/layout/layout";
+import { useDispatch, useSelector } from "react-redux";
+import { getRpicture } from "@/contexts/reducer/room-picture-slice";
 import { RoomPictureColumns } from "./components/room-picture-column";
 
 const RoomPicture = () => {

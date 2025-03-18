@@ -10,11 +10,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import FormInput from "@/components/app/form/form-input";
 import FormComboBox from "@/components/app/form/form-combobox";
-import { getEmployees } from "@/app/reducer/employee-slice";
+import { getEmployees } from "@/contexts/reducer/employee-slice";
 import FormSelect from "@/components/app/form/form-select";
 import { Loader2 } from "lucide-react";
-import axiosAuth from "@/providers/axios-auth";
-import { getAuth } from "@/app/reducer/auth-slice";
+import axiosAuth from "@/lib/axios-auth";
+import { getAuth } from "@/contexts/reducer/auth-slice";
 
 const ROLE = [
   {

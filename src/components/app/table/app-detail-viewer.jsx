@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Separator } from "@/components/ui/separator";
-import { apiUrl } from "@/providers/api";
+import { apiUrl } from "@/lib/api";
 import { defimg } from "@/utils/resize-crop-image";
 
 const AppDetailViewer = ({ item }) => {

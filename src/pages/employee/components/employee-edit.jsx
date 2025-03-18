@@ -8,16 +8,16 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getPositions } from "@/app/reducer/position-slice";
-import { getEmployees } from "@/app/reducer/employee-slice";
-import { getDepartments } from "@/app/reducer/department-slice";
+import { getPositions } from "@/contexts/reducer/position-slice";
+import { getEmployees } from "@/contexts/reducer/employee-slice";
+import { getDepartments } from "@/contexts/reducer/department-slice";
 import { Loader2 } from "lucide-react";
 import PropTypes from "prop-types";
 import FormInput from "@/components/app/form/form-input";
 import FormSelect from "@/components/app/form/form-select";
 import FormDatePicker from "@/components/app/form/form-date-picker";
 import FormComboBox from "@/components/app/form/form-combobox";
-import axiosAuth from "@/providers/axios-auth";
+import axiosAuth from "@/lib/axios-auth";
 
 const EmployeeEdit = ({ lastCode }) => {
   const dispatch = useDispatch();

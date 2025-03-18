@@ -8,14 +8,14 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
-import axios from "@/providers/axios-instance";
+import axios from "@/lib/axios-instance";
 import { useDispatch } from "react-redux";
-import { getRpicture } from "@/app/reducer/room-picture-slice";
+import { getRpicture } from "@/contexts/reducer/room-picture-slice";
 import PropTypes from "prop-types";
 import FormInput from "@/components/app/form/form-input";
 import FormImageOriginal from "@/components/app/form/form-image-ori";
 import FormImagePreview from "@/components/app/form/form-image-preview";
-import { apiUrl } from "@/providers/api";
+import { apiUrl } from "@/lib/api";
 
 const RoomPictureUpdate = ({ item }) => {
   const dispatch = useDispatch();

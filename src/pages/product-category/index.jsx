@@ -2,8 +2,8 @@ import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect, useMemo } from "react";
 import { ProductCategoryColumns } from "./components/product-category-columns.jsx";
 import { toNumber } from "@/utils/dec-format.js";
-import { getCategorys } from "@/app/reducer/product-category-slice.jsx";
-import Layout from "@/components/app/layout";
+import { getCategorys } from "@/contexts/reducer/product-category-slice.jsx";
+import Layout from "@/layout/layout";
 import ProductCategoryAdd from "./components/product-category-add.jsx";
 import AppDataTable from "@/components/app/table/app-data-table.jsx";
 

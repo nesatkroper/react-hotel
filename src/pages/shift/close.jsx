@@ -12,11 +12,11 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getBanknotes } from "@/app/reducer/bank-note-slice";
-import { getShifts } from "@/app/reducer/shift-slice";
-import axiosAuth from "@/providers/axios-auth";
+import { getBanknotes } from "@/contexts/reducer/bank-note-slice";
+import { getShifts } from "@/contexts/reducer/shift-slice";
+import axiosAuth from "@/lib/axios-auth";
 import jsCookie from "js-cookie";
-import { getCode } from "@/app/reducer/code-slice";
+import { getCode } from "@/contexts/reducer/code-slice";
 
 const CloseShift = () => {
   const dispatch = useDispatch();

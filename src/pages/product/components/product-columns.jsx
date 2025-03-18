@@ -26,13 +26,13 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
-import axiosInstance from "@/providers/axios-instance";
+import axiosInstance from "@/lib/axios-instance";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { defimg } from "@/utils/resize-crop-image";
 import { useDispatch } from "react-redux";
-import { getProducts } from "@/app/reducer/product-slice";
-import { apiUrl } from "@/providers/api";
+import { getProducts } from "@/contexts/reducer/product-slice";
+import { apiUrl } from "@/lib/api";
 import React from "react";
 
 export const ProductActions = () => {

@@ -9,10 +9,10 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/providers/auth-provider";
 import FormInput from "@/components/app/form/form-input";
-import axiosAuth from "@/providers/axios-auth";
+import axiosAuth from "@/lib/axios-auth";
 import { useDispatch } from "react-redux";
-import { setAuthData } from "@/app/reducer/role-slice";
-import { getUser } from "@/app/reducer/user-slice";
+import { setAuthData } from "@/contexts/reducer/role-slice";
+import { getUser } from "@/contexts/reducer/user-slice";
 
 const Signup = () => {
   const navigate = useNavigate();

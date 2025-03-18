@@ -9,15 +9,15 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getProducts } from "@/app/reducer/product-slice";
+import { getProducts } from "@/contexts/reducer/product-slice";
 import { defimg } from "@/utils/resize-crop-image";
-import { getCategorys } from "@/app/reducer/product-category-slice";
+import { getCategorys } from "@/contexts/reducer/product-category-slice";
 import PropTypes from "prop-types";
 import FormInput from "@/components/app/form/form-input";
 import FormComboBox from "@/components/app/form/form-combobox";
 import FormImagePreview from "@/components/app/form/form-image-preview";
 import FormImageResize from "@/components/app/form/form-image-resize";
-import axiosInstance from "@/providers/axios-instance";
+import axiosInstance from "@/lib/axios-instance";
 
 const ProductAdd = ({ lastCode }) => {
   const dispatch = useDispatch();

@@ -32,9 +32,9 @@ import { useDispatch } from "react-redux";
 import { Check, X } from "lucide-react";
 import { toast } from "sonner";
 import { defimg } from "@/utils/resize-crop-image";
-import { apiUrl } from "@/providers/api";
+import { apiUrl } from "@/lib/api";
 import { cDollar } from "@/utils/dec-format";
-import axiosAuth from "@/providers/axios-auth";
+import axiosAuth from "@/lib/axios-auth";
 import AppDetailViewer from "./app-detail-viewer";
 
 export const generateColumns = (

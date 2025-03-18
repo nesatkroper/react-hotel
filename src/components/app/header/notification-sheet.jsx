@@ -19,7 +19,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import { io } from "socket.io-client";
-import { apiUrl } from "@/providers/api";
+import { apiUrl } from "@/lib/api";
 
 const SOCKET = io(apiUrl);
 

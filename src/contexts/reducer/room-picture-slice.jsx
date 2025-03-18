@@ -1,4 +1,4 @@
-import axios from "@/providers/axios-instance";
+import axios from "@/lib/axios-instance";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 export const getRpicture = createAsyncThunk("getRpicture", async () => {

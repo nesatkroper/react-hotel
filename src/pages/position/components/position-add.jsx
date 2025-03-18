@@ -7,14 +7,14 @@ import {
 import React, { useEffect } from "react";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { clearCache, getPositions } from "@/app/reducer/position-slice";
+import { clearCache, getPositions } from "@/contexts/reducer/position-slice";
 import { useDispatch, useSelector } from "react-redux";
-import { getDepartments } from "@/app/reducer/department-slice";
+import { getDepartments } from "@/contexts/reducer/department-slice";
 import PropTypes from "prop-types";
 import FormInput from "@/components/app/form/form-input";
 import FormComboBox from "@/components/app/form/form-combobox";
 import FormTextArea from "@/components/app/form/form-textarea";
-import axiosAuth from "@/providers/axios-auth";
+import axiosAuth from "@/lib/axios-auth";
 import { useFormHandler } from "@/components/hooks/use-form-handler";
 
 const PositionAdd = ({ lastCode }) => {

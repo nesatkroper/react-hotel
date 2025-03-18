@@ -1,4 +1,4 @@
-import axiosInstance from "@/providers/axios-instance";
+import axiosInstance from "@/lib/axios-instance";
 import CryptoJS from "crypto-js";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 

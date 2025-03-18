@@ -9,10 +9,10 @@ import { Send, ArrowDown } from "lucide-react";
 import { io } from "socket.io-client";
 import { dateFormat } from "@/utils/dec-format";
 import { useDispatch } from "react-redux";
-import { getUser } from "@/app/reducer/user-slice";
-import { apiUrl } from "@/providers/api";
+import { getUser } from "@/contexts/reducer/user-slice";
+import { apiUrl } from "@/lib/api";
 import Cookies from "js-cookie";
-import axiosAuth from "@/providers/axios-auth";
+import axiosAuth from "@/lib/axios-auth";
 
 const SOCKET = io(apiUrl, {
   transports: ["websocket", "polling"],

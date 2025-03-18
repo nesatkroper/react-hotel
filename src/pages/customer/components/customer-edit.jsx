@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
-import axiosInstance from "@/providers/axios-instance";
+import axiosInstance from "@/lib/axios-instance";
 import {
   DialogContent,
   DialogHeader,
@@ -19,11 +19,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { Loader2 } from "lucide-react";
 import { GENDER } from "@/utils/default-data";
 import { z } from "zod";
-import { clearCache, getCustomers } from "@/app/reducer/customer-slice";
+import { clearCache, getCustomers } from "@/contexts/reducer/customer-slice";
 import { useFormHandler } from "@/components/hooks/use-form-handler";
-import { getCities, getStates } from "@/app/reducer";
+import { getCities, getStates } from "@/contexts/reducer";
 import { defimg } from "@/utils/resize-crop-image";
-import { apiUrl } from "@/providers/api";
+import { apiUrl } from "@/lib/api";
 
 const schema = z.object({
   first_name: z.string().nonempty("Required"),

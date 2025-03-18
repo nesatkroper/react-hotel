@@ -13,9 +13,9 @@ import PropTypes from "prop-types";
 import FormInput from "@/components/app/form/form-input";
 import FormDatePicker from "@/components/app/form/form-date-picker";
 import FormComboBox from "@/components/app/form/form-combobox";
-import axiosAuth from "@/providers/axios-auth";
+import axiosAuth from "@/lib/axios-auth";
 import { z } from "zod";
-import { getDepartments, getEmployees, getPositions } from "@/app/reducer";
+import { getDepartments, getEmployees, getPositions } from "@/contexts/reducer";
 
 const schema = z.object({
   first_name: z.string().nonempty("Required"),

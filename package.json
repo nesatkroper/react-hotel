@@ -16,7 +16,7 @@
     "preview": "vite preview",
     "postinstall": "npx husky install",
     "format": "prettier --write .",
-    "git": "git add . && git commit -m \"custome view dialog\" &&   git push"
+    "git": "git add . && git commit -m \"change to use lazyloading\" &&   git push"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",

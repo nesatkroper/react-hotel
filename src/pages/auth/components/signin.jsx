@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/providers/auth-provider";
 import { Loader2 } from "lucide-react";
 import FormInput from "@/components/app/form/form-input";
-import axiosAuth from "@/providers/axios-auth";
+import axiosAuth from "@/lib/axios-auth";
 import Cookies from "js-cookie";
 
 const Signin = () => {

@@ -30,9 +30,9 @@ import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { defimg } from "@/utils/resize-crop-image";
 import { useDispatch } from "react-redux";
-import { getProducts } from "@/app/reducer/product-slice";
-import { apiUrl } from "@/providers/api";
-import axiosInstance from "@/providers/axios-instance";
+import { getProducts } from "@/contexts/reducer/product-slice";
+import { apiUrl } from "@/lib/api";
+import axiosInstance from "@/lib/axios-instance";
 import RoomPictureUpdate from "./room-picture-update";
 import React from "react";
 

@@ -1,10 +1,10 @@
-import { getAuth } from "@/app/reducer/auth-slice";
+import { getAuth } from "@/contexts/reducer/auth-slice";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Layout from "@/components/app/layout";
 import AppDataTable from "@/components/app/table/app-data-table";
 import { AuthenticationColumns } from "./components/authentication-columns";
 import AuthenticationAdd from "./components/authentication-add";
+import Layout from "@/layout/layout";
 
 const Authentication = () => {
   const dispatch = useDispatch();

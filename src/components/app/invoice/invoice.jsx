@@ -11,7 +11,7 @@ import InvoiceFooter from "./components/inv-footer";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 
-import axiosInstance from "@/providers/axios-instance";
+import axiosInstance from "@/lib/axios-instance";
 import PropTypes from "prop-types";
 
 const Invoice = (props) => {

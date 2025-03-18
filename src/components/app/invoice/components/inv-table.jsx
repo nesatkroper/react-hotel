@@ -11,7 +11,7 @@ import { Separator } from "@/components/ui/separator";
 import PropTypes from "prop-types";
 import { cDollar, datetimeNow, dollarToRiel, toUnit } from "@/utils/dec-format";
 import { useDispatch, useSelector } from "react-redux";
-import { getCarts } from "@/app/reducer/cart-slice";
+import { getCarts } from "@/contexts/reducer/cart-slice";
 import { useEffect, useMemo } from "react";
 
 const Tax = 10;

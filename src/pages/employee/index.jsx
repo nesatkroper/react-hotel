@@ -1,11 +1,11 @@
 import React, { useEffect, useMemo } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { clearCache, getEmployees } from "@/app/reducer/employee-slice";
-import { EmployeeColumns } from "./components/employee-columns";
-import { toNumber } from "@/utils/dec-format";
-import Layout from "@/components/app/layout";
+import Layout from "@/layout/layout";
 import EmployeeAdd from "./components/employee-add";
 import AppDataTable from "@/components/app/table/app-data-table";
+import { useDispatch, useSelector } from "react-redux";
+import { clearCache, getEmployees } from "@/contexts/reducer/employee-slice";
+import { EmployeeColumns } from "./components/employee-columns";
+import { toNumber } from "@/utils/dec-format";
 
 const Employee = () => {
   const dispatch = useDispatch();

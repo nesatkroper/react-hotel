@@ -1,4 +1,4 @@
-import Layout from "@/components/app/layout";
+import Layout from "@/layout/layout";
 import MyBigBarChartInteractive from "./components/big-bar-chart-interactive";
 import MyAreaChart from "./components/area-chart-gradient";
 import MyBarChart from "./components/bar-chart-multiple";

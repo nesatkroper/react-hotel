@@ -17,9 +17,9 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
-import axios from "@/providers/axios-instance";
+import axios from "@/lib/axios-instance";
 import { useDispatch } from "react-redux";
-import { getRooms } from "@/app/reducer/room-slice";
+import { getRooms } from "@/contexts/reducer/room-slice";
 
 const RoomUpdate = ({ item }) => {
   const dispatch = useDispatch();

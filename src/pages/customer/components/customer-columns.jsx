@@ -1,5 +1,5 @@
 import { generateColumns } from "@/components/app/table/generate-column";
-import { getCustomers } from "@/app/reducer/customer-slice";
+import { getCustomers } from "@/contexts/reducer/customer-slice";
 import React from "react";
 import PropTypes from "prop-types";
 import CustomerEdit from "./customer-edit";

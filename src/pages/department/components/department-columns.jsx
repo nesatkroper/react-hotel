@@ -1,5 +1,5 @@
 import { generateColumns } from "@/components/app/table/generate-column";
-import { getDepartments } from "@/app/reducer/department-slice";
+import { getDepartments } from "@/contexts/reducer/department-slice";
 import React from "react";
 import DepartmentUpdate from "./department-update";
 import PropTypes from "prop-types";

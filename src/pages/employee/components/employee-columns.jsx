@@ -1,5 +1,5 @@
 import { generateColumns } from "@/components/app/table/generate-column";
-import { clearCache, getEmployees } from "@/app/reducer/employee-slice";
+import { clearCache, getEmployees } from "@/contexts/reducer/employee-slice";
 import React from "react";
 import EmployeeEdit from "./employee-edit";
 import PropTypes from "prop-types";

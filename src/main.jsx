@@ -1,4 +1,4 @@
-import store from "./app/store";
+import store from "./contexts/store";
 import React from "react";
 import App from "./App.jsx";
 import { createRoot } from "react-dom/client";

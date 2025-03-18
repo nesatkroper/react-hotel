@@ -1,14 +1,14 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { defimg } from "@/utils/resize-crop-image";
-import { apiUrl } from "@/providers/api";
+import { apiUrl } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { useDispatch, useSelector } from "react-redux";
-import { getCarts } from "@/app/reducer/cart-slice";
+import { getCarts } from "@/contexts/reducer/cart-slice";
 import { Plus } from "lucide-react";
 import { cDollar } from "@/utils/dec-format";
 import Cookies from "js-cookie";
 import PropTypes from "prop-types";
-import axiosAuth from "@/providers/axios-auth";
+import axiosAuth from "@/lib/axios-auth";
 import React from "react";
 
 const userInfo = Cookies.get("user-info")
