@@ -16,7 +16,7 @@ import PropTypes from "prop-types";
 import FormInput from "@/components/app/form/form-input";
 import FormTextArea from "@/components/app/form/form-textarea";
 import axiosAuth from "@/lib/axios-auth";
-import { useFormHandler } from "@/components/hooks/use-form-handler";
+import { useFormHandler } from "@/hooks/use-form-handler";
 
 const DepartmentAdd = ({ lastCode }) => {
   const dispatch = useDispatch();
@@ -53,30 +53,30 @@ const DepartmentAdd = ({ lastCode }) => {
         <DialogHeader>
           <DialogTitle>Department Details Information.</DialogTitle>
         </DialogHeader>
-        <Separator className="my-3" />
-        <div className="flex justify-between mb-3">
+        <Separator className='my-3' />
+        <div className='flex justify-between mb-3'>
           <FormInput
             onCallbackInput={handleChange}
-            name="department_name"
+            name='department_name'
             value={formData.department_name}
-            label="Department Name*"
-            type="text"
-            placeholder="IT, Finance, ..."
+            label='Department Name*'
+            type='text'
+            placeholder='IT, Finance, ...'
             required={true}
           />
           <FormInput
-            label="Department Code*"
+            label='Department Code*'
             value={`DEP-${(lastCode + 1).toString().padStart(3, "0")}`}
           />
         </div>
         <FormTextArea
           onCallbackInput={handleChange}
-          label="Decription"
-          name="memo"
-          placeholder="N/A"
+          label='Decription'
+          name='memo'
+          placeholder='N/A'
         />
         <DialogClose>
-          <Button type="submit" className="w-full">
+          <Button type='submit' className='w-full'>
             Submit
           </Button>
         </DialogClose>

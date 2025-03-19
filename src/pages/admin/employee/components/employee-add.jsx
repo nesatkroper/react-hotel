@@ -16,6 +16,8 @@ import FormComboBox from "@/components/app/form/form-combobox";
 import axiosAuth from "@/lib/axios-auth";
 import { z } from "zod";
 import { getDepartments, getEmployees, getPositions } from "@/contexts/reducer";
+import { useFormHandler } from "@/hooks/use-form-handler";
+import { clearCache } from "@/contexts/reducer/employee-slice";
 
 const schema = z.object({
   first_name: z.string().nonempty("Required"),
@@ -39,7 +41,7 @@ const EmployeeAdd = ({ lastCode }) => {
   const { data: depData } = useSelector((state) => state.departments);
   const { data: posData } = useSelector((state) => state.positions);
   const [issend, setIssend] = useState(false);
-  const [formData, setFormData] = useState({
+  const { formData, resetForm, handleChange } = useFormHandler({
     status: "active",
     first_name: "",
     last_name: "",
@@ -62,10 +64,6 @@ const EmployeeAdd = ({ lastCode }) => {
     return false;
   };
 
-  const handleDataChange = (name, value) => {
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     console.log(formData);
@@ -77,6 +75,9 @@ const EmployeeAdd = ({ lastCode }) => {
     try {
       setIssend(true);
       await axiosAuth.post("/employee", formData);
+
+      resetForm();
+      dispatch(clearCache());
       dispatch(getEmployees({ position: true }));
     } catch (e) {
       console.error("Submission error:", e);
@@ -97,95 +98,95 @@ const EmployeeAdd = ({ lastCode }) => {
   return (
     <DialogContent>
       <form onSubmit={handleFormSubmit}>
-        <DialogHeader className="mb-3">
+        <DialogHeader className='mb-3'>
           <DialogTitle>Employee Details</DialogTitle>
         </DialogHeader>
         <Separator />
-        <div className="flex justify-between mb-2 mt-2">
+        <div className='flex justify-between mb-2 mt-2'>
           <FormInput
-            onCallbackInput={handleDataChange}
-            label="First Name*"
-            name="first_name"
-            placeholder="John, ..."
+            onCallbackInput={handleChange}
+            label='First Name*'
+            name='first_name'
+            placeholder='John, ...'
             required
             error={error.first_name?.[0]}
           />
           <FormInput
-            onCallbackInput={handleDataChange}
-            label="Last Name*"
-            name="last_name"
-            placeholder="Doe, ..."
+            onCallbackInput={handleChange}
+            label='Last Name*'
+            name='last_name'
+            placeholder='Doe, ...'
             required
             error={error.last_name?.[0]}
           />
         </div>
-        <div className="flex justify-between mb-2 mt-3">
+        <div className='flex justify-between mb-2 mt-3'>
           <FormInput
-            label="Employee Code*"
+            label='Employee Code*'
             value={`EMP-${(lastCode + 1).toString().padStart(4, "0")}`}
             disabled
           />
           <FormComboBox
             item={GENDER}
-            optID="value"
-            optLabel="label"
-            name="gender"
-            label="Gender"
-            onCallbackSelect={(event) => handleDataChange("gender", event)}
+            optID='value'
+            optLabel='label'
+            name='gender'
+            label='Gender'
+            onCallbackSelect={(event) => handleChange("gender", event)}
             error={error.gender?.[0]}
           />
         </div>
-        <div className="flex justify-between mb-2 mt-2">
+        <div className='flex justify-between mb-2 mt-2'>
           <FormInput
-            onCallbackInput={handleDataChange}
-            label="Phone Number"
-            name="phone"
-            placeholder="010280202"
+            onCallbackInput={handleChange}
+            label='Phone Number'
+            name='phone'
+            placeholder='010280202'
             error={error.phone?.[0]}
           />
           <FormInput
-            onCallbackInput={handleDataChange}
-            label="Salary*"
-            name="salary"
-            placeholder="$250.00"
+            onCallbackInput={handleChange}
+            label='Salary*'
+            name='salary'
+            placeholder='$250.00'
             error={error.salary?.[0]}
           />
         </div>
-        <div className="flex justify-between mb-2 mt-2">
+        <div className='flex justify-between mb-2 mt-2'>
           <FormDatePicker
-            onCallbackPicker={(event) => handleDataChange("dob", event)}
-            label="Date of Birth*"
+            onCallbackPicker={(event) => handleChange("dob", event)}
+            label='Date of Birth*'
             error={error.dob?.[0]}
           />
           <FormDatePicker
-            onCallbackPicker={(event) => handleDataChange("hired_date", event)}
-            label="Hired Date*"
+            onCallbackPicker={(event) => handleChange("hired_date", event)}
+            label='Hired Date*'
             error={error.hired_date?.[0]}
           />
         </div>
-        <div className="flex justify-between mb-2 mt-3">
+        <div className='flex justify-between mb-2 mt-3'>
           <FormComboBox
             onCallbackSelect={(event) =>
-              handleDataChange("department_id", Number(event))
+              handleChange("department_id", Number(event))
             }
-            label="Department*"
+            label='Department*'
             item={depData}
-            optID="department_id"
-            optLabel="department_name"
+            optID='department_id'
+            optLabel='department_name'
             error={error.department_id?.[0]}
           />
           <FormComboBox
-            onCallbackSelect={(event) => handleDataChange("position_id", event)}
-            label="Position*"
+            onCallbackSelect={(event) => handleChange("position_id", event)}
+            label='Position*'
             item={filteredPositions}
-            optID="position_id"
-            optLabel="position_name"
+            optID='position_id'
+            optLabel='position_name'
             error={error.position_id?.[0]}
           />
         </div>
-        <div className="flex justify-end mt-4">
-          <Button type="submit" disabled={issend}>
-            {issend ? <Loader2 className="animate-spin" /> : "Submit"}
+        <div className='flex justify-end mt-4'>
+          <Button type='submit' disabled={issend}>
+            {issend ? <Loader2 className='animate-spin' /> : "Submit"}
           </Button>
         </div>
       </form>

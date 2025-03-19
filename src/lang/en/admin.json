@@ -1,0 +1,46 @@
+{
+  "lang": {
+    "kh": "Khmer",
+    "en": "English"
+  },
+  "header": {
+    "app_name": "Cambodia Drug Dealer University"
+  },
+  "sidebar": {
+    "sub_app_name": "Drug University",
+    "location": "Siem Reap",
+    "menu": "Menu",
+    "dashboard": "Dashboard",
+    "staffs": "Staffs",
+    "student": "Student",
+    "settings": "Settings"
+  },
+  "home": {
+    "body": "lorem ipsum dolor sit amet, consectetur adip"
+  },
+  "opt": {
+    "act": "Actions",
+    "view": "View Item",
+    "edit": "Edit Item",
+    "remove": "Remove Item",
+    "restore": "Resote Item"
+  },
+  "table": {
+    "no": "No.",
+    "pic": "Picture",
+    "name": "Name",
+    "gen": "Gender",
+    "tel": "Phone",
+    "dep": "Department",
+    "pos": "Position",
+    "subject": "Subject",
+    "salary": "Salary",
+    "pay": "Payment",
+    "status": "Status",
+    "action": "Action",
+    "address": "Adress"
+  },
+  "pos": {
+    "name": "Position Name"
+  }
+}

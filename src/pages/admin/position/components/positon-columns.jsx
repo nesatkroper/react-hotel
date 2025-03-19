@@ -13,7 +13,7 @@ export const PositionColumns = (() => {
 
   const columns = generateColumns(
     [
-      { key: "position_name", label: "Position Name" },
+      { key: "position_name", label: "pos.name" },
       { key: "position_code", label: "Position Code" },
       { key: "department.department_name", label: "Department" },
       { key: "status", label: "Status" },

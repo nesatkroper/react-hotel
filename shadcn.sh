@@ -15,6 +15,7 @@ components=(
     "checkbox"
     "collapsible"
     "combobox"
+    "carousel"
     "command"
     "context-menu"
     "data-table"

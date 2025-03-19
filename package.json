@@ -16,7 +16,7 @@
     "preview": "vite preview",
     "postinstall": "npx husky install",
     "format": "prettier --write .",
-    "git": "git add . && git commit -m \"start client page\" &&   git push"
+    "git": "git add . && git commit -m \"setup client layout\" &&   git push"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
@@ -40,7 +40,7 @@
     "@radix-ui/react-select": "^2.1.4",
     "@radix-ui/react-separator": "^1.1.1",
     "@radix-ui/react-slider": "^1.2.2",
-    "@radix-ui/react-slot": "^1.1.1",
+    "@radix-ui/react-slot": "^1.1.2",
     "@radix-ui/react-switch": "^1.1.2",
     "@radix-ui/react-tabs": "^1.1.2",
     "@radix-ui/react-toast": "^1.2.6",
@@ -59,8 +59,11 @@
     "crypto": "^1.0.1",
     "crypto-js": "^4.2.0",
     "date-fns": "^3.6.0",
+    "embla-carousel-autoplay": "^8.5.2",
+    "embla-carousel-react": "^8.5.2",
     "framer-motion": "^12.4.10",
     "html2canvas": "^1.4.1",
+    "i18next": "^24.2.3",
     "idb-keyval": "^6.2.1",
     "input-otp": "^1.4.2",
     "js-cookie": "^3.0.5",
@@ -77,6 +80,7 @@
     "react-dropzone": "^14.3.5",
     "react-easy-crop": "^5.2.0",
     "react-hook-form": "^7.54.2",
+    "react-i18next": "^15.4.1",
     "react-qr-code": "^2.0.15",
     "react-redux": "^9.2.0",
     "react-resizable-panels": "^2.1.7",
@@ -108,6 +112,7 @@
     "globals": "^15.15.0",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.17",
-    "vite": "^6.0.11"
+    "vite": "^6.0.11",
+    "vite-plugin-pwa": "^0.21.1"
   }
 }

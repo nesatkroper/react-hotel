@@ -1,7 +1,7 @@
 import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/providers/auth-provider";
 import React, { useEffect } from "react";
-import useOnlineStatus from "@/components/hooks/use-online-status";
+import useOnlineStatus from "@/hooks/use-online-status";
 
 export const ProtectedRoute = () => {
   const { token } = useAuth();
@@ -16,7 +16,7 @@ export const ProtectedRoute = () => {
     }
   }, [isOnline, location.pathname, navigate]);
 
-  if (!token) return <Navigate to="/auth" />;
+  if (!token) return <Navigate to='/auth' />;
 
   return <Outlet />;
 };

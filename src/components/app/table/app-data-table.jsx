@@ -135,12 +135,12 @@ const AppDataTable = (props) => {
   };
 
   return (
-    <motion.div variants={cardVariants} initial="hidden" animate="visible">
+    <motion.div variants={cardVariants} initial='hidden' animate='visible'>
       <Card>
         <Dialog>
           {addElement}
-          <CardHeader className="p-4">
-            <div className="flex flex-row justify-between">
+          <CardHeader className='p-4'>
+            <div className='flex flex-row justify-between'>
               <div>
                 <CardTitle>{`${title} Table`}</CardTitle>
                 <CardDescription>{des || "Card Description"}</CardDescription>
@@ -149,17 +149,16 @@ const AppDataTable = (props) => {
                 <motion.button
                   whileHover={{ scale: 1.01 }}
                   whileTap={{ scale: 0.95 }}
-                  className={`w-[${btnSize}px] h-8 inline-flex items-center justify-center rounded-md text-sm font-medium bg-primary text-primary-foreground  px-4 py-2`}
-                >
-                  <Plus className="mr-2" /> {title}
+                  className={`w-[${btnSize}px] h-8 inline-flex items-center justify-center rounded-md text-sm font-medium bg-primary text-primary-foreground  px-4 py-2`}>
+                  <Plus className='mr-2' /> {title}
                 </motion.button>
               </DialogTrigger>
             </div>
           </CardHeader>
         </Dialog>
-        <CardContent className="p-4 pt-0">
-          <div className="w-full">
-            <div className="flex gap-4 items-center pb-4">
+        <CardContent className='p-4 pt-0'>
+          <div className='w-full'>
+            <div className='flex gap-4 items-center pb-4'>
               <Input
                 placeholder={`Filter ${main
                   .split("_")
@@ -171,13 +170,12 @@ const AppDataTable = (props) => {
                 onChange={(event) =>
                   table.getColumn(main)?.setFilterValue(event.target.value)
                 }
-                className=" w-64"
+                className=' w-64'
               />
               <Select
-                onValueChange={(event) => table.setPageSize(Number(event))}
-              >
-                <SelectTrigger className="w-[100px]">
-                  <SelectValue placeholder="5 Rows" />
+                onValueChange={(event) => table.setPageSize(Number(event))}>
+                <SelectTrigger className='w-[100px]'>
+                  <SelectValue placeholder='5 Rows' />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value={5}>5 Rows</SelectItem>
@@ -188,7 +186,7 @@ const AppDataTable = (props) => {
                   <SelectItem value={100}>100 Rows</SelectItem>
                 </SelectContent>
               </Select>
-              <Button onClick={handleRefresh} variant="outline" type="button">
+              <Button onClick={handleRefresh} variant='outline' type='button'>
                 <RefreshCcw className={loading ? "animate-spin" : ""} />
                 Refresh
               </Button>
@@ -197,24 +195,22 @@ const AppDataTable = (props) => {
                   <motion.button
                     whileHover={{ scale: 1.01 }}
                     whileTap={{ scale: 0.95 }}
-                    className={`w-[${btnSize}px] ml-auto inline-flex items-center justify-center rounded-md text-sm font-medium border h-8 px-4 py-2`}
-                  >
-                    Columns <ChevronDown className="ml-2" />
+                    className={`w-[${btnSize}px] ml-auto inline-flex items-center justify-center rounded-md text-sm font-medium border h-8 px-4 py-2`}>
+                    Columns <ChevronDown className='ml-2' />
                   </motion.button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
+                <DropdownMenuContent align='end'>
                   {table
                     .getAllColumns()
                     .filter((column) => column.getCanHide())
                     ?.map((column) => (
                       <DropdownMenuCheckboxItem
                         key={column.id}
-                        className="capitalize"
+                        className='capitalize'
                         checked={column.getIsVisible()}
                         onCheckedChange={(value) =>
                           column.toggleVisibility(!!value)
-                        }
-                      >
+                        }>
                         {column.id
                           .split("_")
                           ?.map(
@@ -228,13 +224,12 @@ const AppDataTable = (props) => {
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
-            <div className="rounded-md border">
+            <div className='rounded-md border'>
               <Table>
                 <motion.thead
                   variants={headerVariants}
-                  initial="hidden"
-                  animate="visible"
-                >
+                  initial='hidden'
+                  animate='visible'>
                   {table.getHeaderGroups()?.map((headerGroup) => (
                     <TableRow key={headerGroup.id}>
                       {headerGroup.headers?.map((header) => (
@@ -254,8 +249,7 @@ const AppDataTable = (props) => {
                               : header.id === "actions"
                               ? "w-10"
                               : ""
-                          }`}
-                        >
+                          }`}>
                           {header.isPlaceholder
                             ? null
                             : flexRender(
@@ -276,11 +270,10 @@ const AppDataTable = (props) => {
                         <motion.tr
                           key={row.id}
                           variants={rowVariants}
-                          initial="hidden"
-                          animate="visible"
+                          initial='hidden'
+                          animate='visible'
                           custom={index}
-                          data-state={row.getIsSelected() && "selected"}
-                        >
+                          data-state={row.getIsSelected() && "selected"}>
                           {row.getVisibleCells()?.map((cell) => (
                             <TableCell
                               key={cell.id}
@@ -298,8 +291,7 @@ const AppDataTable = (props) => {
                                   : cell.column.id === "actions"
                                   ? "w-10"
                                   : ""
-                              }
-                            >
+                              }>
                               {flexRender(
                                 cell.column.columnDef.cell,
                                 cell.getContext()
@@ -312,8 +304,7 @@ const AppDataTable = (props) => {
                       <TableRow>
                         <TableCell
                           colSpan={columns.length}
-                          className="h-24 text-center"
-                        >
+                          className='h-24 text-center'>
                           No results.
                         </TableCell>
                       </TableRow>
@@ -322,28 +313,26 @@ const AppDataTable = (props) => {
                 )}
               </Table>
             </div>
-            <div className="flex items-center justify-end space-x-2 pt-4">
-              <div className="flex-1 text-sm text-muted-foreground">
+            <div className='flex items-center justify-end space-x-2 pt-4'>
+              <div className='flex-1 text-sm text-muted-foreground'>
                 {table.getFilteredSelectedRowModel().rows.length} of{" "}
                 {table.getFilteredRowModel().rows.length} row(s) selected.
               </div>
-              <div className="space-x-2">
+              <div className='space-x-2'>
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="inline-flex items-center justify-center rounded-md text-sm font-medium border h-8 px-4 py-2"
+                  className='inline-flex items-center justify-center rounded-md text-sm font-medium border h-8 px-4 py-2'
                   onClick={() => table.previousPage()}
-                  disabled={!table.getCanPreviousPage()}
-                >
+                  disabled={!table.getCanPreviousPage()}>
                   Previous
                 </motion.button>
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="inline-flex items-center justify-center rounded-md text-sm font-medium border h-8 px-4 py-2"
+                  className='inline-flex items-center justify-center rounded-md text-sm font-medium border h-8 px-4 py-2'
                   onClick={() => table.nextPage()}
-                  disabled={!table.getCanNextPage()}
-                >
+                  disabled={!table.getCanNextPage()}>
                   Next
                 </motion.button>
               </div>

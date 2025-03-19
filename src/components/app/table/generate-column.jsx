@@ -49,10 +49,9 @@ export const generateColumns = (
     accessorKey: field.key,
     header: ({ column }) => (
       <Button
-        variant="ghost"
-        className="font-bold"
-        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-      >
+        variant='ghost'
+        className='font-bold'
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
         {field.label} <ArrowUpDown />
       </Button>
     ),
@@ -70,7 +69,7 @@ export const generateColumns = (
         const lastName = row.original.last_name || "";
 
         return (
-          <div className="capitalize">
+          <div className='capitalize'>
             {`${firstName} ${lastName}`.trim() || "N/A"}
           </div>
         );
@@ -101,7 +100,7 @@ export const generateColumns = (
             src={`${apiUrl}/uploads/${value}`}
             alt={value}
             onError={(e) => (e.target.src = defimg)}
-            className="h-[80px] rounded-lg"
+            className='h-[80px] rounded-lg'
           />
         );
       }
@@ -111,9 +110,9 @@ export const generateColumns = (
         keys.forEach((key) => {
           nestedValue = nestedValue?.[key];
         });
-        return <div className="capitalize">{nestedValue || "N/A"}</div>;
+        return <div className='capitalize'>{nestedValue || "N/A"}</div>;
       }
-      return <div className="capitalize">{value || "N/A"}</div>;
+      return <div className='capitalize'>{value || "N/A"}</div>;
     },
   }));
 
@@ -126,15 +125,15 @@ export const generateColumns = (
           (table.getIsSomePageRowsSelected() && "indeterminate")
         }
         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
+        aria-label='Select all'
       />
     ),
     cell: ({ row }) => (
-      <div className="flex items-center justify-center">
+      <div className='flex items-center justify-center'>
         <Checkbox
           checked={row.getIsSelected()}
           onCheckedChange={(value) => row.toggleSelected(!!value)}
-          aria-label="Select row"
+          aria-label='Select row'
         />
       </div>
     ),
@@ -160,7 +159,7 @@ export const generateColumns = (
         toast.success("Status Update Successfully", {
           description: `📅 ${date}`,
           duration: 5000,
-          icon: <FileWarningIcon className="text-yellow-500 w-6 h-6" />,
+          icon: <FileWarningIcon className='text-yellow-500 w-6 h-6' />,
         });
       };
 
@@ -185,37 +184,35 @@ export const generateColumns = (
       const [isRemoveOpen, setIsRemoveOpen] = React.useState(false);
 
       return (
-        <div className="flex justify-end">
+        <div className='flex justify-end'>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
+              <Button variant='ghost' className='h-8 w-8 p-0'>
+                <span className='sr-only'>Open menu</span>
                 <MoreHorizontal />
               </Button>
             </DropdownMenuTrigger>
 
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel className="text-center">
+            <DropdownMenuContent align='end'>
+              <DropdownMenuLabel className='text-center'>
                 Actions
               </DropdownMenuLabel>
 
-              {/* View dialog */}
               <AlertDialog open={isViewOpen} onOpenChange={setIsViewOpen}>
                 <AlertDialogTrigger asChild>
                   <DropdownMenuItem
                     onSelect={(e) => {
                       e.preventDefault();
                       setIsViewOpen(true);
-                    }}
-                  >
-                    <Fullscreen className="me-1" />
+                    }}>
+                    <Fullscreen className='me-1' />
                     View Item
                   </DropdownMenuItem>
                 </AlertDialogTrigger>
 
-                <AlertDialogContent className="w-[700px]">
+                <AlertDialogContent className='w-[700px]'>
                   <AlertDialogHeader>
-                    <AlertDialogTitle className=" font-semibold">
+                    <AlertDialogTitle className=' font-semibold'>
                       Information Details
                     </AlertDialogTitle>
 
@@ -234,7 +231,7 @@ export const generateColumns = (
                   {editComponent}
                   <DialogTrigger asChild>
                     <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                      <FilePenLine className="me-1" /> Edit Item
+                      <FilePenLine className='me-1' /> Edit Item
                     </DropdownMenuItem>
                   </DialogTrigger>
                 </Dialog>
@@ -247,13 +244,12 @@ export const generateColumns = (
                       e.preventDefault();
                       setIsRemoveOpen(true);
                     }}
-                    className={status ? "text-red-500" : "text-yellow-500"}
-                  >
-                    <Trash2 className="me-1" />
+                    className={status ? "text-red-500" : "text-yellow-500"}>
+                    <Trash2 className='me-1' />
                     {status ? "Remove" : "Restore"} Item
                   </DropdownMenuItem>
                 </AlertDialogTrigger>
-                <AlertDialogContent className="w-[400px]">
+                <AlertDialogContent className='w-[400px]'>
                   <AlertDialogHeader>
                     <AlertDialogTitle>
                       Are you sure to {status ? "Remove" : "Restore"} this?
@@ -273,8 +269,7 @@ export const generateColumns = (
                         handleDelete();
                         setIsRemoveOpen(false);
                       }}
-                      className={status ? "bg-red-500" : "bg-green-500"}
-                    >
+                      className={status ? "bg-red-500" : "bg-green-500"}>
                       Continue
                     </AlertDialogAction>
                   </AlertDialogFooter>

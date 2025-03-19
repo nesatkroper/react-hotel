@@ -15,7 +15,7 @@ import FormInput from "@/components/app/form/form-input";
 import FormComboBox from "@/components/app/form/form-combobox";
 import FormTextArea from "@/components/app/form/form-textarea";
 import axiosAuth from "@/lib/axios-auth";
-import { useFormHandler } from "@/components/hooks/use-form-handler";
+import { useFormHandler } from "@/hooks/use-form-handler";
 
 const PositionAdd = ({ lastCode }) => {
   const dispatch = useDispatch();
@@ -53,40 +53,40 @@ const PositionAdd = ({ lastCode }) => {
         <DialogHeader>
           <DialogTitle>Position Details Information.</DialogTitle>
         </DialogHeader>
-        <Separator className="my-3" />
-        <div className="flex justify-between mb-3">
+        <Separator className='my-3' />
+        <div className='flex justify-between mb-3'>
           <FormInput
             onCallbackInput={handleChange}
-            name="position_name"
+            name='position_name'
             value={formData.department_name}
-            label="Position Name*"
-            placeholder="IT, Finance, ..."
+            label='Position Name*'
+            placeholder='IT, Finance, ...'
             required={true}
           />
           <FormInput
-            label="Position Code"
+            label='Position Code'
             value={`POS-${(lastCode + 1).toString().padStart(4, "0")}`}
           />
         </div>
-        <div className="flex justify-between mb-3">
+        <div className='flex justify-between mb-3'>
           <FormComboBox
             onCallbackSelect={(val) => handleChange("department_id", val)}
-            name="department_id"
-            label="Department"
+            name='department_id'
+            label='Department'
             item={depData}
-            optID="department_id"
-            optLabel="department_name"
+            optID='department_id'
+            optLabel='department_name'
           />
           <FormTextArea
             onCallbackInput={handleChange}
-            label="Decription"
-            name="memo"
-            mainClass="w-[250px]"
-            placeholder="N/A"
+            label='Decription'
+            name='memo'
+            mainClass='w-[250px]'
+            placeholder='N/A'
           />
         </div>
         <DialogClose>
-          <Button type="submit" className="w-full">
+          <Button type='submit' className='w-full'>
             Submit
           </Button>
         </DialogClose>

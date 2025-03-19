@@ -15,6 +15,7 @@ import GroupChat from "./group-chat";
 import AppSearchBar from "./app-search-bar";
 import chatSound from "@/assets/mp3/chat.wav";
 import useSound from "../sound/use-sound";
+import LanguageToggle from "../lang/lang-toggle";
 
 const SOCKET = io(apiUrl);
 
@@ -65,31 +66,31 @@ const AppHeader = () => {
   };
 
   return (
-    <header className="flex h-12 items-center justify-between gap-2 px-4">
-      <div className="flex items-center gap-2">
-        <SidebarTrigger className="-ml-1" />
-        <Separator orientation="vertical" className="mr-2 h-4" />
+    <header className='flex h-12 items-center justify-between gap-2 px-4'>
+      <div className='flex items-center gap-2'>
+        <SidebarTrigger className='-ml-1' />
+        <Separator orientation='vertical' className='mr-2 h-4' />
         <Label>{date}</Label>
       </div>
-      <div className="flex gap-1">
+      <div className='flex gap-1'>
         <Dialog>
           <DialogTrigger asChild>
             <Button
-              variant="outline"
-              className="ps-8 text-muted-foreground h-[32px] relative"
-            >
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+              variant='outline'
+              className='ps-8 text-muted-foreground h-[32px] relative'>
+              <Search className='absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground' />
               Search something ...
             </Button>
           </DialogTrigger>
           <AppSearchBar />
         </Dialog>
         <Sheet
-          onOpenChange={(open) => (open ? handleChatOpen() : handleChatClose())}
-        >
+          onOpenChange={(open) =>
+            open ? handleChatOpen() : handleChatClose()
+          }>
           <GroupChat messages={unreadMessages} />
           <SheetTrigger asChild>
-            <Button variant="icon" className="p-2">
+            <Button variant='icon' className='p-2'>
               <Mail />
             </Button>
           </SheetTrigger>
@@ -98,12 +99,12 @@ const AppHeader = () => {
         <Sheet>
           <NotificationSheet />
           <SheetTrigger asChild>
-            <div className="relative">
-              <Button variant="icon" className="p-2">
+            <div className='relative'>
+              <Button variant='icon' className='p-2'>
                 <BellRing size={28} />
               </Button>
               {notiCount > 0 && (
-                <span className="absolute top-2 right-1 flex h-3 w-3 items-center justify-center rounded-full bg-red-600 text-xs font-bold text-white -translate-y-2 translate-x-2">
+                <span className='absolute top-2 right-1 flex h-3 w-3 items-center justify-center rounded-full bg-red-600 text-xs font-bold text-white -translate-y-2 translate-x-2'>
                   {notiCount}
                 </span>
               )}
@@ -112,6 +113,7 @@ const AppHeader = () => {
         </Sheet>
 
         <ModeToggle />
+        <LanguageToggle />
       </div>
     </header>
   );
