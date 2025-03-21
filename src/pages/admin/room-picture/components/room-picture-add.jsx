@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   DialogContent,
   DialogHeader,
@@ -76,36 +76,36 @@ const RoomPictureAdd = () => {
     <>
       <DialogContent>
         <form onSubmit={handleFormSubmit}>
-          <DialogHeader className="mb-4">
+          <DialogHeader className='mb-4'>
             <DialogTitle>Room Picture Information.</DialogTitle>
           </DialogHeader>
           <Separator />
-          <div className="flex justify-between mb-3 mt-2">
+          <div className='flex justify-between mb-3 mt-2'>
             <FormComboBox
               onCallbackSelect={handleFormData}
-              label="Room Name*"
+              label='Room Name*'
               item={rooData}
-              optID="room_id"
-              optLabel="room_name"
+              optID='room_id'
+              optLabel='room_name'
             />
             <FormInput
               onCallbackInput={handleFormData}
-              name="picture_name"
-              label="Picture Name*"
-              placeholder="N/A"
-              type="text"
+              name='picture_name'
+              label='Picture Name*'
+              placeholder='N/A'
+              type='text'
             />
           </div>
-          <div className="flex justify-between mb-3">
-            <div className="flex flex-col gap-2">
+          <div className='flex justify-between mb-3'>
+            <div className='flex flex-col gap-2'>
               <Label>Chosing Image</Label>
               <FormImageOriginal onCallbackFormData={handleFormData} />
             </div>
             <FormImagePreview imgSrc={imagePreview} />
           </div>
 
-          <DialogClose className="mt-2">
-            <Button type="submit">Submit</Button>
+          <DialogClose className='mt-2'>
+            <Button type='submit'>Submit</Button>
           </DialogClose>
         </form>
       </DialogContent>

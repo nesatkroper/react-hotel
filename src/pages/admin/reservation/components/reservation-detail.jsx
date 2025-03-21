@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { format } from "date-fns";
 import { CalendarIcon, ChevronsUpDown, Check } from "lucide-react";
 import { Label } from "@/components/ui/label";
@@ -69,8 +69,8 @@ const ReservationDetails = () => {
           <DialogTitle>Reservation Details Information.</DialogTitle>
         </DialogHeader>
         <Separator />
-        <div className="flex justify-between mb-2">
-          <div className="flex flex-col gap-2">
+        <div className='flex justify-between mb-2'>
+          <div className='flex flex-col gap-2'>
             <Label>Check-In Date</Label>
             <Popover>
               <PopoverTrigger asChild>
@@ -79,8 +79,7 @@ const ReservationDetails = () => {
                   className={cn(
                     "w-[240px] justify-start text-left font-normal",
                     !startDate && "text-muted-foreground"
-                  )}
-                >
+                  )}>
                   <CalendarIcon />
                   {startDate ? (
                     format(startDate, "PPP")
@@ -89,9 +88,9 @@ const ReservationDetails = () => {
                   )}
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="start">
+              <PopoverContent className='w-auto p-0' align='start'>
                 <Calendar
-                  mode="single"
+                  mode='single'
                   selected={startDate}
                   onSelect={setStartDate}
                   initialFocus
@@ -99,7 +98,7 @@ const ReservationDetails = () => {
               </PopoverContent>
             </Popover>
           </div>
-          <div className="flex flex-col gap-2">
+          <div className='flex flex-col gap-2'>
             <Label>Check-Out Date</Label>
             <Popover>
               <PopoverTrigger asChild>
@@ -108,15 +107,14 @@ const ReservationDetails = () => {
                   className={cn(
                     "w-[240px] justify-start text-left font-normal",
                     !endDate && "text-muted-foreground"
-                  )}
-                >
+                  )}>
                   <CalendarIcon />
                   {endDate ? format(endDate, "PPP") : <span>Pick a date</span>}
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="start">
+              <PopoverContent className='w-auto p-0' align='start'>
                 <Calendar
-                  mode="single"
+                  mode='single'
                   selected={endDate}
                   onSelect={setEndDate}
                   initialFocus
@@ -125,29 +123,28 @@ const ReservationDetails = () => {
             </Popover>
           </div>
         </div>
-        <div className="flex justify-between mb-2">
-          <div className="flex flex-col gap-2">
+        <div className='flex justify-between mb-2'>
+          <div className='flex flex-col gap-2'>
             <Label>Rooms</Label>
             <Popover open={cmopen} onOpenChange={setCMOpen}>
               <PopoverTrigger asChild>
                 <Button
-                  variant="outline"
-                  role="combobox"
+                  variant='outline'
+                  role='combobox'
                   aria-expanded={cmopen}
-                  className="w-[240px] justify-between"
-                >
+                  className='w-[240px] justify-between'>
                   {cmvalue
                     ? ROOMS.find((framework) => framework.value === cmvalue)
                         ?.label
                     : "Select framework..."}
-                  <ChevronsUpDown className="opacity-50" />
+                  <ChevronsUpDown className='opacity-50' />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-[200px] p-0">
+              <PopoverContent className='w-[200px] p-0'>
                 <Command>
                   <CommandInput
-                    placeholder="Search framework..."
-                    className="h-9"
+                    placeholder='Search framework...'
+                    className='h-9'
                   />
                   <CommandList>
                     <CommandEmpty>No framework found.</CommandEmpty>
@@ -161,8 +158,7 @@ const ReservationDetails = () => {
                               currentValue === cmvalue ? "" : currentValue
                             );
                             setCMOpen(false);
-                          }}
-                        >
+                          }}>
                           {framework.label}
                           <Check
                             className={cn(
@@ -180,69 +176,69 @@ const ReservationDetails = () => {
               </PopoverContent>
             </Popover>
           </div>
-          <div className="flex flex-col gap-2">
+          <div className='flex flex-col gap-2'>
             <Label>Customer Name</Label>
             <Input
-              name="customer_id"
-              type="text"
-              placeholder="anonymous"
-              className="w-[240px]"
+              name='customer_id'
+              type='text'
+              placeholder='anonymous'
+              className='w-[240px]'
             />
           </div>
         </div>
-        <div className="flex justify-between mb-2">
-          <div className="flex flex-col gap-2">
+        <div className='flex justify-between mb-2'>
+          <div className='flex flex-col gap-2'>
             <Label>Number of Adults</Label>
             <Input
-              name="adults"
-              type="number"
-              placeholder="1"
-              className="w-[240px]"
+              name='adults'
+              type='number'
+              placeholder='1'
+              className='w-[240px]'
             />
           </div>
-          <div className="flex flex-col gap-2">
+          <div className='flex flex-col gap-2'>
             <Label>Number of Children</Label>
             <Input
-              name="children"
-              type="number"
-              placeholder="0"
-              className="w-[240px]"
+              name='children'
+              type='number'
+              placeholder='0'
+              className='w-[240px]'
             />
           </div>
         </div>
-        <div className="flex justify-between mb-2">
-          <div className="flex flex-col gap-2">
+        <div className='flex justify-between mb-2'>
+          <div className='flex flex-col gap-2'>
             <Label>Payment Method</Label>
             <Select>
-              <SelectTrigger className="w-[240px]">
-                <SelectValue placeholder="Cash" />
+              <SelectTrigger className='w-[240px]'>
+                <SelectValue placeholder='Cash' />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="cash">Cash</SelectItem>
-                <SelectItem value="khqr">KHQR</SelectItem>
-                <SelectItem value="credit card">Credit Card</SelectItem>
+                <SelectItem value='cash'>Cash</SelectItem>
+                <SelectItem value='khqr'>KHQR</SelectItem>
+                <SelectItem value='credit card'>Credit Card</SelectItem>
               </SelectContent>
             </Select>
           </div>
-          <div className="flex flex-col gap-2">
+          <div className='flex flex-col gap-2'>
             <Label>Payment Status</Label>
             <Select>
-              <SelectTrigger className="w-[240px]">
-                <SelectValue placeholder="Pending" />
+              <SelectTrigger className='w-[240px]'>
+                <SelectValue placeholder='Pending' />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="panding">Pending</SelectItem>
-                <SelectItem value="paid">Paid</SelectItem>
-                <SelectItem value="cancel">Cancel</SelectItem>
+                <SelectItem value='panding'>Pending</SelectItem>
+                <SelectItem value='paid'>Paid</SelectItem>
+                <SelectItem value='cancel'>Cancel</SelectItem>
               </SelectContent>
             </Select>
           </div>
         </div>
-        <div className="flex flex-col gap-2 justify-between mb-2">
+        <div className='flex flex-col gap-2 justify-between mb-2'>
           <Label>Memo</Label>
-          <Textarea value="null" />
+          <Textarea value='null' />
         </div>
-        <Button type="button">Submit Check</Button>
+        <Button type='button'>Submit Check</Button>
       </DialogContent>
     </>
   );

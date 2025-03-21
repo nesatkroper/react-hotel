@@ -1,14 +1,15 @@
-import LanguageToggle from "@/components/app/lang/lang-toggle";
 import React from "react";
-import { useTranslation } from "react-i18next";
-
+import Timeline from "../../components/app/timeline";
+import Layout from "@/layout/layout";
 const Test = () => {
-  const [lang] = useTranslation("global");
   return (
-    <>
-      <LanguageToggle />
-      <p>{lang("home.body")}</p>;
-    </>
+    <Layout>
+      <Timeline />
+      <Timeline />
+      <Timeline />
+      <Timeline />
+      <Timeline />
+    </Layout>
   );
 };
 

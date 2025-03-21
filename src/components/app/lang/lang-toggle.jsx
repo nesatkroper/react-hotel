@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import en_flag from "@/assets/images/en.png";
 import kh_flag from "@/assets/images/kh.png";
 import {
@@ -14,8 +14,15 @@ import { useTranslation } from "react-i18next";
 
 const LanguageToggle = () => {
   const [lang, i18n] = useTranslation("admin");
+  const [langKey, setLangKey] = useState();
+
+  useEffect(() => {
+    setLangKey(localStorage.getItem("lang-key"));
+    i18n.changeLanguage(langKey);
+  }, [langKey]);
 
   const hangleChangeLanguage = (lang) => {
+    localStorage.setItem("lang-key", lang);
     i18n.changeLanguage(lang);
   };
   return (

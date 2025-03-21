@@ -7,7 +7,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import FormInput from "@/components/app/form/form-input";
 import FormComboBox from "@/components/app/form/form-combobox";
 import { getEmployees } from "@/contexts/reducer/employee-slice";
@@ -93,42 +93,42 @@ const AuthenticationAdd = () => {
         <DialogHeader>
           <DialogTitle>Authentication Details Information.</DialogTitle>
         </DialogHeader>
-        <Separator className="my-3" />
-        <div className="flex justify-between mb-3">
+        <Separator className='my-3' />
+        <div className='flex justify-between mb-3'>
           <FormComboBox
             onCallbackSelect={(e) => handleChange("department_id", e)}
-            name="department_id"
-            label="Employee"
+            name='department_id'
+            label='Employee'
             item={empData}
-            optID="employee_id"
-            optLabel="last_name"
+            optID='employee_id'
+            optLabel='last_name'
           />
           <FormSelect
             onCallbackSelect={(e) => handleChange("role", e)}
-            label="Role"
+            label='Role'
             item={ROLE}
           />
         </div>
-        <div className="flex justify-between mb-3">
+        <div className='flex justify-between mb-3'>
           <FormInput
             onCallbackInput={(e) => handleChange(e)}
-            name="email"
-            type="email"
-            label="Email*"
-            placeholder="someone@something.com"
+            name='email'
+            type='email'
+            label='Email*'
+            placeholder='someone@something.com'
             required={true}
           />
           <FormInput
             onCallbackInput={(e) => handleChange(e)}
-            name="password"
-            label="Password*"
-            placeholder="1234"
+            name='password'
+            label='Password*'
+            placeholder='1234'
             required={true}
           />
         </div>
         <DialogClose>
-          <Button type="submit" className="w-full">
-            {issend ? <Loader2 className=" animate-spin" /> : "Submit"}
+          <Button type='submit' className='w-full'>
+            {issend ? <Loader2 className=' animate-spin' /> : "Submit"}
           </Button>
         </DialogClose>
       </form>

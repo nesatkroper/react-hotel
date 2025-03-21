@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -116,26 +116,24 @@ const FrontDesk = () => {
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <Card className="w-full">
-          <CardHeader className="px-5 py-2 bg-muted rounded-t-lg ">
-            <div className="flex justify-between">
+        <Card className='w-full'>
+          <CardHeader className='px-5 py-2 bg-muted rounded-t-lg '>
+            <div className='flex justify-between'>
               <CardTitle>Front Desk</CardTitle>
-              <div className="flex gap-2">
+              <div className='flex gap-2'>
                 <Button
                   onClick={handleReservation}
-                  variant="outline"
-                  type="button"
-                  className="py-0 h-[30px] bg-yellow-500"
-                >
+                  variant='outline'
+                  type='button'
+                  className='py-0 h-[30px] bg-yellow-500'>
                   <Label>Reserve</Label>
                 </Button>
                 <Dialog>
                   <DialogTrigger>
                     <Button
-                      type="button"
-                      variant="outline"
-                      className="py-0 h-[30px] bg-green-500"
-                    >
+                      type='button'
+                      variant='outline'
+                      className='py-0 h-[30px] bg-green-500'>
                       Check
                     </Button>
                   </DialogTrigger>
@@ -145,29 +143,27 @@ const FrontDesk = () => {
               </div>
             </div>
           </CardHeader>
-          <CardContent className="p-0">
-            <Table className="pe-1">
+          <CardContent className='p-0'>
+            <Table className='pe-1'>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="text-center">
+                  <TableHead className='text-center'>
                     <p>{currentMonth}</p>
-                    <div className="flex justify-between p-1">
+                    <div className='flex justify-between p-1'>
                       <Button
                         onClick={() => {
                           setThisMonth(thisMonth - 1);
                         }}
-                        variant="outline"
-                        className="h-[25px]"
-                      >
+                        variant='outline'
+                        className='h-[25px]'>
                         <ChevronLeft />
                       </Button>
                       <Button
                         onClick={() => {
                           setThisMonth(thisMonth + 1);
                         }}
-                        variant="outline"
-                        className="h-[25px]"
-                      >
+                        variant='outline'
+                        className='h-[25px]'>
                         <ChevronRight />
                       </Button>
                     </div>
@@ -179,7 +175,7 @@ const FrontDesk = () => {
                       index + 1
                     );
                     return (
-                      <TableHead key={index} className="text-center">
+                      <TableHead key={index} className='text-center'>
                         <p>
                           {date.toLocaleDateString("en-US", {
                             weekday: "short",
@@ -195,26 +191,25 @@ const FrontDesk = () => {
                   })}
                 </TableRow>
               </TableHeader>
-              <TableBody className="pe-1">
-                <TableRow className="font-semibold bg-muted ">
+              <TableBody className='pe-1'>
+                <TableRow className='font-semibold bg-muted '>
                   <TableCell
                     colspan={DAYS_IN_MONTH + 1}
-                    className="text-center py-1"
-                  >
+                    className='text-center py-1'>
                     Single Room
                   </TableCell>
                 </TableRow>
                 {Array.from({ length: SINGLE_ROOM }, (_, index) => {
                   return (
                     <TableRow key={index}>
-                      <TableCell className="text-center p-0 font-semibold whitespace-nowrap">
+                      <TableCell className='text-center p-0 font-semibold whitespace-nowrap'>
                         Room-2{F_NUM(index + 1)}
                       </TableCell>
                       {Array.from({ length: DAYS_IN_MONTH }, (__, step) => {
                         return (
-                          <TableCell key={step} className="text-center p-0">
+                          <TableCell key={step} className='text-center p-0'>
                             <Checkbox
-                              className="w-[40px] h-[20px]"
+                              className='w-[40px] h-[20px]'
                               disabled={reserve ? false : true}
                               onCheckedChange={() =>
                                 handleCheckboxChange(
@@ -231,25 +226,24 @@ const FrontDesk = () => {
                   );
                 })}
 
-                <TableRow className="font-semibold bg-muted">
+                <TableRow className='font-semibold bg-muted'>
                   <TableCell
                     colspan={DAYS_IN_MONTH + 1}
-                    className="text-center py-1"
-                  >
+                    className='text-center py-1'>
                     Double Room
                   </TableCell>
                 </TableRow>
                 {Array.from({ length: DOUBLE_ROOM }, (_, index) => {
                   return (
                     <TableRow key={index}>
-                      <TableCell className="text-center p-0 font-semibold whitespace-nowrap">
+                      <TableCell className='text-center p-0 font-semibold whitespace-nowrap'>
                         Room-1{F_NUM(index + 1)}
                       </TableCell>
                       {Array.from({ length: DAYS_IN_MONTH }, (__, step) => {
                         return (
-                          <TableCell key={step} className="text-center p-0">
+                          <TableCell key={step} className='text-center p-0'>
                             <Checkbox
-                              className="w-[40px] h-[20px]"
+                              className='w-[40px] h-[20px]'
                               disabled={reserve ? false : true}
                               onCheckedChange={() =>
                                 handleCheckboxChange(
@@ -268,13 +262,12 @@ const FrontDesk = () => {
                 <TableRow>
                   <TableCell
                     colspan={DAYS_IN_MONTH + 1}
-                    className="text-center font-semibold bg-muted py-1 "
-                  >
+                    className='text-center font-semibold bg-muted py-1 '>
                     Summary
                   </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell className="font-semibold text-center py-1 ">
+                  <TableCell className='font-semibold text-center py-1 '>
                     Booked
                   </TableCell>
                   {booked.map((item, index) => (
@@ -284,14 +277,13 @@ const FrontDesk = () => {
                         item > 0
                           ? "py-1 text-center font-semibold bg-green-500"
                           : "py-1 text-center font-semibold"
-                      }
-                    >
+                      }>
                       {item}
                     </TableCell>
                   ))}
                 </TableRow>
                 <TableRow>
-                  <TableCell className="font-semibold text-center py-1 rounded-bl-lg">
+                  <TableCell className='font-semibold text-center py-1 rounded-bl-lg'>
                     Available
                   </TableCell>
                   {available.map((item, index) => (
@@ -303,8 +295,7 @@ const FrontDesk = () => {
                           : item < 5
                           ? "py-1 text-center font-semibold bg-red-400"
                           : "py-1 text-center font-semibold"
-                      }
-                    >
+                      }>
                       {item}
                     </TableCell>
                   ))}

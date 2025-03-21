@@ -1,5 +1,5 @@
 import React from "react";
-import Logo from "@/assets/images/logo1.png";
+import Logo from "@/assets/images/logo.png";
 import LanguageToggle from "../lang/lang-toggle";
 import { Card, CardContent } from "@/components/ui/card";
 import { ModeToggle } from "../theme/mode-toggle";
@@ -19,7 +19,10 @@ const HeaderClient = () => {
     <header className='sticky top-0 z-50'>
       <Card className='rounded-none py-2 mb-6 w-full '>
         <CardContent className='py-0 md:container md:mx-auto px-4 flex justify-between'>
-          <img src={Logo} className='h-8' alt='logo' />
+          <div className='flex items-center gap-2'>
+            <img src={Logo} className='h-8' alt='logo' />
+            <p className='font-bold text-md'>Nun Hotel</p>
+          </div>
           <div className='flex gap-2'>
             <ModeToggle />
             <LanguageToggle />

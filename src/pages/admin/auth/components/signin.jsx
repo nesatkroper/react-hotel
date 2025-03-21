@@ -53,7 +53,7 @@ const Signin = () => {
       setToken(res.data.token);
       Cookies.set("user-info", JSON.stringify(res.data.auth), { expires: 0.4 });
 
-      navigate("/", { replace: true });
+      navigate("/home", { replace: true });
     } catch (err) {
       console.log(err);
       resetForm();
@@ -80,32 +80,31 @@ const Signin = () => {
     <form onSubmit={handleSubmit}>
       <FormInput
         onCallbackInput={handleChange}
-        name="email"
-        label="Email*"
-        type="email"
-        placeholder="devnun"
+        name='email'
+        label='Email*'
+        type='email'
+        placeholder='devnun'
         required={true}
       />
       <FormInput
         onCallbackInput={handleChange}
-        name="password"
-        label="Password*"
+        name='password'
+        label='Password*'
         type={show ? "text" : "password"}
-        placeholder="1234"
-        mainClass="my-3"
+        placeholder='1234'
+        mainClass='my-3'
         required={true}
       />
-      <div className="flex items-center space-x-2 mb-4">
-        <Checkbox id="showPassword" onCheckedChange={() => setShow(!show)} />
+      <div className='flex items-center space-x-2 mb-4'>
+        <Checkbox id='showPassword' onCheckedChange={() => setShow(!show)} />
         <label
-          htmlFor="showPassword"
-          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-        >
+          htmlFor='showPassword'
+          className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'>
           {show ? "Hide" : "Show"} Password
         </label>
       </div>
-      <Button type="submit" className="w-full">
-        {isSend ? <Loader2 className="animate-spin" /> : "Sign In"}
+      <Button type='submit' className='w-full'>
+        {isSend ? <Loader2 className='animate-spin' /> : "Sign In"}
       </Button>
     </form>
   );

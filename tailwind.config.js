@@ -4,17 +4,22 @@ module.exports = {
   content: ["./index.html", "./src/**/*.{ts,tsx,js,jsx}"],
   theme: {
     fontSize: {
-      xs: "0.6rem", // Smaller than default 0.75rem
-      sm: "0.8rem", // Slightly bigger than default 0.875rem
-      base: "0.9rem", // Same as default
-      lg: "1.5rem", // Bigger than default 1.125rem
-      xl: "2rem", // Bigger than default 1.25rem
-      "2xl": "2.5rem", // Bigger than default 1.5rem
-      "3xl": "3rem", // Bigger than default 1.875rem
-      "4xl": "4rem", // Bigger than default 2.25rem
-      "5xl": "5rem", // Bigger than default 3rem
+      xs: "0.6rem",
+      sm: "0.8rem",
+      base: "0.9rem",
+      md: "1.2rem",
+      lg: "1.5rem",
+      xl: "2rem",
+      "2xl": "2.5rem",
+      "3xl": "3rem",
+      "4xl": "4rem",
+      "5xl": "5rem",
     },
     extend: {
+      fontFamily: {
+        poppins: ["Poppins", "sans-serif"],
+        khmer: ["Kantumruy", "sans-serif"],
+      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",

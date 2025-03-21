@@ -7,7 +7,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
+import React, { useState } from "react";
 import axios from "@/lib/axios-instance";
 import { useDispatch } from "react-redux";
 import { getRpicture } from "@/contexts/reducer/room-picture-slice";
@@ -71,35 +71,35 @@ const RoomPictureUpdate = ({ item }) => {
     <>
       <DialogContent>
         <form onSubmit={handleFormSubmit}>
-          <DialogHeader className="mb-4">
+          <DialogHeader className='mb-4'>
             <DialogTitle>Room Picture Information.</DialogTitle>
           </DialogHeader>
           <Separator />
-          <div className="flex justify-between mb-3 mt-2">
+          <div className='flex justify-between mb-3 mt-2'>
             <FormInput
               onCallbackInput={handleFormData}
-              label="Room Name*"
+              label='Room Name*'
               value={item.room?.room_name}
-              type="text"
+              type='text'
               readonly={true}
             />
             <FormInput
               onCallbackInput={handleFormData}
-              label="Picture Name*"
-              name="picture_name"
+              label='Picture Name*'
+              name='picture_name'
               value={formData.get("picture_name")}
-              type="text"
+              type='text'
             />
           </div>
-          <div className="flex justify-between mb-3">
-            <div className="flex flex-col gap-2">
+          <div className='flex justify-between mb-3'>
+            <div className='flex flex-col gap-2'>
               <Label>Choose Image</Label>
               <FormImageOriginal onCallbackFormData={handleFormData} />
             </div>
             <FormImagePreview imgSrc={imagePreview} />
           </div>
-          <DialogClose className="mt-2">
-            <Button type="submit">Submit</Button>
+          <DialogClose className='mt-2'>
+            <Button type='submit'>Submit</Button>
           </DialogClose>
         </form>
       </DialogContent>

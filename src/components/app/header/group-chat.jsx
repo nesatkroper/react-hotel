@@ -1,16 +1,16 @@
-import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
-import {Textarea} from "@/components/ui/textarea";
-import {SheetContent, SheetHeader, SheetTitle} from "@/components/ui/sheet";
-import {Button} from "@/components/ui/button";
-import {Separator} from "@/components/ui/separator";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Textarea } from "@/components/ui/textarea";
+import { SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import React from "react";
-import {useEffect, useRef, useState} from "react";
-import {Send, ArrowDown} from "lucide-react";
-import {io} from "socket.io-client";
-import {dateFormat} from "@/utils/dec-format";
-import {useDispatch} from "react-redux";
-import {getUser} from "@/contexts/reducer/user-slice";
-import {apiUrl} from "@/lib/api";
+import { useEffect, useRef, useState } from "react";
+import { Send, ArrowDown } from "lucide-react";
+import { io } from "socket.io-client";
+import { dateFormat } from "@/utils/dec-format";
+import { useDispatch } from "react-redux";
+import { getUser } from "@/contexts/reducer/user-slice";
+import { apiUrl } from "@/lib/api";
 import Cookies from "js-cookie";
 import axiosAuth from "@/lib/axios-auth";
 
@@ -21,7 +21,7 @@ const SOCKET = io(apiUrl, {
 
 const GroupChat = () => {
   const dispatch = useDispatch();
-  const user = JSON.parse(Cookies.get("user-info"));
+  const user = JSON.parse(Cookies.get("user-info")) || null;
   const [messages, setMessages] = useState([]);
   const [msg, setMsg] = useState("");
   const [isAtBottom, setIsAtBottom] = useState(true);
@@ -70,60 +70,58 @@ const GroupChat = () => {
   };
 
   const handleScroll = (e) => {
-    const {scrollTop, scrollHeight, clientHeight} = e.target;
+    const { scrollTop, scrollHeight, clientHeight } = e.target;
     const atBottom = scrollTop + clientHeight >= scrollHeight - 10;
     setIsAtBottom(atBottom);
   };
 
   return (
-    <SheetContent className="flex flex-col justify-between p-3 gap-0">
-      <div className="relative">
+    <SheetContent className='flex flex-col justify-between p-3 gap-0'>
+      <div className='relative'>
         <SheetHeader>
-          <SheetTitle className="text-center">System Group Chat</SheetTitle>
+          <SheetTitle className='text-center'>System Group Chat</SheetTitle>
         </SheetHeader>
-        <Separator className="my-3" />
+        <Separator className='my-3' />
         <div
-          className="h-[83vh] w-[360px] overflow-y-auto rounded-xl"
+          className='h-[83vh] w-[360px] overflow-y-auto rounded-xl'
           onScroll={handleScroll}
-          ref={scrollRef}
-        >
+          ref={scrollRef}>
           {messages?.map((msg, index) => (
-            <Card key={index} className="mb-2 w-[350px] shadow-none">
-              <CardHeader className="p-1 px-3 pb-0">
-                <CardTitle className="flex justify-between">
-                  <p className="text-sm ps-2">
+            <Card key={index} className='mb-2 w-[350px] shadow-none'>
+              <CardHeader className='p-1 px-3 pb-0'>
+                <CardTitle className='flex justify-between'>
+                  <p className='text-sm ps-2'>
                     {msg.sender
                       ? msg.sender
                       : `${msg.employee?.first_name ?? "Admin"} ${
                           msg.employee?.last_name ?? " "
                         }`}
                   </p>
-                  <p className="font-normal text-sm">{dateFormat(msg.time)}</p>
+                  <p className='font-normal text-sm'>{dateFormat(msg.time)}</p>
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-3 pt-0">
-                <p className="text-wrap text-sm">{msg.content}</p>
+              <CardContent className='p-3 pt-0'>
+                <p className='text-wrap text-sm'>{msg.content}</p>
               </CardContent>
             </Card>
           ))}
           {!isAtBottom && (
             <Button
               onClick={scrollToBottom}
-              className="absolute bottom-2 right-6 p-2 "
-            >
+              className='absolute bottom-2 right-6 p-2 '>
               <ArrowDown size={20} />
             </Button>
           )}
         </div>
       </div>
       <div>
-        <div className="flex gap-1 mb-2">
+        <div className='flex gap-1 mb-2'>
           <Textarea
             onChange={(e) => setMsg(e.target.value)}
             value={msg}
-            placeholder="Say something..."
+            placeholder='Say something...'
           />
-          <Button onClick={handleSendMessage} disabled={!msg} className="p-3">
+          <Button onClick={handleSendMessage} disabled={!msg} className='p-3'>
             <Send />
           </Button>
         </div>

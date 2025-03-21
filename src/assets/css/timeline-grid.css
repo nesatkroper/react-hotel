@@ -1,0 +1,23 @@
+.start-end-cell::before,
+.selected-cell::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 60%;
+  width: 99%;
+  height: 80%;
+  z-index: 1;
+}
+
+.start-end-cell::before {
+  background-color: rgb(74, 222, 128);
+}
+
+.selected-cell::before {
+  background-color: rgb(134, 239, 172);
+}
+
+.grid > div:last-child .start-end-cell::before,
+.grid > div:last-child .selected-cell::before {
+  width: 40%;
+}

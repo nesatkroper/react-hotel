@@ -66,7 +66,7 @@ const AppHeader = () => {
   };
 
   return (
-    <header className='flex h-12 items-center justify-between gap-2 px-4'>
+    <header className='sticky top-0 z-10 bg-background flex h-12 items-center justify-between gap-2 px-4 border-b'>
       <div className='flex items-center gap-2'>
         <SidebarTrigger className='-ml-1' />
         <Separator orientation='vertical' className='mr-2 h-4' />

@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getPositions } from "@/contexts/reducer/position-slice";
 import { getEmployees } from "@/contexts/reducer/employee-slice";
@@ -85,83 +85,83 @@ const EmployeeEdit = ({ lastCode }) => {
   return (
     <DialogContent>
       <form onSubmit={handleFormSubmit}>
-        <DialogHeader className="mb-3">
+        <DialogHeader className='mb-3'>
           <DialogTitle>Emoloyee Details Information.</DialogTitle>
         </DialogHeader>
         <Separator />
-        <div className="flex justify-between mb-2 mt-2">
+        <div className='flex justify-between mb-2 mt-2'>
           <FormInput
             onCallbackInput={handleChange}
-            label="First Name*"
-            name="first_name"
-            placeholder="Jonh, ..."
+            label='First Name*'
+            name='first_name'
+            placeholder='Jonh, ...'
             required={true}
           />
           <FormInput
             onCallbackInput={handleChange}
-            label="Last Name*"
-            name="last_name"
-            placeholder="Ramboo, ..."
+            label='Last Name*'
+            name='last_name'
+            placeholder='Ramboo, ...'
             required={true}
           />
         </div>
-        <div className="flex justify-between mb-2 mt-3">
+        <div className='flex justify-between mb-2 mt-3'>
           <FormInput
             onCallbackInput={handleChange}
-            label="Employee Code*"
+            label='Employee Code*'
             value={`EMP-${(lastCode + 1).toString().padStart(4, "0")}`}
           />
           <FormSelect
-            name="gender"
+            name='gender'
             onCallbackSelect={(event) => handleDataChange("gender", event)}
           />
         </div>
-        <div className="flex justify-between mb-2 mt-2">
+        <div className='flex justify-between mb-2 mt-2'>
           <FormInput
             onCallbackInput={handleChange}
-            label="Phone Number"
-            name="phone"
-            placeholder="010280202"
+            label='Phone Number'
+            name='phone'
+            placeholder='010280202'
           />
           <FormInput
             onCallbackInput={handleChange}
-            label="Salary*"
-            name="salary"
-            placeholder="$250.00"
+            label='Salary*'
+            name='salary'
+            placeholder='$250.00'
           />
         </div>
-        <div className="flex justify-between mb-2 mt-2">
+        <div className='flex justify-between mb-2 mt-2'>
           <FormDatePicker
             onCallbackPicker={(event) => handleDataChange("dob", event)}
-            label="Date of Birth"
+            label='Date of Birth'
           />
           <FormDatePicker
             onCallbackPicker={(event) => handleDataChange("hired_date", event)}
-            label="Hired Date"
+            label='Hired Date'
           />
         </div>
-        <div className="flex justify-between mb-2 mt-3">
+        <div className='flex justify-between mb-2 mt-3'>
           <FormComboBox
             onCallbackSelect={(event) =>
               handleDataChange("department_id", event)
             }
-            label="Department"
+            label='Department'
             item={depData}
-            optID="department_id"
-            optLabel="department_name"
+            optID='department_id'
+            optLabel='department_name'
           />
           <FormComboBox
             onCallbackSelect={(event) => handleDataChange("position_id", event)}
-            label="Position"
+            label='Position'
             item={posData}
-            optID="position_id"
-            optLabel="position_name"
+            optID='position_id'
+            optLabel='position_name'
           />
         </div>
-        <div className="flex justify-between mb-2 mt-3"></div>
-        <DialogClose onClick={handleFormSubmit} className="mt-2">
-          <Button type="submit">
-            {issend ? <Loader2 className=" animate-spin" /> : "Submit"}
+        <div className='flex justify-between mb-2 mt-3'></div>
+        <DialogClose onClick={handleFormSubmit} className='mt-2'>
+          <Button type='submit'>
+            {issend ? <Loader2 className=' animate-spin' /> : "Submit"}
           </Button>
         </DialogClose>
       </form>
