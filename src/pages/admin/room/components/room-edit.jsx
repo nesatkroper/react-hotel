@@ -1,4 +1,6 @@
 import React, { useEffect } from "react";
+import axios from "@/lib/axios-instance";
+import PropTypes from "prop-types";
 import {
   DialogContent,
   DialogHeader,
@@ -8,41 +10,38 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { useDispatch, useSelector } from "react-redux";
-import { clearCache, getRooms } from "@/contexts/reducer/room-slice";
-import { getRoomtypes } from "@/contexts/reducer/room-type-slice";
+import { getRooms } from "@/contexts/reducer/room-slice";
 import { useFormHandler } from "@/hooks/use-form-handler";
-import FormInput from "@/components/app/form/form-input";
-import FormRatio from "@/components/app/form/form-ratio";
-import FormComboBox from "@/components/app/form/form-combobox";
-import axiosAuth from "@/lib/axios-auth";
+import { FormComboBox, FormInput, FormRatio } from "@/components/app/form";
+import { getRoomtypes } from "@/contexts/reducer";
 
-const RoomAdd = () => {
+const RoomEdit = ({ items }) => {
   const dispatch = useDispatch();
   const { data: typData } = useSelector((state) => state.roomtypes);
-  const { formData, resetForm, handleChange } = useFormHandler({
-    room_name: 100,
-    roomtype_id: 1,
-    is_ac: true,
-    size: 25,
-    capacity: 4,
-    is_booked: false,
-    discount_rate: 0,
-    status: "active",
+  const { formData, handleChange, resetForm } = useFormHandler({
+    room_name: items.room_name,
+    roomtype_id: items.roomtype_id,
+    price: items.price,
+    discount_rate: items.discount_rate,
+    size: items.size,
+    capacity: items.capacity,
+    is_ac: items.is_ac,
+    status: items.status,
   });
 
   useEffect(() => {
     dispatch(getRoomtypes());
   }, [dispatch]);
 
+  console.log(items);
+
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axiosAuth.post("/room", formData);
       console.log(formData);
-
-      dispatch(clearCache());
-      getRooms({ status: "all", roomtype: true, pictures: true, order: "asc" });
+      await axios.put(`/room/${items.room_id}`, formData);
       resetForm();
+      getRooms({ status: "all", roomtype: true, pictures: true, order: "asc" });
     } catch (error) {
       console.log(error);
     }
@@ -52,16 +51,18 @@ const RoomAdd = () => {
     <DialogContent>
       <form onSubmit={handleFormSubmit}>
         <DialogHeader className='mb-3'>
-          <DialogTitle>Reservation Details Information.</DialogTitle>
+          <DialogTitle className='text-md'>
+            Update Reservation Details Information.
+          </DialogTitle>
         </DialogHeader>
         <Separator />
         <div className='flex justify-between mb-2 mt-2'>
           <FormInput
-            onCallbackInput={handleChange}
+            onChange={handleChange}
             name='room_name'
-            type='number'
-            placeholder='Room-101'
-            label='Room Number*'
+            value={items.room_name}
+            label="Room's Name*"
+            readonly={true}
           />
           <FormComboBox
             onCallbackSelect={(event) => handleChange("room_type_id", event)}
@@ -69,41 +70,38 @@ const RoomAdd = () => {
             optID='roomtype_id'
             optLabel='type_name'
             label='Room Type'
+            defaultValue={items.roomtype_id}
           />
         </div>
         <div className='flex justify-between mb-2'>
           <FormInput
-            onCallbackInput={handleChange}
+            onChange={handleChange}
             name='price'
             type='number'
-            placeholder='$39,99'
-            label='Price*'
+            value={items.price}
+            label='Price ($)'
           />
           <FormInput
-            onCallbackInput={handleChange}
+            onChange={handleChange}
             name='discount_rate'
             type='number'
-            placeholder='5 %'
-            label='Discount Rate*'
-            step={1}
+            value={items.discount_rate}
+            label='Discount Rate (%)'
           />
         </div>
         <div className='flex justify-between mb-2'>
           <FormInput
-            onCallbackInput={handleChange}
+            onChange={handleChange}
             name='size'
             type='number'
-            placeholder='25 m²'
-            label='Room Size*'
-            step={1}
+            value={items.size}
           />
           <FormInput
-            onCallbackInput={handleChange}
+            onChange={handleChange}
             name='capacity'
             type='number'
-            placeholder='4 people'
-            label='Room Capacity*'
-            step={1}
+            value={items.capacity}
+            label="Room's Capacity"
           />
         </div>
         <div className='flex justify-between mb-2'>
@@ -117,4 +115,8 @@ const RoomAdd = () => {
   );
 };
 
-export default RoomAdd;
+RoomEdit.propTypes = {
+  items: PropTypes.object,
+};
+
+export default RoomEdit;

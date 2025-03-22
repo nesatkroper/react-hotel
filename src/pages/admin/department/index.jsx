@@ -2,13 +2,13 @@ import React, { useEffect, useMemo } from "react";
 import Layout from "@/layout/layout";
 import AppDataTable from "@/components/app/table/app-data-table";
 import DepartmentAdd from "./components/department-add";
+import { DepartmentColumns } from "./components/department-columns";
+import { toNumber } from "@/utils/dec-format";
+import { useDispatch, useSelector } from "react-redux";
 import {
   clearCache,
   getDepartments,
 } from "@/contexts/reducer/department-slice";
-import { DepartmentColumns } from "./components/department-columns";
-import { toNumber } from "@/utils/dec-format";
-import { useDispatch, useSelector } from "react-redux";
 
 const Department = () => {
   const dispatch = useDispatch();
@@ -38,8 +38,8 @@ const Department = () => {
         columns={DepartmentColumns}
         loading={depLoading}
         addElement={<DepartmentAdd key={lastCode} lastCode={lastCode} />}
-        title="Departments"
-        main="department_name"
+        title='Departments'
+        main='department_name'
         refresh={refresh}
       />
     </Layout>

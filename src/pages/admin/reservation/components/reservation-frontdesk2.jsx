@@ -11,7 +11,7 @@ import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import ReservationDetails from "./reservation-detail";
+import ReservationDetails from "./reservation-dialog";
 import { useDispatch, useSelector } from "react-redux";
 import { getRooms } from "@/contexts/reducer/room-slice";
 

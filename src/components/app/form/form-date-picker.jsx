@@ -25,7 +25,7 @@ const FormDatePicker = (props) => {
   } = props;
 
   const [date, setDate] = useState(null);
-  const [currentMonth, setCurrentMonth] = useState(new Date()); // This controls the calendar's view
+  const [currentMonth, setCurrentMonth] = useState(new Date());
 
   const handlePicker = (event) => {
     setDate(event);
@@ -59,34 +59,31 @@ const FormDatePicker = (props) => {
             className={cn(
               `w-[${size}px] justify-start text-left font-normal`,
               !date && "text-muted-foreground"
-            )}
-          >
-            <CalendarIcon className="mr-2" />
+            )}>
+            <CalendarIcon className='mr-2' />
             {date ? format(date, "PPP") : <span>Pick a date</span>}
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-auto p-0" align="start">
-          <div className="flex items-center justify-between px-4 py-2">
+        <PopoverContent className='w-auto p-0' align='start'>
+          <div className='flex items-center justify-between px-4 py-2'>
             <Button
-              variant="ghost"
-              size="sm"
+              variant='ghost'
+              size='sm'
               onClick={goToPreviousYear}
-              disabled={currentMonth.getFullYear() <= fromYear}
-            >
-              <ChevronLeft className="w-4 h-4" />
+              disabled={currentMonth.getFullYear() <= fromYear}>
+              <ChevronLeft className='w-4 h-4' />
             </Button>
-            <span className="font-semibold">{currentMonth.getFullYear()}</span>
+            <span className='font-semibold'>{currentMonth.getFullYear()}</span>
             <Button
-              variant="ghost"
-              size="sm"
+              variant='ghost'
+              size='sm'
               onClick={goToNextYear}
-              disabled={currentMonth.getFullYear() >= toYear}
-            >
-              <ChevronRight className="w-4 h-4" />
+              disabled={currentMonth.getFullYear() >= toYear}>
+              <ChevronRight className='w-4 h-4' />
             </Button>
           </div>
           <Calendar
-            mode="single"
+            mode='single'
             selected={date}
             onSelect={handlePicker}
             fromDate={new Date(fromYear, 0, 1)}
@@ -97,7 +94,7 @@ const FormDatePicker = (props) => {
           />
         </PopoverContent>
       </Popover>
-      {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+      {error && <p className='text-red-500 text-sm mt-1'>{error}</p>}
     </div>
   );
 };

@@ -12,7 +12,7 @@ export default function Layout({ children }) {
     _setOpen(localStorage.getItem("sidebar-open") === "true");
   }, [_open]);
 
-  console.log(_open);
+  // console.log(_open);
   return (
     <SidebarProvider defaultOpen={_open}>
       <AppSidebar />

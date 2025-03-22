@@ -33,7 +33,7 @@ import { Check, X } from "lucide-react";
 import { toast } from "sonner";
 import { defimg } from "@/utils/resize-crop-image";
 import { apiUrl } from "@/lib/api";
-import { cDollar } from "@/utils/dec-format";
+import { cDollar, toUnit } from "@/utils/dec-format";
 import axiosAuth from "@/lib/axios-auth";
 import AppDetailViewer from "./app-detail-viewer";
 
@@ -57,13 +57,15 @@ export const generateColumns = (
     ),
     cell: ({ row }) => {
       const value = row.original[field.key];
-      if (field.key === "status") {
+
+      if (field.key === "status" || field.key === "is_ac") {
         return (
-          <Checkbox checked={value === "active"} disabled={true}>
+          <Checkbox checked={value === "active" || value} disabled={true}>
             {value === "active" ? <Check /> : <X />}{" "}
           </Checkbox>
         );
       }
+
       if (field.key === "full_name") {
         const firstName = row.original.first_name || "";
         const lastName = row.original.last_name || "";
@@ -74,9 +76,23 @@ export const generateColumns = (
           </div>
         );
       }
-      if (field.key === "salary") {
+
+      if (field.key === "salary" || field.key === "price") {
         return <div>{cDollar(value)}</div>;
       }
+
+      if (field.key === "discount_rate") {
+        return <div>{toUnit(value, 0, "%")}</div>;
+      }
+
+      if (field.key === "size") {
+        return <div>{toUnit(value, 2, "m²")}</div>;
+      }
+
+      if (field.key === "capacity") {
+        return <div>{toUnit(value, 0, "people")}</div>;
+      }
+
       if (field.key === "dob" || field.key === "hired_date") {
         const dateValue = row.original[field.key];
         if (!dateValue) return <div>N/A</div>;
@@ -94,6 +110,7 @@ export const generateColumns = (
           </div>
         );
       }
+
       if (field.key === "picture" || field.key === "info.picture") {
         return (
           <img
@@ -104,6 +121,7 @@ export const generateColumns = (
           />
         );
       }
+
       if (field.key.includes(".")) {
         const keys = field.key.split(".");
         let nestedValue = row.original;

@@ -19,10 +19,10 @@ const HeaderClient = () => {
     <header className='sticky top-0 z-50'>
       <Card className='rounded-none py-2 mb-6 w-full '>
         <CardContent className='py-0 md:container md:mx-auto px-4 flex justify-between'>
-          <div className='flex items-center gap-2'>
+          <a href='/home' className='flex items-center gap-2'>
             <img src={Logo} className='h-8' alt='logo' />
             <p className='font-bold text-md'>Nun Hotel</p>
-          </div>
+          </a>
           <div className='flex gap-2'>
             <ModeToggle />
             <LanguageToggle />

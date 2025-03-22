@@ -20,7 +20,7 @@ import { useFormHandler } from "@/hooks/use-form-handler";
 
 const DepartmentAdd = ({ lastCode }) => {
   const dispatch = useDispatch();
-  const { formData, setFormData, handleChange } = useFormHandler({
+  const { formData, resetForm, handleChange } = useFormHandler({
     department_name: "",
     memo: "",
   });
@@ -33,11 +33,8 @@ const DepartmentAdd = ({ lastCode }) => {
         .then((res) => {
           console.log(res);
           dispatch(clearCache());
+          resetForm();
           dispatch(getDepartments({ status: "all" }));
-          setFormData({
-            department_name: "",
-            memo: "",
-          });
         })
         .catch((err) => {
           console.log(err);
