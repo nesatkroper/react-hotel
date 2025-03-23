@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import React, { useState } from "react";
 import axios from "@/lib/axios-instance";
 import { useDispatch } from "react-redux";
-import { getRpicture } from "@/contexts/reducer/room-picture-slice";
+import { getRoomPictures } from "@/contexts/reducer/room-picture-slice";
 import PropTypes from "prop-types";
 import FormInput from "@/components/app/form/form-input";
 import FormImageOriginal from "@/components/app/form/form-image-ori";
@@ -60,7 +60,7 @@ const RoomPictureUpdate = ({ item }) => {
       .put(`/room-picture/${item.room_picture_id}`, formData)
       .then((res) => {
         console.log(res);
-        dispatch(getRpicture());
+        dispatch(getRoomPictures());
       })
       .catch((error) => {
         console.log(error);

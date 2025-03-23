@@ -3,28 +3,32 @@ import RoomEdit from "./room-edit";
 import { generateColumns } from "@/components/app/table/generate-column";
 import PropTypes from "prop-types";
 import { getRooms } from "@/contexts/reducer";
-
-const roomColumns = [
-  { key: "picture", label: "Picture" },
-  { key: "room_name", label: "Room Number" },
-  { key: "roomtype.type_name", label: "Room Type" },
-  { key: "price", label: "Price" },
-  { key: "discount_rate", label: "Discount Rate" },
-  { key: "size", label: "Size" },
-  { key: "capacity", label: "Capacity" },
-  { key: "is_ac", label: "AC" },
-  { key: "status", label: "Status" },
-];
+import { useTranslation } from "react-i18next";
 
 const RoomEditWrapper = ({ item }) => {
   return <RoomEdit items={item} />;
 };
 
-export const RoomColumns = (() => {
-  const createEditComponent = (item) => <RoomEditWrapper item={item} />;
+export const RoomColumns = () => {
+  const [t] = useTranslation("admin");
 
-  return generateColumns(roomColumns, createEditComponent, "room", getRooms);
-})();
+  return generateColumns(
+    [
+      { key: "picture", label: t("table.pic") },
+      { key: "room_name", label: t("table.room.name") },
+      { key: "roomtype.type_name", label: t("table.room.type") },
+      { key: "price", label: t("table.room.price") },
+      { key: "discount_rate", label: t("table.room.dis") },
+      { key: "size", label: t("table.room.size") },
+      { key: "capacity", label: t("table.room.capacity") },
+      { key: "is_ac", label: t("table.room.ac") },
+      { key: "status", label: t("table.status") },
+    ],
+    (item) => <RoomEditWrapper item={item} />,
+    "room",
+    getRooms
+  );
+};
 
 RoomEditWrapper.propTypes = {
   item: PropTypes.object,

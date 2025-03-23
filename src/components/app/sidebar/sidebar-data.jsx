@@ -27,93 +27,97 @@ export const data = {
   ],
   navMain: [
     {
-      title: "Room",
+      title: "room",
       url: "#",
       icon: BedDouble,
       isActive: true,
       items: [
         {
-          title: "All Rooms",
+          title: "all-room",
           url: "room",
         },
         {
-          title: "Room Picture",
+          title: "room-pic",
           url: "room-picture",
         },
       ],
     },
     {
-      title: "Product",
+      title: "pro",
       url: "#",
       icon: SquareTerminal,
       items: [
         {
-          title: "All Product",
+          title: "all-pro",
           url: "product",
         },
         {
-          title: "Product Category",
+          title: "pro-cate",
           url: "category",
+        },
+        {
+          title: "pro-brand",
+          url: "brand",
         },
       ],
     },
     {
-      title: "Category",
+      title: "cate",
       url: "#",
       icon: BookOpen,
       items: [
         {
-          title: "Supplier",
-          url: "/supplier",
+          title: "sup",
+          url: "supplier",
         },
         {
-          title: "Customer",
-          url: "/customer",
+          title: "cus",
+          url: "customer",
         },
       ],
     },
     {
-      title: "Human Resource",
+      title: "human",
       url: "#",
       icon: Bot,
       items: [
         {
-          title: "Employee",
-          url: "/employee",
+          title: "emp",
+          url: "employee",
         },
         {
-          title: "Department",
-          url: "/department",
+          title: "dep",
+          url: "department",
         },
         {
-          title: "Position",
-          url: "/position",
+          title: "pos",
+          url: "position",
         },
         {
-          title: "Authentication",
-          url: "/authentication",
+          title: "auth",
+          url: "authentication",
         },
         {
-          title: "Customer",
-          url: "/customer",
+          title: "cus",
+          url: "customer",
         },
         {
-          title: "Supplier",
-          url: "/supplier",
+          title: "sup",
+          url: "supplier",
         },
       ],
     },
     {
-      title: "Settings",
+      title: "setting",
       url: "#",
       icon: Settings2,
       items: [
         {
-          title: "General",
+          title: "gen",
           url: "#",
         },
         {
-          title: "Team",
+          title: "team",
           url: "#",
         },
         {
@@ -129,22 +133,22 @@ export const data = {
   ],
   projects: [
     {
-      name: "Home",
+      name: "home",
       url: "/",
       icon: Frame,
     },
     {
-      name: "POS",
-      url: "/pos",
+      name: "po",
+      url: "pos",
       icon: ClipboardPen,
     },
     {
-      name: "Dashboard",
+      name: "dash",
       url: "/dashboard",
       icon: PieChart,
     },
     {
-      name: "Reservation",
+      name: "reserve",
       url: "/reservation",
       icon: Map,
     },

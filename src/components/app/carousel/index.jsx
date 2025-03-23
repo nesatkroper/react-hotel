@@ -7,12 +7,12 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
-import pic1 from "@/assets/images/banner/1.png";
-import pic2 from "@/assets/images/banner/2.png";
-import pic3 from "@/assets/images/banner/2.png";
-import pic4 from "@/assets/images/banner/4.png";
-import pic5 from "@/assets/images/banner/5.png";
-import pic6 from "@/assets/images/banner/6.png";
+import pic1 from "@/assets/images/banner/1.webp";
+import pic2 from "@/assets/images/banner/2.webp";
+import pic3 from "@/assets/images/banner/2.webp";
+import pic4 from "@/assets/images/banner/4.webp";
+import pic5 from "@/assets/images/banner/5.webp";
+import pic6 from "@/assets/images/banner/6.webp";
 import PropTypes from "prop-types";
 import { motion } from "framer-motion";
 
@@ -73,6 +73,7 @@ const CarouselImage = ({ items, loop, auto, delay, height, split, slice }) => {
               alt={m.name}
               style={{ height: `${height}px` }}
               className={`w-full object-cover rounded-3xl`}
+              loading='lazy'
               initial='hidden'
               whileInView='visible'
               viewport={{ once: true, amount: 0.3 }}

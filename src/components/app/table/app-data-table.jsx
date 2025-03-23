@@ -43,6 +43,7 @@ import { column } from "./column";
 import { motion } from "framer-motion";
 import PropTypes from "prop-types";
 import AppLoading from "../utils/app-loading";
+import { useTranslation } from "react-i18next";
 
 const rowVariants = {
   hidden: { opacity: 0, x: -20 },
@@ -75,11 +76,9 @@ const rowNumberColumn = {
   id: "rowNumber",
   header: "#",
   cell: (info) => {
-    const rowNum =
-      info.row.index +
-      1 +
-      info.table.getState().pagination.pageIndex *
-        info.table.getState().pagination.pageSize;
+    const rowNum = info.row.index + 1;
+    // + info.table.getState().pagination.pageIndex;
+    // info.table.getState().pagination.pageSize;
     return rowNum.toString().padStart(2, "0");
   },
   enableSorting: false,
@@ -91,7 +90,6 @@ const AppDataTable = (props) => {
     data = demo,
     columns = column,
     main = "name",
-    btnSize = 200,
     addElement = null,
     title = "Default Title",
     des = "Default Description",
@@ -103,8 +101,12 @@ const AppDataTable = (props) => {
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
   const [rowSelection, setRowSelection] = useState({});
+  const [t] = useTranslation("admin");
 
   const tableColumns = [rowNumberColumn, ...columns];
+  const hasPicture = data.some(
+    (d) => "picture" in d || "info.picture" in d || "pictures" in d
+  );
 
   const table = useReactTable({
     data,
@@ -125,7 +127,7 @@ const AppDataTable = (props) => {
     },
     initialState: {
       pagination: {
-        pageSize: 5,
+        pageSize: hasPicture ? 6 : 10,
       },
     },
   });
@@ -149,7 +151,7 @@ const AppDataTable = (props) => {
                 <motion.button
                   whileHover={{ scale: 1.01 }}
                   whileTap={{ scale: 0.95 }}
-                  className={`w-[${btnSize}px] h-8 inline-flex items-center justify-center rounded-md text-sm font-medium bg-primary text-primary-foreground  px-4 py-2`}>
+                  className={` h-8 w-40 inline-flex items-center justify-center rounded-md text-sm font-medium bg-primary text-primary-foreground  px-4 py-2`}>
                   <Plus className='mr-2' /> {title}
                 </motion.button>
               </DialogTrigger>
@@ -175,28 +177,28 @@ const AppDataTable = (props) => {
               <Select
                 onValueChange={(event) => table.setPageSize(Number(event))}>
                 <SelectTrigger className='w-[100px]'>
-                  <SelectValue placeholder='5 Rows' />
+                  <SelectValue placeholder={`6 ${t("table.row")}`} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value={5}>5 Rows</SelectItem>
-                  <SelectItem value={10}>10 Rows</SelectItem>
-                  <SelectItem value={15}>15 Rows</SelectItem>
-                  <SelectItem value={25}>25 Rows</SelectItem>
-                  <SelectItem value={50}>50 Rows</SelectItem>
-                  <SelectItem value={100}>100 Rows</SelectItem>
+                  <SelectItem value={6}>6 {t("table.row")}</SelectItem>
+                  <SelectItem value={10}>10 {t("table.row")}</SelectItem>
+                  <SelectItem value={15}>15 {t("table.row")}</SelectItem>
+                  <SelectItem value={25}>25 {t("table.row")}</SelectItem>
+                  <SelectItem value={50}>50 {t("table.row")}</SelectItem>
+                  <SelectItem value={100}>100 {t("table.row")}</SelectItem>
                 </SelectContent>
               </Select>
               <Button onClick={handleRefresh} variant='outline' type='button'>
                 <RefreshCcw className={loading ? "animate-spin" : ""} />
-                Refresh
+                {t("table.reload")}
               </Button>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <motion.button
                     whileHover={{ scale: 1.01 }}
                     whileTap={{ scale: 0.95 }}
-                    className={`w-[${btnSize}px] ml-auto inline-flex items-center justify-center rounded-md text-sm font-medium border h-8 px-4 py-2`}>
-                    Columns <ChevronDown className='ml-2' />
+                    className={`w-40 ml-auto inline-flex items-center justify-center rounded-md text-sm font-medium border h-8 px-4 py-2`}>
+                    {t("table.col")} <ChevronDown className='ml-2' />
                   </motion.button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align='end'>
@@ -235,7 +237,7 @@ const AppDataTable = (props) => {
                       {headerGroup.headers?.map((header) => (
                         <TableHead
                           key={header.id}
-                          className={`font-bold ${
+                          className={`font-bold px-1 ${
                             header.id === "rowNumber"
                               ? "w-12 text-center"
                               : header.id === "info.picture"
@@ -277,7 +279,7 @@ const AppDataTable = (props) => {
                           {row.getVisibleCells()?.map((cell) => (
                             <TableCell
                               key={cell.id}
-                              className={
+                              className={`px-1 ${
                                 cell.column.id === "rowNumber"
                                   ? "text-center"
                                   : cell.column.id === "info.picture"
@@ -291,7 +293,7 @@ const AppDataTable = (props) => {
                                   : cell.column.id === "actions"
                                   ? "w-10"
                                   : ""
-                              }>
+                              }`}>
                               {flexRender(
                                 cell.column.columnDef.cell,
                                 cell.getContext()
@@ -348,7 +350,6 @@ AppDataTable.propTypes = {
   data: PropTypes.arrayOf(PropTypes.object),
   columns: PropTypes.arrayOf(PropTypes.object),
   main: PropTypes.string,
-  btnSize: PropTypes.number,
   addElement: PropTypes.oneOfType([PropTypes.node, PropTypes.element]),
   title: PropTypes.string,
   des: PropTypes.string,

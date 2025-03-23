@@ -3,14 +3,16 @@
 @font-face {
   font-family: "Poppins";
   src: url("./assets/fonts/Poppins.ttf") format("truetype");
-  font-weight: 400;
+  font-optical-sizing: auto;
+  font-weight: 500;
   font-style: normal;
 }
 
 @font-face {
   font-family: "Kantumruy";
   src: url("./assets/fonts/Kantumruy.ttf") format("truetype");
-  font-weight: normal;
+  font-optical-sizing: auto;
+  font-weight: 500;
   font-style: normal;
 }
 
@@ -18,8 +20,80 @@
 @tailwind components;
 @tailwind utilities;
 
-/*@ Violet */
 @layer base {
+  :root {
+    --background: 0 0% 98%;
+    --foreground: 220 40% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 220 40% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 40% 10%;
+
+    --primary: 221 85% 53%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 15% 85%;
+    --secondary-foreground: 220 40% 15%;
+
+    --muted: 220 14% 90%;
+    --muted-foreground: 220 10% 35%;
+
+    --accent: 260 80% 65%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 13% 80%;
+    --input: 220 13% 80%;
+    --ring: 221 85% 53%;
+    --radius: 0.5rem;
+
+    /* Updated Chart Colors */
+    --chart-1: 10 80% 55%;
+    --chart-2: 180 70% 45%;
+    --chart-3: 200 50% 30%;
+    --chart-4: 40 80% 55%;
+    --chart-5: 30 85% 60%;
+  }
+
+  .dark {
+    --background: 220 30% 10%;
+    --foreground: 0 0% 95%;
+    --card: 220 40% 12%;
+    --card-foreground: 0 0% 95%;
+    --popover: 220 40% 12%;
+    --popover-foreground: 0 0% 95%;
+
+    --primary: 221 70% 60%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 20% 30%;
+    --secondary-foreground: 0 0% 90%;
+
+    --muted: 220 25% 18%;
+    --muted-foreground: 220 10% 60%;
+
+    --accent: 280 70% 50%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 60% 45%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 25% 18%;
+    --input: 220 25% 18%;
+    --ring: 221 70% 55%;
+
+    /* Dark mode Chart Colors */
+    --chart-1: 220 75% 55%;
+    --chart-2: 160 65% 40%;
+    --chart-3: 30 85% 50%;
+    --chart-4: 270 70% 55%;
+    --chart-5: 350 75% 50%;
+  }
+}
+
+/* @layer base {
   :root {
     --background: 0 0% 98%;
     --foreground: 224 71.4% 4.1%;
@@ -75,7 +149,7 @@
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
   }
-}
+} */
 
 @layer base {
   * {

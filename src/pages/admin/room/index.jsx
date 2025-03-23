@@ -18,8 +18,6 @@ const Room = () => {
     );
   }, [dispatch]);
 
-  console.log(rooData);
-
   const refresh = () => {
     dispatch(clearCache());
     getRooms({ status: "all", roomtype: true, pictures: true, order: "asc" });
@@ -29,13 +27,14 @@ const Room = () => {
     <Layout>
       <AppDataTable
         data={rooData}
-        columns={RoomColumns}
+        addElement={<RoomAdd />}
+        columns={RoomColumns()}
+        loading={rooLoading}
+        refresh={refresh}
         title='Rooms'
         main='room_name'
-        loading={rooLoading}
         add='Add Room'
-        addElement={<RoomAdd />}
-        refresh={refresh}
+        btnSize={240}
       />
     </Layout>
   );

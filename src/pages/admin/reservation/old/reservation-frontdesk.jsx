@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import axios from "@/lib/axios-instance";
-import Details from "./reservation-dialog";
+import Details from "../components/reservation-dialog";
 
 //! THIS IS LOCAL VARIABLE
 const SINGLE_ROOM = 12;

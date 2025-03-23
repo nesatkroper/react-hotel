@@ -1,34 +1,14 @@
-import axios from "@/lib/axios-instance";
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import {
+  createApiThunk,
+  createGenericSlice,
+} from "../utils/create-async-slice";
 
-export const getRpicture = createAsyncThunk("getRpicture", async () => {
-  const res = await axios.get("/room-picture");
-  return res?.data;
-});
+export const getRoomPictures = createApiThunk(
+  "roompicture/getRoomPictures",
+  "/roompicture"
+);
 
-const rpictureSlice = createSlice({
-  name: "rpicture",
-  initialState: {
-    rpiData: [],
-    rpiLoading: false,
-    rpiError: null,
-  },
-  reducers: {},
-  extraReducers: (builder) => {
-    builder
-      .addCase(getRpicture.pending, (state) => {
-        state.rpiLoading = true;
-        state.rpiError = null;
-      })
-      .addCase(getRpicture.fulfilled, (state, action) => {
-        state.rpiLoading = false;
-        state.rpiData = action.payload;
-      })
-      .addCase(getRpicture.rejected, (state, action) => {
-        state.rpiLoading = false;
-        state.rpiError = action.payload;
-      });
-  },
-});
+const roomPictureSlice = createGenericSlice("roompicture", getRoomPictures);
 
-export default rpictureSlice.reducer;
+export const { clearCache } = roomPictureSlice.actions;
+export default roomPictureSlice.reducer;

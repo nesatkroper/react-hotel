@@ -32,7 +32,7 @@ export default {
   customers: customerReduce,
   employees: employeeReduce,
   reserveDetails: rdetailReduce,
-  roomPictures: rpictureReduce,
+  roompicture: rpictureReduce,
   reservations: reservationReduce,
   pcategories: pcategoryReduce,
   products: productReduce,

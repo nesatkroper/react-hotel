@@ -7,13 +7,36 @@
     "app_name": "Cambodia Drug Dealer University"
   },
   "sidebar": {
-    "sub_app_name": "Drug University",
+    "app-name": "Drug University",
     "location": "Siem Reap",
-    "menu": "Menu",
-    "dashboard": "Dashboard",
-    "staffs": "Staffs",
-    "student": "Student",
-    "settings": "Settings"
+    "home": "Home",
+    "dash": "Dashboard",
+    "po": "POS",
+    "reserve": "Reservation",
+    "room": "Room",
+    "all-room": "All Room",
+    "room-pic": "Room Picture",
+    "pro": "Product",
+    "all-pro": "All Product",
+    "pro-cate": "Product Category",
+    "pro-brand": "Product Brand",
+    "cate": "Category",
+    "brand": "Brand",
+    "sup": "Supplier",
+    "cus": "Customer",
+    "human": "Human Resource",
+    "emp": "Employee",
+    "dep": "Department",
+    "pos": "Position",
+    "auth": "Authorization",
+    "setting": "Settings",
+    "gen": "General",
+    "lang": "Language",
+    "team": "Team",
+    "logout": "Logout",
+    "profile": "Profile",
+    "project": "Project",
+    "platform": "Platform"
   },
   "home": {
     "body": "lorem ipsum dolor sit amet, consectetur adip"
@@ -27,6 +50,11 @@
   },
   "table": {
     "no": "No.",
+    "row": "Rows",
+    "col": "Column",
+    "reload": "Reload",
+    "search": "Search",
+    "roo": "Room",
     "pic": "Picture",
     "name": "Name",
     "gen": "Gender",
@@ -38,7 +66,26 @@
     "pay": "Payment",
     "status": "Status",
     "action": "Action",
-    "address": "Adress"
+    "address": "Adress",
+    "room": {
+      "name": "Room Name",
+      "type": "Room Type",
+      "price": "Price",
+      "desc": "Description",
+      "dis": "Discount Rate",
+      "total": "Total Room",
+      "size": "Room Size",
+      "bed": "Bed Type",
+      "capacity": "Capacity",
+      "ac": "AC",
+      "view": "Room View",
+      "wifi": "Wifi",
+      "tv": "TV",
+      "bath": "Bathroom",
+      "breakfast": "Breakfast",
+      "lunch": "Lunch",
+      "dinner": "Dinner"
+    }
   },
   "pos": {
     "name": "Position Name"
