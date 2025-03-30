@@ -1,21 +1,19 @@
+import React, { useEffect } from "react";
+import PropTypes from "prop-types";
+import axiosAuth from "@/lib/axios-auth";
+import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
+import { clearCache, getPositions } from "@/contexts/reducer/position-slice";
+import { useDispatch, useSelector } from "react-redux";
+import { getDepartments } from "@/contexts/reducer/department-slice";
+import { useFormHandler } from "@/hooks/use-form-handler";
 import {
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogClose,
 } from "@/components/ui/dialog";
-import React, { useEffect } from "react";
-import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
-import { clearCache, getPositions } from "@/contexts/reducer/position-slice";
-import { useDispatch, useSelector } from "react-redux";
-import { getDepartments } from "@/contexts/reducer/department-slice";
-import PropTypes from "prop-types";
-import FormInput from "@/components/app/form/form-input";
-import FormComboBox from "@/components/app/form/form-combobox";
-import FormTextArea from "@/components/app/form/form-textarea";
-import axiosAuth from "@/lib/axios-auth";
-import { useFormHandler } from "@/hooks/use-form-handler";
+import { FormComboBox, FormInput, FormTextArea } from "@/components/app/form";
 
 const PositionUpdate = ({ items }) => {
   const dispatch = useDispatch();

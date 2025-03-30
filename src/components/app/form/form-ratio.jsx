@@ -14,29 +14,26 @@ const demo = [
   },
 ];
 
-const FormRatio = (props) => {
-  const {
-    onCallbackSelect,
-    mainClass,
-    labelClass,
-    label = "Air Conditional*",
-    item = demo,
-  } = props;
-
+const FormRatio = ({
+  onCallbackSelect,
+  mainClass,
+  labelClass,
+  label = "Air Conditional*",
+  item = demo,
+}) => {
   const handleSelect = (event) => {
     onCallbackSelect(event);
   };
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className='flex flex-col gap-2'>
       <Label className={labelClass}>{label}</Label>
       <RadioGroup
         onValueChange={handleSelect}
         defaultValue={item[0].value}
-        className={`flex pt-2 ${mainClass}`}
-      >
+        className={`flex pt-2 ${mainClass}`}>
         {item?.map((d, i) => (
-          <div key={i} className="flex items-center space-x-2">
+          <div key={i} className='flex items-center space-x-2'>
             <RadioGroupItem value={d.value} id={d.value} />
             <Label htmlFor={d.value}>{d.data}</Label>
           </div>

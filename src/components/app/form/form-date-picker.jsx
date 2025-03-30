@@ -12,18 +12,16 @@ import { format, addYears, subYears } from "date-fns";
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
-const FormDatePicker = (props) => {
-  const {
-    onCallbackPicker,
-    mainClass,
-    labelClass,
-    size = 250,
-    label = "Date of Birth*",
-    fromYear = 1900,
-    toYear = new Date().getFullYear(),
-    error,
-  } = props;
-
+const FormDatePicker = ({
+  onCallbackPicker,
+  mainClass,
+  labelClass,
+  size = 250,
+  label = "Date of Birth*",
+  fromYear = 1900,
+  toYear = new Date().getFullYear(),
+  error,
+}) => {
   const [date, setDate] = useState(null);
   const [currentMonth, setCurrentMonth] = useState(new Date());
 

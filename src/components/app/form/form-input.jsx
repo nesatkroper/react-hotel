@@ -3,25 +3,23 @@ import { Input } from "@/components/ui/input";
 import PropTypes from "prop-types";
 import React from "react";
 
-const FormInput = (props) => {
-  const {
-    onCallbackInput,
-    name,
-    value,
-    type = "text",
-    mainClass,
-    inputClass,
-    labelClass,
-    placeholder = "Food, Drink, ...",
-    size = 250,
-    label = "Email*",
-    readonly = false,
-    required = false,
-    min = 0,
-    step = 0.01,
-    error,
-  } = props;
-
+const FormInput = ({
+  onCallbackInput,
+  name,
+  value,
+  type = "text",
+  mainClass,
+  inputClass,
+  labelClass,
+  placeholder = "Food, Drink, ...",
+  size = 250,
+  label = "Email*",
+  readonly = false,
+  required = false,
+  min = 0,
+  step = 0.01,
+  error,
+}) => {
   const handleChange = (event) => {
     const { name, value } = event.target;
     onCallbackInput(name, value);

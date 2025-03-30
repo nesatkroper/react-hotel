@@ -1,18 +1,19 @@
 import React from "react";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
+import axiosInstance from "@/lib/axios-instance";
+import PropTypes from "prop-types";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { useRef } from "react";
 import { logo } from "@/utils/resize-crop-image";
-import InvoiceHeader from "./components/inv-header";
-import InvoiceContent from "./components/inv-content";
-import InvoiceTable from "./components/inv-table";
-import InvoiceFooter from "./components/inv-footer";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
-
-import axiosInstance from "@/lib/axios-instance";
-import PropTypes from "prop-types";
+import {
+  InvoiceContent,
+  InvoiceFooter,
+  InvoiceHeader,
+  InvoiceTable,
+} from "./components";
 
 const Invoice = (props) => {
   const { method = "cash", type = "sale", currency = "usd" } = props;
@@ -102,14 +103,13 @@ const Invoice = (props) => {
   };
 
   return (
-    <div className="flex justify-center relative">
+    <div className='flex justify-center relative'>
       <Card
         ref={cardRef}
-        className="w-[8cm] text-center rounded-none  max-h-[20cm] overflow-y-auto "
-      >
-        <InvoiceHeader brand="Hotel Jee Heang" logo={logo} />
-        <CardContent className="px-3">
-          <Separator className="mb-1" />
+        className='w-[8cm] text-center rounded-none  max-h-[20cm] overflow-y-auto '>
+        <InvoiceHeader brand='Hotel Jee Heang' logo={logo} />
+        <CardContent className='px-3'>
+          <Separator className='mb-1' />
           <InvoiceContent payment={method} />
           <Separator />
           <InvoiceTable type={type} currency={currency} />
@@ -117,11 +117,11 @@ const Invoice = (props) => {
           <InvoiceFooter method={method} />
         </CardContent>
       </Card>
-      <div className="flex gap-3 absolute bottom-[-47px] left-0">
-        <Button variant="outline" onClick={handleDownloadPDF} className=" ">
+      <div className='flex gap-3 absolute bottom-[-47px] left-0'>
+        <Button variant='outline' onClick={handleDownloadPDF} className=' '>
           PDF
         </Button>
-        <Button variant="outline" onClick={handleSaveAsJPG} className=" ">
+        <Button variant='outline' onClick={handleSaveAsJPG} className=' '>
           JPG
         </Button>
       </div>

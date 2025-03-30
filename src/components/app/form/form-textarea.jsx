@@ -3,18 +3,16 @@ import { Textarea } from "@/components/ui/textarea";
 import PropTypes from "prop-types";
 import React from "react";
 
-const FormTextArea = (props) => {
-  const {
-    onCallbackInput,
-    name,
-    value,
-    mainClass,
-    inputClass,
-    labelClass,
-    placeholder = "Food, Drink, ...",
-    label = "Email*",
-  } = props;
-
+const FormTextArea = ({
+  onCallbackInput,
+  name,
+  value,
+  mainClass,
+  inputClass,
+  labelClass,
+  placeholder = "Food, Drink, ...",
+  label = "Email*",
+}) => {
   const handleChange = (event) => {
     const { name, value } = event.target;
     onCallbackInput(name, value);

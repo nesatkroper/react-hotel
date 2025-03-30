@@ -1,84 +1,50 @@
+import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
+import axiosAuth from "@/lib/axios-auth";
+import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
+import { useDispatch, useSelector } from "react-redux";
+import { Loader2 } from "lucide-react";
+import { GENDER } from "@/utils/default-data";
+import { getDepartments, getEmployees, getPositions } from "@/contexts/reducer";
+import { useFormHandler } from "@/hooks/use-form-handler";
+import { clearCache } from "@/contexts/reducer/employee-slice";
+import { FormComboBox, FormDatePicker, FormInput } from "@/components/app/form";
 import {
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Loader2 } from "lucide-react";
-import { GENDER } from "@/utils/default-data";
-import PropTypes from "prop-types";
-import FormInput from "@/components/app/form/form-input";
-import FormDatePicker from "@/components/app/form/form-date-picker";
-import FormComboBox from "@/components/app/form/form-combobox";
-import axiosAuth from "@/lib/axios-auth";
-import { z } from "zod";
-import { getDepartments, getEmployees, getPositions } from "@/contexts/reducer";
-import { useFormHandler } from "@/hooks/use-form-handler";
-import { clearCache } from "@/contexts/reducer/employee-slice";
 
-const schema = z.object({
-  first_name: z.string().nonempty("Required"),
-  last_name: z.string().nonempty("Required"),
-  salary: z.preprocess(
-    (val) => parseFloat(val),
-    z.number().positive("Salary must be > 0")
-  ),
-  phone: z
-    .string()
-    .regex(/^\d{7,15}$/, "Phone number must be 7-15 digits")
-    .optional(),
-  gender: z.enum(["male", "female", "other"]).optional(),
-  position_id: z.string().nonempty("Position is required"),
-  department_id: z.number().int(),
-});
-
-const EmployeeAdd = ({ lastCode }) => {
+const EmployeeAdd = () => {
   const dispatch = useDispatch();
-  const [error, setError] = useState({});
+  const [issend, setIssend] = useState(false);
   const { data: depData } = useSelector((state) => state.departments);
   const { data: posData } = useSelector((state) => state.positions);
-  const [issend, setIssend] = useState(false);
   const { formData, resetForm, handleChange } = useFormHandler({
     status: "active",
-    first_name: "",
-    last_name: "",
+    firstName: "",
+    lastName: "",
     gender: "",
     dob: "",
     phone: "",
-    position_id: "",
-    department_id: "",
+    positionId: "",
+    departmentId: "",
     salary: "",
-    hired_date: "",
+    hiredDate: "",
   });
-
-  const validate = (data) => {
-    const result = schema.safeParse(data);
-    if (result.success) {
-      setError({});
-      return true;
-    }
-    setError(result.error.flatten().fieldErrors);
-    return false;
-  };
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
-
-    if (!validate(formData)) {
-      return;
-    }
 
     try {
       setIssend(true);
-      await axiosAuth.post("/employee", formData);
-
-      resetForm();
-      dispatch(clearCache());
-      dispatch(getEmployees({ position: true }));
+      await axiosAuth.post("/employee", formData).then((res) => {
+        console.log(res);
+        resetForm();
+        dispatch(clearCache());
+        getEmployees({ params: { status: "all", info: true, position: true } });
+      });
     } catch (e) {
       console.error("Submission error:", e);
     } finally {
@@ -92,40 +58,33 @@ const EmployeeAdd = ({ lastCode }) => {
   }, [dispatch]);
 
   const filteredPositions = posData.filter(
-    (position) => position.department_id === Number(formData.department_id)
+    (position) => position.departmentId === formData.departmentId
   );
 
   return (
     <DialogContent>
       <form onSubmit={handleFormSubmit}>
         <DialogHeader className='mb-3'>
-          <DialogTitle>Employee Details</DialogTitle>
+          <DialogTitle className='text-md'>Employee Details</DialogTitle>
         </DialogHeader>
         <Separator />
         <div className='flex justify-between mb-2 mt-2'>
           <FormInput
             onCallbackInput={handleChange}
             label='First Name*'
-            name='first_name'
+            name='firstName'
             placeholder='John, ...'
             required
-            error={error.first_name?.[0]}
           />
           <FormInput
             onCallbackInput={handleChange}
             label='Last Name*'
-            name='last_name'
+            name='lastName'
             placeholder='Doe, ...'
             required
-            error={error.last_name?.[0]}
           />
         </div>
         <div className='flex justify-between mb-2 mt-3'>
-          <FormInput
-            label='Employee Code*'
-            value={`EMP-${(lastCode + 1).toString().padStart(4, "0")}`}
-            disabled
-          />
           <FormComboBox
             item={GENDER}
             optID='value'
@@ -133,55 +92,48 @@ const EmployeeAdd = ({ lastCode }) => {
             name='gender'
             label='Gender'
             onCallbackSelect={(event) => handleChange("gender", event)}
-            error={error.gender?.[0]}
           />
-        </div>
-        <div className='flex justify-between mb-2 mt-2'>
           <FormInput
             onCallbackInput={handleChange}
             label='Phone Number'
             name='phone'
             placeholder='010280202'
-            error={error.phone?.[0]}
-          />
-          <FormInput
-            onCallbackInput={handleChange}
-            label='Salary*'
-            name='salary'
-            placeholder='$250.00'
-            error={error.salary?.[0]}
           />
         </div>
         <div className='flex justify-between mb-2 mt-2'>
           <FormDatePicker
             onCallbackPicker={(event) => handleChange("dob", event)}
             label='Date of Birth*'
-            error={error.dob?.[0]}
           />
           <FormDatePicker
-            onCallbackPicker={(event) => handleChange("hired_date", event)}
+            onCallbackPicker={(event) => handleChange("hiredDate", event)}
             label='Hired Date*'
-            error={error.hired_date?.[0]}
           />
         </div>
         <div className='flex justify-between mb-2 mt-3'>
           <FormComboBox
             onCallbackSelect={(event) =>
-              handleChange("department_id", Number(event))
+              handleChange("departmentId", Number(event))
             }
             label='Department*'
             item={depData}
-            optID='department_id'
-            optLabel='department_name'
-            error={error.department_id?.[0]}
+            optID='departmentId'
+            optLabel='departmentName'
           />
           <FormComboBox
-            onCallbackSelect={(event) => handleChange("position_id", event)}
+            onCallbackSelect={(event) => handleChange("positionId", event)}
             label='Position*'
             item={filteredPositions}
-            optID='position_id'
-            optLabel='position_name'
-            error={error.position_id?.[0]}
+            optID='positionId'
+            optLabel='positionName'
+          />
+        </div>
+        <div className='flex justify-between mb-2 mt-2'>
+          <FormInput
+            onCallbackInput={handleChange}
+            label='Salary*'
+            name='salary'
+            placeholder='$250.00'
           />
         </div>
         <div className='flex justify-end mt-4'>

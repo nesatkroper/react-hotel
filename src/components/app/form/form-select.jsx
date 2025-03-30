@@ -20,19 +20,17 @@ const demo = [
   },
 ];
 
-const FormSelect = (props) => {
-  const {
-    onCallbackSelect,
-    mainClass,
-    labelClass,
-    optID,
-    optLabel,
-    size = 250,
-    label = "Gender",
-    item = demo,
-    isLabel = true,
-  } = props;
-
+const FormSelect = ({
+  onCallbackSelect,
+  mainClass,
+  labelClass,
+  optID,
+  optLabel,
+  size = 250,
+  label = "Gender",
+  item = demo,
+  isLabel = true,
+}) => {
   const filter = (item || []).map((d) => ({
     value: d[optID],
     label: d[optLabel],

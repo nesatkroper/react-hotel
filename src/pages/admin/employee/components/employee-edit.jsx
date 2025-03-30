@@ -1,31 +1,32 @@
+import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
+import axiosAuth from "@/lib/axios-auth";
+import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
+import { useDispatch, useSelector } from "react-redux";
+import { getPositions } from "@/contexts/reducer/position-slice";
+import { getEmployees } from "@/contexts/reducer/employee-slice";
+import { getDepartments } from "@/contexts/reducer/department-slice";
+import { Loader2 } from "lucide-react";
 import {
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogClose,
 } from "@/components/ui/dialog";
-import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getPositions } from "@/contexts/reducer/position-slice";
-import { getEmployees } from "@/contexts/reducer/employee-slice";
-import { getDepartments } from "@/contexts/reducer/department-slice";
-import { Loader2 } from "lucide-react";
-import PropTypes from "prop-types";
-import FormInput from "@/components/app/form/form-input";
-import FormSelect from "@/components/app/form/form-select";
-import FormDatePicker from "@/components/app/form/form-date-picker";
-import FormComboBox from "@/components/app/form/form-combobox";
-import axiosAuth from "@/lib/axios-auth";
+import {
+  FormComboBox,
+  FormDatePicker,
+  FormInput,
+  FormSelect,
+} from "@/components/app/form";
 
-const EmployeeEdit = ({ lastCode }) => {
+const EmployeeEdit = () => {
   const dispatch = useDispatch();
   const { depData } = useSelector((state) => state.departments);
   const { posData } = useSelector((state) => state.positions);
   const [issend, setIssend] = useState(false);
   const [formData, setFormData] = useState({
-    employee_code: parseInt(lastCode, 10) + 1,
     status: "active",
     first_name: "",
     last_name: "",
@@ -55,22 +56,10 @@ const EmployeeEdit = ({ lastCode }) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const validateForm = () => {
-    if (!formData.employee_code) return "Employee code is required.";
-    if (!formData.first_name) return "First name is required.";
-    if (!formData.last_name) return "Last name is required.";
-    if (!formData.gender) return "Gender is required.";
-    if (!formData.position_id) return "Position is required.";
-    if (!formData.department_id) return "Department is required.";
-    if (!formData.salary) return "Salary is required.";
-    return null;
-  };
-
   const handleFormSubmit = async (e) => {
     try {
       e.preventDefault();
       setIssend(!issend);
-      validateForm();
 
       await axiosAuth.post("/employee", formData);
       dispatch(getEmployees({ position: true }));
@@ -106,11 +95,6 @@ const EmployeeEdit = ({ lastCode }) => {
           />
         </div>
         <div className='flex justify-between mb-2 mt-3'>
-          <FormInput
-            onCallbackInput={handleChange}
-            label='Employee Code*'
-            value={`EMP-${(lastCode + 1).toString().padStart(4, "0")}`}
-          />
           <FormSelect
             name='gender'
             onCallbackSelect={(event) => handleDataChange("gender", event)}

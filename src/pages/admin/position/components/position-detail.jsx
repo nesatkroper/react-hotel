@@ -6,7 +6,7 @@ const PositionDetail = ({ item }) => {
   return (
     <>
       <Separator />
-      <div className="space-y-4 mt-4">
+      <div className='space-y-4 mt-4'>
         {Object.entries(item).map(([key, value]) => {
           if (key === "id") return null;
 
@@ -26,14 +26,13 @@ const PositionDetail = ({ item }) => {
                   value === "active"
                     ? "bg-green-100 text-green-700"
                     : "bg-red-100 text-red-700"
-                }`}
-              >
+                }`}>
                 {value || "N/A"}
               </span>
             );
           } else if (typeof value === "object" && value !== null) {
             displayValue = (
-              <pre className="bg-gray-100 p-2 rounded-md text-sm">
+              <pre className='bg-gray-100 p-2 rounded-md text-sm'>
                 {JSON.stringify(value, null, 2)}
               </pre>
             );
@@ -42,11 +41,11 @@ const PositionDetail = ({ item }) => {
           }
 
           return (
-            <div key={key} className="flex items-center space-x-2">
-              <span className="text-sm w-32 capitalize">
+            <div key={key} className='flex items-center space-x-2'>
+              <span className='text-sm w-32 capitalize'>
                 {key.replace(/_/g, " ")}:
               </span>
-              <span className="text-sm capitalize">{displayValue}</span>
+              <span className='text-sm capitalize'>{displayValue}</span>
             </div>
           );
         })}

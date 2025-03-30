@@ -1,13 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
-import FormInput from "@/components/app/form/form-input";
-import FormTextArea from "@/components/app/form/form-textarea";
 import axiosAuth from "@/lib/axios-auth";
 import { useFormHandler } from "@/hooks/use-form-handler";
 import { showToast } from "@/components/app/toast";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { useDispatch } from "react-redux";
+import { FormInput, FormTextArea } from "@/components/app/form";
 import {
   DialogContent,
   DialogHeader,
