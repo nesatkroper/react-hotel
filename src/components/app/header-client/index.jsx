@@ -12,9 +12,19 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LogOut, ReceiptIcon, User } from "lucide-react";
+import { AlignJustify, LogOut, ReceiptIcon, User } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTrigger,
+  SheetTitle,
+} from "@/components/ui/sheet";
+import "@/assets/css/client.css";
 
 const HeaderClient = () => {
+  const isMobile = useIsMobile();
   return (
     <header className='sticky top-0 z-50'>
       <Card className='rounded-none py-2 mb-6 w-full '>
@@ -23,34 +33,51 @@ const HeaderClient = () => {
             <img src={Logo} className='h-8' alt='logo' />
             <p className='font-bold text-md'>Nun Hotel</p>
           </a>
-          <div className='flex gap-2'>
+          <div className='flex gap-1'>
+            <a href='/test'>go to test</a>
             <ModeToggle />
             <LanguageToggle />
-
-            <DropdownMenu>
-              <DropdownMenuTrigger>
-                <Avatar>
-                  <AvatarImage src='https://github.com/shadcn.png' />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <User />
-                  Profile
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <ReceiptIcon />
-                  Billing
-                </DropdownMenuItem>
-                <DropdownMenuItem className='text-red-500'>
-                  <LogOut />
-                  Logout
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            {isMobile ? (
+              <Sheet>
+                <SheetTrigger>
+                  <AlignJustify className='ms-1 cursor-pointer' />
+                </SheetTrigger>
+                <SheetContent>
+                  <SheetHeader className='flex flex-row gap-3 items-center'>
+                    <Avatar>
+                      <AvatarImage src='https://github.com/shadcn.png' />
+                      <AvatarFallback>CN</AvatarFallback>
+                    </Avatar>
+                    <SheetTitle className='text-md m-0'>Suon Phanun</SheetTitle>
+                  </SheetHeader>
+                </SheetContent>
+              </Sheet>
+            ) : (
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  <Avatar>
+                    <AvatarImage src='https://github.com/shadcn.png' />
+                    <AvatarFallback>CN</AvatarFallback>
+                  </Avatar>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>
+                    <User />
+                    Profile
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <ReceiptIcon />
+                    Billing
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className='text-red-500'>
+                    <LogOut />
+                    Logout
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
           </div>
         </CardContent>
       </Card>

@@ -1,31 +1,30 @@
-import { generateColumns } from "@/components/app/table/generate-column";
-import { getDepartments } from "@/contexts/reducer/department-slice";
 import React from "react";
 import DepartmentUpdate from "./department-update";
 import PropTypes from "prop-types";
+import { generateColumns } from "@/components/app/table/generate-column";
+import { getDepartments } from "@/contexts/reducer/department-slice";
+import { useTranslation } from "react-i18next";
 
-const departmentFields = [
-  { key: "department_name", label: "Department Name" },
-  { key: "department_code", label: "Department Code" },
-  { key: "memo", label: "Description" },
-  { key: "status", label: "Status" },
-];
-
-const DepartmentUpdateWrapper = ({ item }) => {
+const DepartmentEditWrapper = ({ item }) => {
   return <DepartmentUpdate items={item} />;
 };
 
-export const DepartmentColumns = (() => {
-  const createEditComponent = (item) => <DepartmentUpdateWrapper item={item} />;
+export const DepartmentColumns = () => {
+  const [t] = useTranslation("admin");
 
   return generateColumns(
-    departmentFields,
-    createEditComponent,
+    [
+      { key: "departmentName", label: t("table.dep.name") },
+      { key: "departmentCode", label: t("table.dep.code") },
+      { key: "memo", label: t("table.desc") },
+      { key: "status", label: t("table.status") },
+    ],
+    (item) => <DepartmentEditWrapper item={item} />,
     "department",
     getDepartments
   );
-})();
+};
 
-DepartmentUpdateWrapper.propTypes = {
+DepartmentEditWrapper.propTypes = {
   item: PropTypes.object,
 };

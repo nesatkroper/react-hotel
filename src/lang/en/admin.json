@@ -1,7 +1,7 @@
 {
   "lang": {
-    "kh": "Khmer",
-    "en": "English"
+    "en": "English",
+    "kh": "Khmer"
   },
   "header": {
     "app_name": "Cambodia Drug Dealer University"
@@ -36,7 +36,8 @@
     "logout": "Logout",
     "profile": "Profile",
     "project": "Project",
-    "platform": "Platform"
+    "platform": "Platform",
+    "search": "Search something ..."
   },
   "home": {
     "body": "lorem ipsum dolor sit amet, consectetur adip"
@@ -49,6 +50,11 @@
     "restore": "Resote Item"
   },
   "table": {
+    "next": "Next",
+    "prev": "Previous",
+    "nores": "No results.",
+    "selected": "row(s) selected.",
+    "of": " of ",
     "no": "No.",
     "row": "Rows",
     "col": "Column",
@@ -59,35 +65,49 @@
     "name": "Name",
     "gen": "Gender",
     "tel": "Phone",
-    "dep": "Department",
-    "pos": "Position",
     "subject": "Subject",
     "salary": "Salary",
     "pay": "Payment",
     "status": "Status",
     "action": "Action",
     "address": "Adress",
+    "desc": "Description",
+    "opt": {
+      "act": "Actions",
+      "ope": "Open menu",
+      "view": "View Item",
+      "edit": "Edit Item",
+      "remove": "Remove Item",
+      "restore": "Resote Item"
+    },
     "room": {
       "name": "Room Name",
       "type": "Room Type",
       "price": "Price",
-      "desc": "Description",
       "dis": "Discount Rate",
       "total": "Total Room",
       "size": "Room Size",
       "bed": "Bed Type",
       "capacity": "Capacity",
       "ac": "AC",
-      "view": "Room View",
-      "wifi": "Wifi",
-      "tv": "TV",
+      "peo": "People",
+      "m": "m²",
       "bath": "Bathroom",
       "breakfast": "Breakfast",
       "lunch": "Lunch",
       "dinner": "Dinner"
+    },
+    "dep": {
+      "name": "Department Name",
+      "code": "Department Code"
+    },
+    "pos": {
+      "name": "Position Name",
+      "code": "Position Code"
     }
   },
-  "pos": {
-    "name": "Position Name"
+  "toast": {
+    "remove": "Are you sure to remove this item?",
+    "restore": "This item will be restore."
   }
 }

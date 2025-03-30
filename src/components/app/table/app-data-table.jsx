@@ -147,7 +147,7 @@ const AppDataTable = (props) => {
                 <CardTitle>{`${title} Table`}</CardTitle>
                 <CardDescription>{des || "Card Description"}</CardDescription>
               </div>
-              <DialogTrigger>
+              <DialogTrigger asChild>
                 <motion.button
                   whileHover={{ scale: 1.01 }}
                   whileTap={{ scale: 0.95 }}
@@ -275,6 +275,7 @@ const AppDataTable = (props) => {
                           initial='hidden'
                           animate='visible'
                           custom={index}
+                          className='border-b'
                           data-state={row.getIsSelected() && "selected"}>
                           {row.getVisibleCells()?.map((cell) => (
                             <TableCell
@@ -307,7 +308,7 @@ const AppDataTable = (props) => {
                         <TableCell
                           colSpan={columns.length}
                           className='h-24 text-center'>
-                          No results.
+                          {t("table.nores")}
                         </TableCell>
                       </TableRow>
                     )}
@@ -317,8 +318,9 @@ const AppDataTable = (props) => {
             </div>
             <div className='flex items-center justify-end space-x-2 pt-4'>
               <div className='flex-1 text-sm text-muted-foreground'>
-                {table.getFilteredSelectedRowModel().rows.length} of{" "}
-                {table.getFilteredRowModel().rows.length} row(s) selected.
+                {table.getFilteredSelectedRowModel().rows.length}
+                {t("table.of")}
+                {table.getFilteredRowModel().rows.length} {t("table.selected")}
               </div>
               <div className='space-x-2'>
                 <motion.button
@@ -327,7 +329,7 @@ const AppDataTable = (props) => {
                   className='inline-flex items-center justify-center rounded-md text-sm font-medium border h-8 px-4 py-2'
                   onClick={() => table.previousPage()}
                   disabled={!table.getCanPreviousPage()}>
-                  Previous
+                  {t("table.prev")}
                 </motion.button>
                 <motion.button
                   whileHover={{ scale: 1.05 }}
@@ -335,7 +337,7 @@ const AppDataTable = (props) => {
                   className='inline-flex items-center justify-center rounded-md text-sm font-medium border h-8 px-4 py-2'
                   onClick={() => table.nextPage()}
                   disabled={!table.getCanNextPage()}>
-                  Next
+                  {t("table.next")}
                 </motion.button>
               </div>
             </div>

@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next";
 
 const App = () => {
   const { i18n } = useTranslation();
-  const font = i18n.language === "kh" ? "font-khmer" : "font-poppins";
+  const font = i18n.language === "kh" ? "font-kh" : "font-en";
 
   return (
     <ThemeProvider defaultTheme='dark' storageKey='vite-ui-theme'>

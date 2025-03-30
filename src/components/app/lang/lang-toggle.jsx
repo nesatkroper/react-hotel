@@ -13,7 +13,7 @@ import { Languages } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 const LanguageToggle = () => {
-  const [lang, i18n] = useTranslation("admin");
+  const [t, i18n] = useTranslation("admin");
   const [langKey, setLangKey] = useState();
 
   useEffect(() => {
@@ -27,7 +27,7 @@ const LanguageToggle = () => {
   };
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger>
+      <DropdownMenuTrigger asChild>
         <Button variant='ghost' size='icon'>
           <Languages />
         </Button>
@@ -39,7 +39,7 @@ const LanguageToggle = () => {
             alt='flag'
             className='h-[20px] rounded-sm shadow-sm'
           />
-          {lang("lang.en")}
+          {t("lang.en")}
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={() => hangleChangeLanguage("kh")}>
@@ -48,7 +48,7 @@ const LanguageToggle = () => {
             alt='flag'
             className='h-[20px] rounded-sm shadow-sm'
           />
-          {lang("lang.kh")}
+          {t("lang.kh")}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

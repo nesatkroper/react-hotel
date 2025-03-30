@@ -1,99 +1,150 @@
 import axiosInstance from "@/lib/axios-instance";
-import CryptoJS from "crypto-js";
+import localForage from "localforage";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { getFromCache, saveToCache } from "./cache";
 
-const SECRET_KEY = import.meta.env.VITE_APP_CACHE_KEY;
+const storage = localForage.createInstance({
+  name: "reserve-cache",
+  storeName: "api_responses",
+  description: "Cached API responses",
+});
 
-const saveToSessionStorage = (key, value) => {
+const clearCacheItem = async (key) => {
   try {
-    const dataString = JSON.stringify(value);
-
-    const encryptedData = CryptoJS.AES.encrypt(
-      dataString,
-      SECRET_KEY
-    ).toString();
-
-    sessionStorage.setItem(key, encryptedData);
+    await storage.removeItem(key);
   } catch (e) {
-    console.error("Error saving to sessionStorage:", e);
+    console.error("Error clearing cache item:", e);
   }
 };
 
-const getFromSessionStorage = (key) => {
-  try {
-    const encryptedData = sessionStorage.getItem(key);
-    if (!encryptedData) return null;
+export const createClearCacheThunk = (prefix) =>
+  createAsyncThunk(`${prefix}/clearCache`, async () => {
+    try {
+      const keys = await storage.keys();
+      await Promise.all(
+        keys.map((key) =>
+          key.startsWith(`${prefix}_`)
+            ? storage.removeItem(key)
+            : Promise.resolve()
+        )
+      );
+    } catch (e) {
+      console.error("Failed to clear cache:", e);
+      throw e;
+    }
+  });
 
-    const bytes = CryptoJS.AES.decrypt(encryptedData, SECRET_KEY);
-    const decryptedData = bytes.toString(CryptoJS.enc.Utf8);
+export const createApiThunk = (name, endpoint, options = {}) => {
+  const {
+    cacheEnabled = true,
+    cacheExpiration = 12 * 60 * 60 * 1000,
+    invalidateOnMutation = true,
+  } = options;
 
-    return JSON.parse(decryptedData);
-  } catch (e) {
-    console.error("Error reading from sessionStorage:", e);
-    return null;
-  }
-};
-
-export const createApiThunk = (name, endpoint, save = true) => {
   return createAsyncThunk(
     name,
-    async ({ id, ...params } = {}, { rejectWithValue }) => {
-      const storageKey = `${name}_data`;
-      const storedData = getFromSessionStorage(storageKey);
-      const cacheExpiration = 12 * 60 * 60 * 1000;
+    async (
+      { id, params = {}, payload, method = "GET" } = {},
+      { rejectWithValue }
+    ) => {
+      const cacheKey = `${name}_${id || ""}_${JSON.stringify(params)}`;
 
-      if (
-        storedData &&
-        storedData.data &&
-        storedData.data.length > 0 &&
-        Date.now() - storedData.lastFetched < cacheExpiration
-      ) {
-        return { data: storedData.data, meta: storedData.meta };
+      if (cacheEnabled && method === "GET") {
+        const cachedData = await getFromCache(cacheKey);
+        if (
+          cachedData &&
+          Date.now() - cachedData.lastFetched < cacheExpiration
+        ) {
+          return cachedData.data;
+        }
       }
 
       try {
+        let response;
         const queryParams = new URLSearchParams(params).toString();
-        const url = id
-          ? `${endpoint}/${id}?${queryParams}`
-          : `${endpoint}?${queryParams}`;
 
-        const response = await axiosInstance.get(url);
-        const { data, meta } = response.data;
+        switch (method) {
+          case "GET": {
+            const url = id
+              ? `${endpoint}/${id}?${queryParams}`
+              : `${endpoint}?${queryParams}`;
+            response = await axiosInstance.get(url);
 
-        if (save)
-          saveToSessionStorage(storageKey, {
-            data,
-            meta,
-            lastFetched: Date.now(),
-          });
+            break;
+          }
+          case "POST":
+            response = await axiosInstance.post(endpoint, payload);
+            break;
+          case "PUT":
+            response = await axiosInstance.put(`${endpoint}/${id}`, payload);
+            break;
+          case "DELETE":
+            response = await axiosInstance.delete(`${endpoint}/${id}`);
+            if (invalidateOnMutation) {
+              await clearCacheItem(`${name}_data`);
+            }
+            break;
+          default:
+            throw new Error(`Unsupported method: ${method}`);
+        }
 
-        return { data, meta };
+        const apiData = response.data?.data || response.data;
+        const result = {
+          data: Array.isArray(apiData) ? apiData : [apiData],
+          meta: response.data?.meta || {
+            total: response.data?.data?.length || 0,
+            page: 1,
+            limit: 10,
+            totalPages: 0,
+          },
+        };
+
+        if (cacheEnabled && method === "GET") {
+          await saveToCache(cacheKey, result);
+        }
+
+        return result;
       } catch (error) {
-        return rejectWithValue(error.response?.data || "Something went wrong");
+        return rejectWithValue(error.response?.data || error.message);
       }
     }
   );
 };
 
-export const createGenericSlice = (name, apiThunk) => {
-  const storageKey = `${apiThunk.typePrefix}_data`;
-  const storedData = getFromSessionStorage(storageKey);
+export const createGenericSlice = (name, apiThunk, initialState = {}) => {
+  const clearCacheThunk = createClearCacheThunk(apiThunk.typePrefix);
 
-  return createSlice({
+  const initialCacheState = {
+    data: [],
+    meta: { total: 0, page: 1, limit: 10, totalPages: 0 },
+    loading: false,
+    error: null,
+    lastFetched: null,
+    ...initialState,
+  };
+
+  const slice = createSlice({
     name,
-    initialState: {
-      data: storedData?.data || [],
-      meta: storedData?.meta || { total: 0, page: 1, limit: 0, totalPages: 0 },
-      loading: false,
-      error: null,
-      lastFetched: storedData?.lastFetched || null,
-    },
+    initialState: initialCacheState,
     reducers: {
       clearCache: (state) => {
-        state.data = [];
-        state.meta = { total: 0, page: 1, limit: 0, totalPages: 0 };
-        state.lastFetched = null;
-        sessionStorage.removeItem(storageKey);
+        Object.assign(state, initialCacheState);
+      },
+      updateItem: (state, action) => {
+        const index = state.data.findIndex(
+          (item) => item.id === action.payload.id
+        );
+        if (index !== -1) {
+          state.data[index] = { ...state.data[index], ...action.payload };
+        }
+      },
+      addItem: (state, action) => {
+        state.data.unshift(action.payload);
+        state.meta.total += 1;
+      },
+      removeItem: (state, action) => {
+        state.data = state.data.filter((item) => item.id !== action.payload);
+        state.meta.total = Math.max(0, state.meta.total - 1);
       },
     },
     extraReducers: (builder) => {
@@ -105,18 +156,27 @@ export const createGenericSlice = (name, apiThunk) => {
         .addCase(apiThunk.fulfilled, (state, action) => {
           state.loading = false;
           state.data = action.payload.data || [];
-          state.meta = action.payload.meta || {
-            total: 0,
-            page: 1,
-            limit: 0,
-            totalPages: 0,
-          };
+          state.meta = action.payload.meta || initialCacheState.meta;
           state.lastFetched = Date.now();
         })
         .addCase(apiThunk.rejected, (state, action) => {
           state.loading = false;
           state.error = action.payload;
+        })
+        .addCase(clearCacheThunk.pending, (state) => {
+          state.loading = true;
+        })
+        .addCase(clearCacheThunk.fulfilled, (state) => {
+          state.loading = false;
+        })
+        .addCase(clearCacheThunk.rejected, (state) => {
+          state.loading = false;
         });
     },
   });
+
+  return {
+    ...slice,
+    clearCacheAsync: clearCacheThunk,
+  };
 };

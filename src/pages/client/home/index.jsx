@@ -3,6 +3,7 @@ import LayoutClient from "@/layout/layout-client";
 import CarouselImage from "@/components/app/carousel";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 60 },
@@ -34,6 +35,7 @@ const staggerContainer = {
 
 const HomeClient = () => {
   const [lang] = useTranslation("client");
+  const isMobile = useIsMobile();
 
   return (
     <LayoutClient>
@@ -51,7 +53,7 @@ const HomeClient = () => {
         whileInView='visible'
         viewport={{ once: true, amount: 0.3 }}
         variants={fadeInUp}>
-        <CarouselImage delay={5000} height={500} />
+        <CarouselImage delay={5000} height={isMobile ? 180 : 400} />
       </motion.div>
 
       <motion.p

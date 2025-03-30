@@ -1,28 +1,29 @@
+import React, { useEffect } from "react";
+import PropTypes from "prop-types";
+import FormInput from "@/components/app/form/form-input";
+import FormComboBox from "@/components/app/form/form-combobox";
+import FormTextArea from "@/components/app/form/form-textarea";
+import axiosAuth from "@/lib/axios-auth";
+import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
+import { clearCache, getPositions } from "@/contexts/reducer/position-slice";
+import { useDispatch, useSelector } from "react-redux";
+import { getDepartments } from "@/contexts/reducer/department-slice";
+import { useFormHandler } from "@/hooks/use-form-handler";
 import {
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogClose,
 } from "@/components/ui/dialog";
-import React, { useEffect } from "react";
-import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
-import { clearCache, getPositions } from "@/contexts/reducer/position-slice";
-import { useDispatch, useSelector } from "react-redux";
-import { getDepartments } from "@/contexts/reducer/department-slice";
-import PropTypes from "prop-types";
-import FormInput from "@/components/app/form/form-input";
-import FormComboBox from "@/components/app/form/form-combobox";
-import FormTextArea from "@/components/app/form/form-textarea";
-import axiosAuth from "@/lib/axios-auth";
-import { useFormHandler } from "@/hooks/use-form-handler";
+import { showToast } from "@/components/app/toast";
 
-const PositionAdd = ({ lastCode }) => {
+const PositionAdd = () => {
   const dispatch = useDispatch();
   const { data: depData } = useSelector((state) => state.departments);
-  const { formData, setFormData, handleChange } = useFormHandler({
-    department_id: 0,
-    position_name: "",
+  const { formData, resetForm, handleChange } = useFormHandler({
+    departmentId: 0,
+    positionName: "",
     memo: "",
   });
 
@@ -32,17 +33,22 @@ const PositionAdd = ({ lastCode }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
-    try {
-      await axiosAuth.post("/position", formData);
 
-      dispatch(clearCache());
-      dispatch(getPositions({ department: true }));
-      setFormData({
-        department_id: 0,
-        position_name: "",
-        memo: "",
-      });
+    try {
+      await axiosAuth
+        .post("/position", formData)
+        .then((res) => {
+          console.table(res);
+          showToast(`${formData.positionName} Add Successfully.`, "success");
+          resetForm();
+          dispatch(clearCache());
+          dispatch(
+            getPositions({ params: { status: "all", department: true } })
+          );
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     } catch (e) {
       console.log(e);
     }
@@ -51,41 +57,38 @@ const PositionAdd = ({ lastCode }) => {
     <DialogContent>
       <form onSubmit={handleSubmit}>
         <DialogHeader>
-          <DialogTitle>Position Details Information.</DialogTitle>
+          <DialogTitle className='text-md'>
+            Position Details Information.
+          </DialogTitle>
         </DialogHeader>
         <Separator className='my-3' />
         <div className='flex justify-between mb-3'>
           <FormInput
             onCallbackInput={handleChange}
-            name='position_name'
-            value={formData.department_name}
+            name='positionName'
+            value={formData.departmentName}
             label='Position Name*'
             placeholder='IT, Finance, ...'
             required={true}
           />
-          <FormInput
-            label='Position Code'
-            value={`POS-${(lastCode + 1).toString().padStart(4, "0")}`}
-          />
-        </div>
-        <div className='flex justify-between mb-3'>
           <FormComboBox
-            onCallbackSelect={(val) => handleChange("department_id", val)}
-            name='department_id'
+            onCallbackSelect={(val) => handleChange("departmentId", val)}
+            name='departmentId'
             label='Department'
             item={depData}
-            optID='department_id'
-            optLabel='department_name'
-          />
-          <FormTextArea
-            onCallbackInput={handleChange}
-            label='Decription'
-            name='memo'
-            mainClass='w-[250px]'
-            placeholder='N/A'
+            optID='departmentId'
+            optLabel='departmentName'
           />
         </div>
-        <DialogClose>
+
+        <FormTextArea
+          onCallbackInput={handleChange}
+          label='Decription'
+          name='memo'
+          placeholder='N/A'
+        />
+
+        <DialogClose asChild>
           <Button type='submit' className='w-full'>
             Submit
           </Button>

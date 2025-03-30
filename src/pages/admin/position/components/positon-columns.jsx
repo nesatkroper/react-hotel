@@ -1,31 +1,30 @@
-import { generateColumns } from "@/components/app/table/generate-column";
-import { getPositions } from "@/contexts/reducer/position-slice";
 import PositionUpdate from "./position-update";
 import React from "react";
 import PropTypes from "prop-types";
+import { generateColumns } from "@/components/app/table/generate-column";
+import { getPositions } from "@/contexts/reducer/position-slice";
+import { useTranslation } from "react-i18next";
 
-const PositionUpdateWrapper = ({ item }) => {
+const PositionEditWrapper = ({ item }) => {
   return <PositionUpdate items={item} />;
 };
 
-export const PositionColumns = (() => {
-  const createEditComponent = (item) => <PositionUpdateWrapper item={item} />;
+export const PositionColumns = () => {
+  const [t] = useTranslation("admin");
 
-  const columns = generateColumns(
+  return generateColumns(
     [
-      { key: "position_name", label: "pos.name" },
-      { key: "position_code", label: "Position Code" },
-      { key: "department.department_name", label: "Department" },
-      { key: "status", label: "Status" },
+      { key: "positionName", label: t("table.pos.name") },
+      { key: "positionCode", label: t("table.pos.code") },
+      { key: "department.departmentName", label: t("table.dep.name") },
+      { key: "status", label: t("table.status") },
     ],
-    createEditComponent,
+    (item) => <PositionEditWrapper item={item} />,
     "position",
     getPositions
   );
+};
 
-  return columns;
-})();
-
-PositionUpdateWrapper.propTypes = {
+PositionEditWrapper.propTypes = {
   item: PropTypes.object,
 };

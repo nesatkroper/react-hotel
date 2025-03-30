@@ -84,7 +84,7 @@ const RoomPictureAdd = () => {
           />
         </div>
 
-        <DialogClose className='mt-2'>
+        <DialogClose asChild className='mt-2'>
           <Button type='submit'>Submit</Button>
         </DialogClose>
       </form>

@@ -1,40 +1,43 @@
+import React from "react";
+import PropTypes from "prop-types";
+import FormInput from "@/components/app/form/form-input";
+import FormTextArea from "@/components/app/form/form-textarea";
+import axiosAuth from "@/lib/axios-auth";
+import { useFormHandler } from "@/hooks/use-form-handler";
+import { showToast } from "@/components/app/toast";
+import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
+import { useDispatch } from "react-redux";
 import {
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogClose,
 } from "@/components/ui/dialog";
-import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
-import React from "react";
-import { useDispatch } from "react-redux";
 import {
   clearCache,
   getDepartments,
 } from "@/contexts/reducer/department-slice";
-import PropTypes from "prop-types";
-import FormInput from "@/components/app/form/form-input";
-import FormTextArea from "@/components/app/form/form-textarea";
-import axiosAuth from "@/lib/axios-auth";
-import { useFormHandler } from "@/hooks/use-form-handler";
 
-const DepartmentAdd = ({ lastCode }) => {
+const DepartmentAdd = () => {
   const dispatch = useDispatch();
   const { formData, resetForm, handleChange } = useFormHandler({
-    department_name: "",
+    departmentName: "",
     memo: "",
   });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.table(formData);
     try {
       await axiosAuth
         .post("/department", formData)
         .then((res) => {
           console.log(res);
+          showToast(`${formData.departmentName} Add Successfully.`, "success");
           dispatch(clearCache());
           resetForm();
-          dispatch(getDepartments({ status: "all" }));
+          dispatch(getDepartments({ params: { status: "all" } }));
         })
         .catch((err) => {
           console.log(err);
@@ -54,8 +57,8 @@ const DepartmentAdd = ({ lastCode }) => {
         <div className='flex justify-between mb-3'>
           <FormInput
             onCallbackInput={handleChange}
-            name='department_name'
-            value={formData.department_name}
+            name='departmentName'
+            value={formData.departmentName}
             label='Department Name*'
             type='text'
             placeholder='IT, Finance, ...'
@@ -63,7 +66,8 @@ const DepartmentAdd = ({ lastCode }) => {
           />
           <FormInput
             label='Department Code*'
-            value={`DEP-${(lastCode + 1).toString().padStart(3, "0")}`}
+            name='id'
+            value={`DEP-Something`}
           />
         </div>
         <FormTextArea
@@ -72,7 +76,7 @@ const DepartmentAdd = ({ lastCode }) => {
           name='memo'
           placeholder='N/A'
         />
-        <DialogClose>
+        <DialogClose asChild>
           <Button type='submit' className='w-full'>
             Submit
           </Button>

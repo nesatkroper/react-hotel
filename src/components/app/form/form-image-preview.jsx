@@ -1,16 +1,21 @@
+import React from "react";
+import { PropTypes } from "prop-types";
 import { Label } from "@/components/ui/label";
 import { defimg } from "@/utils/resize-crop-image";
-import { PropTypes } from "prop-types";
-import React from "react";
 
-const FormImagePreview = (props) => {
-  const { imgSrc, labelClass, imgClass, size, label } = props;
+const FormImagePreview = ({
+  imgSrc = null,
+  labelClass = "",
+  imgClass = "",
+  size = 250,
+  label = "Picture Preview",
+}) => {
   return (
-    <div className="flex flex-col gap-2">
+    <div className='flex flex-col gap-2'>
       <Label className={labelClass}>{label}</Label>
       <img
         src={imgSrc || defimg}
-        alt="picture preview"
+        alt='picture preview'
         className={`w-[${size}px] rounded-xl shadow ${imgClass}`}
       />
     </div>
@@ -24,13 +29,4 @@ FormImagePreview.propTypes = {
   size: PropTypes.number,
   label: PropTypes.string,
 };
-
-FormImagePreview.defaultProps = {
-  imgSrc: null,
-  labelClass: "",
-  imgClass: "",
-  size: 250,
-  label: "Picture Preview",
-};
-
 export default FormImagePreview;

@@ -1,5 +1,11 @@
-import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import React from "react";
+import NotificationSheet from "./notification-sheet";
+import GroupChat from "./group-chat";
+import AppSearchBar from "./app-search-bar";
+import chatSound from "@/assets/mp3/chat.wav";
+import useSound from "../sound/use-sound";
+import LanguageToggle from "../lang/lang-toggle";
+import { Dialog, DialogTrigger, DialogTitle } from "@/components/ui/dialog";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -10,37 +16,31 @@ import { useEffect, useState } from "react";
 import { ModeToggle } from "../theme/mode-toggle";
 import { io } from "socket.io-client";
 import { apiUrl } from "@/lib/api";
-import NotificationSheet from "./notification-sheet";
-import GroupChat from "./group-chat";
-import AppSearchBar from "./app-search-bar";
-import chatSound from "@/assets/mp3/chat.wav";
-import useSound from "../sound/use-sound";
-import LanguageToggle from "../lang/lang-toggle";
+import { useTranslation } from "react-i18next";
 
 const SOCKET = io(apiUrl);
 
 const AppHeader = () => {
   const play = useSound(chatSound);
+  const [t, i18n] = useTranslation("admin");
   const [notiCount] = useState(2);
   const [chatcount, setChatcount] = useState(0);
   const [unreadMessages, setUnreadMessages] = useState([]);
   const [isChatOpen, setIsChatOpen] = useState(false);
-  const [date, setDate] = useState(
-    new Date().toLocaleString("en-US", {
-      dateStyle: "long",
-      timeStyle: "medium",
-    })
-  );
+  const [date, setDate] = useState("");
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setDate(
-        new Date().toLocaleString("en-US", {
-          dateStyle: "long",
-          timeStyle: "medium",
-        })
-      );
-    }, 1000);
+    const updateDateTime = () => {
+      const locale = i18n.language == "kh" ? "km-KH" : "en-US";
+      const dateTime = new Date().toLocaleString(locale, {
+        dateStyle: "long",
+        timeStyle: "medium",
+      });
+      setDate(dateTime);
+    };
+
+    updateDateTime();
+    const interval = setInterval(updateDateTime, 1000);
 
     SOCKET.on("receiveGroup", (message) => {
       play();
@@ -54,7 +54,7 @@ const AppHeader = () => {
       clearInterval(interval);
       SOCKET.off("receiveGroup");
     };
-  }, [isChatOpen]);
+  }, [isChatOpen, i18n.language]);
 
   const handleChatOpen = () => {
     setIsChatOpen(true);
@@ -74,12 +74,13 @@ const AppHeader = () => {
       </div>
       <div className='flex gap-1'>
         <Dialog>
+          <DialogTitle></DialogTitle>
           <DialogTrigger asChild>
             <Button
               variant='outline'
-              className='ps-8 text-muted-foreground h-[32px] relative'>
+              className='ps-8 text-muted-foreground h-[32px] min-w-52 relative text-start'>
               <Search className='absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground' />
-              Search something ...
+              {t("sidebar.search")}
             </Button>
           </DialogTrigger>
           <AppSearchBar />
@@ -90,7 +91,7 @@ const AppHeader = () => {
           }>
           <GroupChat messages={unreadMessages} />
           <SheetTrigger asChild>
-            <Button variant='icon' className='p-2'>
+            <Button variant='ghost' className='p-2'>
               <Mail />
             </Button>
           </SheetTrigger>
@@ -100,7 +101,7 @@ const AppHeader = () => {
           <NotificationSheet />
           <SheetTrigger asChild>
             <div className='relative'>
-              <Button variant='icon' className='p-2'>
+              <Button variant='ghost' className='p-2'>
                 <BellRing size={28} />
               </Button>
               {notiCount > 0 && (

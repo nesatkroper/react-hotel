@@ -1,3 +1,5 @@
+import React, { useState, useCallback } from "react";
+import Cropper from "react-easy-crop";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -8,8 +10,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import React, { useState, useCallback } from "react";
-import Cropper from "react-easy-crop";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
@@ -19,8 +19,7 @@ import { defimg } from "@/utils/resize-crop-image";
 import { Button } from "@/components/ui/button";
 import { PropTypes } from "prop-types";
 
-const FormImageResize = (props) => {
-  const { onCallbackFormData, resolution = 600 } = props;
+const FormImageResize = ({ onCallbackFormData, resolution = 600 }) => {
   const [imageSrc, setImageSrc] = useState(defimg);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
@@ -133,10 +132,10 @@ const FormImageResize = (props) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-2 w-[250px]">
+    <div onSubmit={handleSubmit} className='flex flex-col gap-2 w-[250px]'>
       <AlertDialog>
         <AlertDialogTrigger>
-          <Input type="file" accept="image/*" onChange={handleFileUpload} />
+          <Input type='file' accept='image/*' onChange={handleFileUpload} />
         </AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -146,42 +145,41 @@ const FormImageResize = (props) => {
 
           <RadioGroup
             onValueChange={handleAspectChange}
-            defaultValue="1x1"
-            className="flex justify-between"
-          >
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="1x1" id="1x1" />
-              <Label htmlFor="1x1" className="font-bold">
+            defaultValue='1x1'
+            className='flex justify-between'>
+            <div className='flex items-center space-x-2'>
+              <RadioGroupItem value='1x1' id='1x1' />
+              <Label htmlFor='1x1' className='font-bold'>
                 1 : 1
               </Label>
             </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="3x2" id="3x2" />
-              <Label htmlFor="3x2" className="font-bold">
+            <div className='flex items-center space-x-2'>
+              <RadioGroupItem value='3x2' id='3x2' />
+              <Label htmlFor='3x2' className='font-bold'>
                 3 : 2
               </Label>
             </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="2x3" id="2x3" />
-              <Label htmlFor="2x3" className="font-bold">
+            <div className='flex items-center space-x-2'>
+              <RadioGroupItem value='2x3' id='2x3' />
+              <Label htmlFor='2x3' className='font-bold'>
                 2 : 3
               </Label>
             </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="16x9" id="16x9" />
-              <Label htmlFor="16x9" className="font-bold">
+            <div className='flex items-center space-x-2'>
+              <RadioGroupItem value='16x9' id='16x9' />
+              <Label htmlFor='16x9' className='font-bold'>
                 16 : 9
               </Label>
             </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="20x10" id="20x10" />
-              <Label htmlFor="20x10" className="font-bold">
+            <div className='flex items-center space-x-2'>
+              <RadioGroupItem value='20x10' id='20x10' />
+              <Label htmlFor='20x10' className='font-bold'>
                 20 : 10
               </Label>
             </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="21x9" id="21x9" />
-              <Label htmlFor="21x9" className="font-bold">
+            <div className='flex items-center space-x-2'>
+              <RadioGroupItem value='21x9' id='21x9' />
+              <Label htmlFor='21x9' className='font-bold'>
                 21 : 9
               </Label>
             </div>
@@ -194,8 +192,7 @@ const FormImageResize = (props) => {
                 position: "relative",
                 height: "400px",
                 width: "100%",
-              }}
-            >
+              }}>
               <Cropper
                 image={imageSrc}
                 crop={crop}
@@ -209,13 +206,13 @@ const FormImageResize = (props) => {
           )}
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <Button onClick={handleSubmit} className="p-0">
+            <Button onClick={handleSubmit} className='p-0'>
               <AlertDialogAction>Continue</AlertDialogAction>
             </Button>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </form>
+    </div>
   );
 };
 

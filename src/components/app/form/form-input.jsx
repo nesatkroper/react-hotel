@@ -42,14 +42,14 @@ const FormInput = (props) => {
         step={step}
         required={required}
       />
-      {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+      {error && <p className='text-red-500 text-sm mt-1'>{error}</p>}
     </div>
   );
 };
 
 FormInput.propTypes = {
   onCallbackInput: PropTypes.func,
-  name: PropTypes.string.isRequired,
+  name: PropTypes.string,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   type: PropTypes.string,
   mainClass: PropTypes.string,

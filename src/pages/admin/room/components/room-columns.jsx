@@ -1,7 +1,7 @@
 import React from "react";
 import RoomEdit from "./room-edit";
-import { generateColumns } from "@/components/app/table/generate-column";
 import PropTypes from "prop-types";
+import { generateColumns } from "@/components/app/table/generate-column";
 import { getRooms } from "@/contexts/reducer";
 import { useTranslation } from "react-i18next";
 

@@ -48,10 +48,19 @@ const imageFadeIn = {
   },
 };
 
-const CarouselImage = ({ items, loop, auto, delay, height, split, slice }) => {
+const CarouselImage = ({
+  items,
+  loop,
+  auto,
+  delay,
+  height,
+  split,
+  slice,
+  className,
+}) => {
   return (
     <Carousel
-      className='w-full min-w-[20rem]'
+      className={`w-full min-w-[20rem] ${className}`}
       opts={{
         align: "start",
         loop: loop,
@@ -82,8 +91,8 @@ const CarouselImage = ({ items, loop, auto, delay, height, split, slice }) => {
           </CarouselItem>
         ))}
       </CarouselContent>
-      <CarouselPrevious className='hidden md:flex' />{" "}
-      <CarouselNext className='hidden md:flex' />
+      <CarouselPrevious className='hidden md:flex ms-3' />{" "}
+      <CarouselNext className='hidden md:flex me-3' />
     </Carousel>
   );
 };
@@ -94,13 +103,14 @@ CarouselImage.propTypes = {
       name: PropTypes.string,
       src: PropTypes.string,
     })
-  ),
+  ).isRequired,
   loop: PropTypes.bool,
   auto: PropTypes.bool,
   delay: PropTypes.number,
   height: PropTypes.number,
   split: PropTypes.bool,
   slice: PropTypes.number,
+  className: PropTypes.string,
 };
 
 CarouselImage.defaultProps = {

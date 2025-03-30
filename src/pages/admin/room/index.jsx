@@ -20,7 +20,12 @@ const Room = () => {
 
   const refresh = () => {
     dispatch(clearCache());
-    getRooms({ status: "all", roomtype: true, pictures: true, order: "asc" });
+    getRooms({
+      status: "all",
+      roomtype: true,
+      pictures: true,
+      order: "asc",
+    });
   };
 
   return (
@@ -33,8 +38,6 @@ const Room = () => {
         refresh={refresh}
         title='Rooms'
         main='room_name'
-        add='Add Room'
-        btnSize={240}
       />
     </Layout>
   );

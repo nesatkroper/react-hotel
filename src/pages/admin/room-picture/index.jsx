@@ -31,7 +31,7 @@ const RoomPicture = () => {
         columns={PictureColumns()}
         loading={rpiLoading}
         addElement={<RoomPictureAdd />}
-        main='room_id'
+        main='picture'
         title='Room Pictures'
         refresh={refresh}
       />

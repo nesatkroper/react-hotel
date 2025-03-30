@@ -17,8 +17,10 @@ module.exports = {
     },
     extend: {
       fontFamily: {
-        poppins: ["Poppins", "sans-serif"],
-        khmer: ["Kantumruy", "sans-serif"],
+        en: ["Poppins", "sans-serif"],
+        kh: ["Kantumruy", "sans-serif"],
+        jet: ["Jet", "sans-serif"],
+        fira: ["Fira", "sans-serif"],
       },
       borderRadius: {
         lg: "var(--radius)",

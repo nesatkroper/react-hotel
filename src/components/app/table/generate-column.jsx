@@ -20,7 +20,6 @@ import {
 import {
   ArrowUpDown,
   FilePenLine,
-  FileWarningIcon,
   Fullscreen,
   MoreHorizontal,
   Trash2,
@@ -29,13 +28,14 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { useDispatch } from "react-redux";
-import { Check, X } from "lucide-react";
-import { toast } from "sonner";
+
 import { defimg } from "@/utils/resize-crop-image";
 import { apiUrl } from "@/lib/api";
 import { cDollar, toUnit } from "@/utils/dec-format";
+import { useTranslation } from "react-i18next";
 import axiosAuth from "@/lib/axios-auth";
 import AppDetailViewer from "./app-detail-viewer";
+import { showToast } from "../toast";
 
 export const generateColumns = (
   fields,
@@ -45,11 +45,13 @@ export const generateColumns = (
   fetchFunc,
   params = {}
 ) => {
+  const [t] = useTranslation("admin");
+
   const columns = fields.map((field) => ({
     accessorKey: field.key,
     header: ({ column }) => (
       <Button
-        variant='ghost'
+        variant='icon'
         className='font-bold'
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
         {field.label} <ArrowUpDown />
@@ -58,17 +60,29 @@ export const generateColumns = (
     cell: ({ row }) => {
       const value = row.original[field.key];
 
-      if (field.key === "status" || field.key === "is_ac") {
-        return (
-          <Checkbox checked={value === "active" || value} disabled={true}>
-            {value === "active" ? <Check /> : <X />}{" "}
-          </Checkbox>
-        );
-      }
+      if (field.key === "status" || field.key === "isAc")
+        return <Checkbox checked={value === "active"} disabled={true} />;
 
-      if (field.key === "full_name") {
-        const firstName = row.original.first_name || "";
-        const lastName = row.original.last_name || "";
+      if (field.key === "salary" || field.key === "price")
+        return <div>{cDollar(value)}</div>;
+
+      if (field.key === "discountRate")
+        return <div>{toUnit(value, 0, "%")}</div>;
+
+      if (field.key === "size")
+        return <div>{toUnit(value, 2, t("table.room.m"))}</div>;
+
+      if (field.key === "capacity")
+        return <div>{toUnit(value, 0, t("table.room.peo"))}</div>;
+
+      if (field.key.includes("Code"))
+        return (
+          <div className='uppercase font-jet font-light'>{value || "N/A"}</div>
+        );
+
+      if (field.key === "fullName") {
+        const firstName = row.original.firstName || "";
+        const lastName = row.original.lastName || "";
 
         return (
           <div className='capitalize'>
@@ -77,23 +91,7 @@ export const generateColumns = (
         );
       }
 
-      if (field.key === "salary" || field.key === "price") {
-        return <div>{cDollar(value)}</div>;
-      }
-
-      if (field.key === "discount_rate") {
-        return <div>{toUnit(value, 0, "%")}</div>;
-      }
-
-      if (field.key === "size") {
-        return <div>{toUnit(value, 2, "m²")}</div>;
-      }
-
-      if (field.key === "capacity") {
-        return <div>{toUnit(value, 0, "people")}</div>;
-      }
-
-      if (field.key === "dob" || field.key === "hired_date") {
+      if (field.key === "dob" || field.key === "hiredDate") {
         const dateValue = row.original[field.key];
         if (!dateValue) return <div>N/A</div>;
         const date = new Date(dateValue);
@@ -111,7 +109,7 @@ export const generateColumns = (
         );
       }
 
-      if (field.key === "picture" || field.key === "info.picture") {
+      if (field.key === "picture" || field.key === "info.picture")
         return (
           <img
             src={`${apiUrl}/uploads/${value}`}
@@ -120,7 +118,6 @@ export const generateColumns = (
             className='h-[80px] rounded-lg'
           />
         );
-      }
 
       if (field.key.includes(".")) {
         const keys = field.key.split(".");
@@ -166,31 +163,25 @@ export const generateColumns = (
       const dispatch = useDispatch();
       const item = row.original;
       const status = item.status === "active";
-      const date = new Date();
 
       const editComponent =
         typeof editComponentCreator === "function"
           ? editComponentCreator(item)
           : null;
 
-      const showToast = () => {
-        toast.success("Status Update Successfully", {
-          description: `📅 ${date}`,
-          duration: 5000,
-          icon: <FileWarningIcon className='text-yellow-500 w-6 h-6' />,
-        });
-      };
-
       const handleDelete = async () => {
         try {
           status
             ? await axiosAuth.patch(
-                `/${model}/${item[`${model}_id`]}?type=remove`
+                `/${model}/${item[`${model}Id`]}?type=remove`
               )
             : await axiosAuth.patch(
-                `/${model}/${item[`${model}_id`]}?type=restore`
+                `/${model}/${item[`${model}Id`]}?type=restore`
               );
-          showToast();
+          showToast(
+            status ? t("toast.remove") : t("toast.restore"),
+            status ? "error" : "success"
+          );
           dispatch(clearCach());
           dispatch(fetchFunc(params));
         } catch (e) {
@@ -205,15 +196,15 @@ export const generateColumns = (
         <div className='flex justify-end'>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant='ghost' className='h-8 w-8 p-0'>
-                <span className='sr-only'>Open menu</span>
+              <Button variant='icon' className='h-8 w-8 p-0'>
+                <span className='sr-only'>{t("table.opt.ope")}</span>
                 <MoreHorizontal />
               </Button>
             </DropdownMenuTrigger>
 
             <DropdownMenuContent align='end'>
               <DropdownMenuLabel className='text-center'>
-                Actions
+                {t("table.opt.act")}
               </DropdownMenuLabel>
 
               <AlertDialog open={isViewOpen} onOpenChange={setIsViewOpen}>
@@ -224,7 +215,7 @@ export const generateColumns = (
                       setIsViewOpen(true);
                     }}>
                     <Fullscreen className='me-1' />
-                    View Item
+                    {t("table.opt.view")}
                   </DropdownMenuItem>
                 </AlertDialogTrigger>
 
@@ -249,7 +240,8 @@ export const generateColumns = (
                   {editComponent}
                   <DialogTrigger asChild>
                     <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                      <FilePenLine className='me-1' /> Edit Item
+                      <FilePenLine className='me-1' />
+                      {t("table.opt.edit")}
                     </DropdownMenuItem>
                   </DialogTrigger>
                 </Dialog>
@@ -264,13 +256,13 @@ export const generateColumns = (
                     }}
                     className={status ? "text-red-500" : "text-yellow-500"}>
                     <Trash2 className='me-1' />
-                    {status ? "Remove" : "Restore"} Item
+                    {status ? t("table.opt.remove") : t("table.opt.restore")}
                   </DropdownMenuItem>
                 </AlertDialogTrigger>
                 <AlertDialogContent className='w-[400px]'>
                   <AlertDialogHeader>
-                    <AlertDialogTitle>
-                      Are you sure to {status ? "Remove" : "Restore"} this?
+                    <AlertDialogTitle className='text-md'>
+                      {status ? t("toast.remove") : t("toast.restore")}
                     </AlertDialogTitle>
                     <AlertDialogDescription>
                       {status

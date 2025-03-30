@@ -1,3 +1,6 @@
+import React, { useState } from "react";
+import axios from "@/lib/axios-instance";
+import PropTypes from "prop-types";
 import {
   DialogContent,
   DialogHeader,
@@ -7,26 +10,22 @@ import {
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Label } from "@/components/ui/label";
-import React, { useState } from "react";
-import axios from "@/lib/axios-instance";
 import { useDispatch } from "react-redux";
 import { getRoomPictures } from "@/contexts/reducer/room-picture-slice";
-import PropTypes from "prop-types";
-import FormInput from "@/components/app/form/form-input";
-import FormImageOriginal from "@/components/app/form/form-image-ori";
-import FormImagePreview from "@/components/app/form/form-image-preview";
 import { apiUrl } from "@/lib/api";
+import { FormImagePreview, FormInput } from "@/components/app/form";
+import FormImageOriginal from "@/components/app/form/form-image-ori";
 
 const RoomPictureUpdate = ({ item }) => {
   const dispatch = useDispatch();
   const [imagePreview, setImagePreview] = useState(
-    `${apiUrl}/uploads/room-picture/${item.picture}`
+    `${apiUrl}/uploads/room-picture/${item?.picture}`
   );
   const [formData] = useState(() => {
     const form = new FormData();
-    form.append("room_id", item.room_id);
-    form.append("picture", item.picture);
-    form.append("picture_name", item.picture_name);
+    form.append("room_id", item?.room_id);
+    form.append("picture", item?.picture);
+    form.append("picture_name", item?.picture_name);
     return form;
   });
 
@@ -57,7 +56,7 @@ const RoomPictureUpdate = ({ item }) => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     await axios
-      .put(`/room-picture/${item.room_picture_id}`, formData)
+      .put(`/room-picture/${item?.room_picture_id}`, formData)
       .then((res) => {
         console.log(res);
         dispatch(getRoomPictures());
@@ -68,42 +67,41 @@ const RoomPictureUpdate = ({ item }) => {
   };
 
   return (
-    <>
-      <DialogContent>
-        <form onSubmit={handleFormSubmit}>
-          <DialogHeader className='mb-4'>
-            <DialogTitle>Room Picture Information.</DialogTitle>
-          </DialogHeader>
-          <Separator />
-          <div className='flex justify-between mb-3 mt-2'>
-            <FormInput
-              onCallbackInput={handleFormData}
-              label='Room Name*'
-              value={item.room?.room_name}
-              type='text'
-              readonly={true}
-            />
-            <FormInput
-              onCallbackInput={handleFormData}
-              label='Picture Name*'
-              name='picture_name'
-              value={formData.get("picture_name")}
-              type='text'
-            />
+    <DialogContent>
+      <form onSubmit={handleFormSubmit}>
+        <DialogHeader className='mb-4'>
+          <DialogTitle>Room Picture Information.</DialogTitle>
+        </DialogHeader>
+        <Separator />
+        <div className='flex justify-between mb-3 mt-2'>
+          <FormInput
+            onCallbackInput={handleFormData}
+            label='Room Name*'
+            value={item?.room?.room_name}
+            type='text'
+            readonly={true}
+            name='id'
+          />
+          <FormInput
+            onCallbackInput={handleFormData}
+            label='Picture Name*'
+            name='picture_name'
+            value={formData.get("picture_name")}
+            type='text'
+          />
+        </div>
+        <div className='flex justify-between mb-3'>
+          <div className='flex flex-col gap-2'>
+            <Label>Choose Image</Label>
+            <FormImageOriginal onCallbackFormData={handleFormData} />
           </div>
-          <div className='flex justify-between mb-3'>
-            <div className='flex flex-col gap-2'>
-              <Label>Choose Image</Label>
-              <FormImageOriginal onCallbackFormData={handleFormData} />
-            </div>
-            <FormImagePreview imgSrc={imagePreview} />
-          </div>
-          <DialogClose className='mt-2'>
-            <Button type='submit'>Submit</Button>
-          </DialogClose>
-        </form>
-      </DialogContent>
-    </>
+          <FormImagePreview imgSrc={imagePreview} />
+        </div>
+        <DialogClose className='mt-2'>
+          <Button type='submit'>Submit</Button>
+        </DialogClose>
+      </form>
+    </DialogContent>
   );
 };
 

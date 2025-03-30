@@ -1,35 +1,36 @@
+import React from "react";
+import PropTypes from "prop-types";
+import FormInput from "@/components/app/form/form-input";
+import FormTextArea from "@/components/app/form/form-textarea";
+import axiosAuth from "@/lib/axios-auth";
 import {
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogClose,
 } from "@/components/ui/dialog";
-import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
-import React from "react";
-import { useDispatch } from "react-redux";
 import {
   clearCache,
   getDepartments,
 } from "@/contexts/reducer/department-slice";
-import PropTypes from "prop-types";
-import FormInput from "@/components/app/form/form-input";
-import FormTextArea from "@/components/app/form/form-textarea";
-import axiosAuth from "@/lib/axios-auth";
+import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
+import { useDispatch } from "react-redux";
 import { useFormHandler } from "@/hooks/use-form-handler";
 
 const DepartmentUpdate = ({ items = {} }) => {
   const dispatch = useDispatch();
   const { formData, handleChange, resetForm } = useFormHandler({
-    department_name: items?.department_name || "",
+    departmentName: items?.departmentName || "",
     memo: items?.memo || "",
   });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axiosAuth.put(`/department/${items.department_id}`, formData);
-      resetForm(), dispatch(clearCache());
+      await axiosAuth.put(`/department/${items.departmentId}`, formData);
+      resetForm();
+      dispatch(clearCache());
       dispatch(getDepartments({ status: "all" }));
     } catch (e) {
       console.log(e);
@@ -46,14 +47,14 @@ const DepartmentUpdate = ({ items = {} }) => {
         <div className='flex justify-between mb-3'>
           <FormInput
             onCallbackInput={handleChange}
-            name='department_name'
-            value={formData.department_name}
+            name='departmentName'
+            value={formData.departmentName}
             label='Department Name*'
             type='text'
             placeholder='IT, Finance, ...'
             required={true}
           />
-          <FormInput label='Department Code*' value={items.department_code} />
+          <FormInput label='Department Code*' value={items.departmentCode} />
         </div>
         <FormTextArea
           onCallbackInput={handleChange}
@@ -62,7 +63,7 @@ const DepartmentUpdate = ({ items = {} }) => {
           placeholder='N/A'
           value={formData.memo}
         />
-        <DialogClose>
+        <DialogClose asChild>
           <Button type='submit' className='w-full'>
             Submit
           </Button>
