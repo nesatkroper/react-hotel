@@ -5,7 +5,7 @@ import { AppSidebar } from "@/components/app/sidebar/app-sidebar";
 import AppHeader from "@/components/app/header/app-header";
 
 export default function Layout({ children, className }) {
-  const [_open, _setOpen] = useState();
+  const [_open, _setOpen] = useState(false);
 
   useEffect(() => {
     _setOpen(localStorage.getItem("sidebar-open") === "true");

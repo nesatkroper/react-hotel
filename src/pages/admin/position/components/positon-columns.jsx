@@ -1,4 +1,4 @@
-import PositionUpdate from "./position-update";
+import PositionUpdate from "./position-edit";
 import React from "react";
 import PropTypes from "prop-types";
 import { generateColumns } from "@/components/app/table/generate-column";

@@ -4,7 +4,8 @@
     "kh": "Khmer"
   },
   "header": {
-    "app_name": "Cambodia Drug Dealer University"
+    "register": "បន្ថែមបុគ្គលិក",
+    "search": "ស្វែងរក ..."
   },
   "sidebar": {
     "app-name": "Drug University",
@@ -62,12 +63,11 @@
     "search": "Search",
     "roo": "Room",
     "pic": "Picture",
-    "name": "Name",
+    "name": "Full Name",
     "gen": "Gender",
     "tel": "Phone",
-    "subject": "Subject",
-    "salary": "Salary",
-    "pay": "Payment",
+    "dob": "DOB",
+    "email": "Email",
     "status": "Status",
     "action": "Action",
     "address": "Adress",
@@ -97,6 +97,11 @@
       "lunch": "Lunch",
       "dinner": "Dinner"
     },
+    "emp": {
+      "name": "Employee Name",
+      "code": "Emp Code",
+      "salary": "Salary"
+    },
     "dep": {
       "name": "Department Name",
       "code": "Department Code"
@@ -104,6 +109,9 @@
     "pos": {
       "name": "Position Name",
       "code": "Position Code"
+    },
+    "cus": {
+      "name": "Customer Name"
     }
   },
   "toast": {

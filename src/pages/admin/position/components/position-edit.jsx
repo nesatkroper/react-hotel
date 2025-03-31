@@ -15,17 +15,17 @@ import {
 } from "@/components/ui/dialog";
 import { FormComboBox, FormInput, FormTextArea } from "@/components/app/form";
 
-const PositionUpdate = ({ items }) => {
+const PositionUpdate = ({ items = {} }) => {
   const dispatch = useDispatch();
   const { data: depData } = useSelector((state) => state.departments);
 
   const { formData, handleChange } = useFormHandler({
-    department_id:
-      items?.department_id ||
-      (depData.length > 0 ? depData[0].department_id : ""),
-    position_name: items?.position_name || "",
+    departmentId: items?.departmentId || "",
+    positionName: items?.positionName || "",
     memo: items?.memo || "",
   });
+
+  console.table(items);
 
   useEffect(() => {
     dispatch(getDepartments());
@@ -33,7 +33,7 @@ const PositionUpdate = ({ items }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await axiosAuth.put(`/position/${items.position_id}`, formData);
+    await axiosAuth.put(`/position/${items.positionId}`, formData);
 
     dispatch(clearCache());
     dispatch(getPositions({ status: "all", department: true }));
@@ -42,29 +42,36 @@ const PositionUpdate = ({ items }) => {
     <DialogContent>
       <form onSubmit={handleSubmit}>
         <DialogHeader>
-          <DialogTitle>Position Details Information.</DialogTitle>
+          <DialogTitle className='text-md'>
+            Position Details Information.
+          </DialogTitle>
         </DialogHeader>
         <Separator className='my-3' />
         <div className='flex justify-between mb-3'>
           <FormInput
             onCallbackInput={handleChange}
-            name='position_name'
-            value={formData.position_name}
+            name='positionName'
+            value={formData.positionName}
             label='Position Name*'
             placeholder='IT, Finance, ...'
-            required={true}
+            required
           />
-          <FormInput label='Position Code' value={items.position_code} />
+          <FormInput
+            inputClass='uppercase'
+            label='Position Code'
+            value={items.positionCode}
+            readonly
+          />
         </div>
         <div className='flex justify-between mb-3'>
           <FormComboBox
-            onCallbackSelect={(val) => handleChange("department_id", val)}
-            name='department_id'
+            onCallbackSelect={(val) => handleChange("departmentId", val)}
+            name='departmentId'
             label='Department'
             item={depData || []}
-            optID='department_id'
-            optLabel='department_name'
-            defaultValue={items?.department_id || ""}
+            optID='departmentId'
+            optLabel='departmentName'
+            defaultValue={items?.departmentId || ""}
           />
 
           <FormTextArea
@@ -75,7 +82,7 @@ const PositionUpdate = ({ items }) => {
             placeholder='N/A'
           />
         </div>
-        <DialogClose>
+        <DialogClose asChild>
           <Button type='submit' className='w-full'>
             Submit
           </Button>

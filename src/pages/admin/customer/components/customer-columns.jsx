@@ -1,33 +1,32 @@
-import { generateColumns } from "@/components/app/table/generate-column";
-import { getCustomers } from "@/contexts/reducer/customer-slice";
 import React from "react";
 import PropTypes from "prop-types";
 import CustomerEdit from "./customer-edit";
-
-const customerFields = [
-  { key: "picture", label: "Picture" },
-  { key: "full_name", label: "Name" },
-  { key: "gender", label: "Gender" },
-  { key: "email", label: "Email" },
-  { key: "phone", label: "Phone" },
-  { key: "address", label: "Address" },
-  { key: "status", label: "" },
-];
+import { getCustomers } from "@/contexts/reducer/customer-slice";
+import { useTranslation } from "react-i18next";
+import { generateColumns } from "@/components/app/table/generate-column";
 
 const CustomerEditWrapper = ({ item }) => {
   return <CustomerEdit items={item} />;
 };
 
-export const CustomerColumns = (() => {
-  const createEditComponent = (item) => <CustomerEditWrapper item={item} />;
+export const CustomerColumns = () => {
+  const [t] = useTranslation("admin");
 
   return generateColumns(
-    customerFields,
-    createEditComponent,
+    [
+      { key: "picture", label: t("table.pic") },
+      { key: "fullName", label: t("table.name") },
+      { key: "gender", label: t("table.gen") },
+      { key: "email", label: t("table.email") },
+      { key: "phone", label: t("table.tel") },
+      { key: "address", label: t("table.address") },
+      { key: "status", label: t("table.status") },
+    ],
+    (item) => <CustomerEditWrapper item={item} />,
     "customer",
     getCustomers
   );
-})();
+};
 
 CustomerEditWrapper.propTypes = {
   item: PropTypes.object,

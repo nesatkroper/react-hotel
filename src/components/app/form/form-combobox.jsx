@@ -1,3 +1,9 @@
+import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
+import { Check, ChevronsUpDown } from "lucide-react";
 import {
   Popover,
   PopoverContent,
@@ -11,12 +17,6 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { cn } from "@/lib/utils";
-import React, { useState } from "react";
-import { Check, ChevronsUpDown } from "lucide-react";
-import PropTypes from "prop-types";
 
 const FormComboBox = ({
   onCallbackSelect = null,
@@ -41,6 +41,10 @@ const FormComboBox = ({
   const [data, setData] = useState(
     defaultValue || (filter.length > 0 ? filter[0].value : "")
   );
+
+  useEffect(() => {
+    if (onCallbackSelect && data) onCallbackSelect(data);
+  }, []);
 
   return (
     <div className='flex flex-col gap-2'>

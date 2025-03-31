@@ -3,9 +3,13 @@ import {
   createGenericSlice,
 } from "../utils/create-async-slice";
 
-export const getStates = createApiThunk("states/getStates", "/state");
+export const getStates = createApiThunk("states/getStates", "/state", {
+  cacheEnabled: true,
+  cacheExpiration: 24 * 60 * 60 * 1000,
+});
 
 const stateSlice = createGenericSlice("states", getStates);
 
-export const { clearCache } = stateSlice.actions;
 export default stateSlice.reducer;
+export const { clearCache, updateItem, addItem, removeItem } =
+  stateSlice.actions;

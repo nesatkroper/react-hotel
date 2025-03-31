@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import AppDataTable from "@/components/app/table/app-data-table";
+import Layout from "@/layout/layout";
 import CustomerAdd from "./components/customer-add";
 import { useDispatch, useSelector } from "react-redux";
 import { CustomerColumns } from "./components/customer-columns";
 import { clearCache, getCustomers } from "@/contexts/reducer/customer-slice";
-import Layout from "@/layout/layout";
 
 const Customer = () => {
   const dispatch = useDispatch();
@@ -13,11 +13,11 @@ const Customer = () => {
   );
 
   useEffect(() => {
-    dispatch(getCustomers({ status: "all" }));
+    dispatch(getCustomers({ params: { status: "all" } }));
   }, [dispatch]);
 
   const refresh = () => {
-    dispatch(getCustomers({ status: "all" }));
+    dispatch(getCustomers({ params: { status: "all" } }));
     dispatch(clearCache());
   };
 
@@ -26,10 +26,10 @@ const Customer = () => {
       <AppDataTable
         data={cusData}
         loading={cusLoading}
-        columns={CustomerColumns}
+        columns={CustomerColumns()}
         addElement={<CustomerAdd />}
-        title="Customers"
-        main="customer_name"
+        title='Customers'
+        main='fullName'
         refresh={refresh}
       />
     </Layout>

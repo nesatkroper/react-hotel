@@ -5,10 +5,15 @@ import {
 
 export const getEmployees = createApiThunk(
   "employees/getEmployees",
-  "/employee"
+  "/employee",
+  {
+    cacheEnabled: true,
+    cacheExpiration: 24 * 60 * 60 * 1000,
+  }
 );
 
 const employeeSlice = createGenericSlice("employees", getEmployees);
 
-export const { clearCache } = employeeSlice.actions;
+export const { clearCache, updateItem, addItem, removeItem } =
+  employeeSlice.actions;
 export default employeeSlice.reducer;

@@ -6,14 +6,15 @@ import { Button } from "@/components/ui/button";
 import { useDispatch, useSelector } from "react-redux";
 import { Loader2 } from "lucide-react";
 import { GENDER } from "@/utils/default-data";
-import { getDepartments, getEmployees, getPositions } from "@/contexts/reducer";
 import { useFormHandler } from "@/hooks/use-form-handler";
 import { clearCache } from "@/contexts/reducer/employee-slice";
+import { getDepartments, getEmployees, getPositions } from "@/contexts/reducer";
 import { FormComboBox, FormDatePicker, FormInput } from "@/components/app/form";
 import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogClose,
 } from "@/components/ui/dialog";
 
 const EmployeeAdd = () => {
@@ -36,7 +37,6 @@ const EmployeeAdd = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-
     try {
       setIssend(true);
       await axiosAuth.post("/employee", formData).then((res) => {
@@ -53,12 +53,12 @@ const EmployeeAdd = () => {
   };
 
   useEffect(() => {
-    dispatch(getDepartments());
+    dispatch(getDepartments({ params: { positions: true } }));
     dispatch(getPositions());
   }, [dispatch]);
 
   const filteredPositions = posData.filter(
-    (position) => position.departmentId === formData.departmentId
+    (pos) => pos.departmentId === formData.departmentId
   );
 
   return (
@@ -112,9 +112,7 @@ const EmployeeAdd = () => {
         </div>
         <div className='flex justify-between mb-2 mt-3'>
           <FormComboBox
-            onCallbackSelect={(event) =>
-              handleChange("departmentId", Number(event))
-            }
+            onCallbackSelect={(event) => handleChange("departmentId", event)}
             label='Department*'
             item={depData}
             optID='departmentId'
@@ -136,11 +134,11 @@ const EmployeeAdd = () => {
             placeholder='$250.00'
           />
         </div>
-        <div className='flex justify-end mt-4'>
-          <Button type='submit' disabled={issend}>
+        <DialogClose asChild>
+          <Button type='submit' disabled={issend} className='w-full'>
             {issend ? <Loader2 className='animate-spin' /> : "Submit"}
           </Button>
-        </div>
+        </DialogClose>
       </form>
     </DialogContent>
   );

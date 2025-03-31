@@ -20,7 +20,7 @@ const AppDetailViewer = ({ item }) => {
           src={`${apiUrl}/uploads/${value}`}
           alt={value}
           onError={(e) => (e.target.src = defimg)}
-          className="h-[80px] rounded-lg"
+          className='h-[80px] rounded-lg'
         />
       );
     } else if (
@@ -43,8 +43,7 @@ const AppDetailViewer = ({ item }) => {
             value === "active"
               ? "bg-green-100 text-green-700"
               : "bg-red-100 text-red-700"
-          }`}
-        >
+          }`}>
           {value || "N/A"}
         </span>
       );
@@ -58,11 +57,11 @@ const AppDetailViewer = ({ item }) => {
     }
 
     return (
-      <div key={key} className="flex items-center space-x-2 mb-4">
-        <span className="text-sm w-32 capitalize">
+      <div key={key} className='flex items-center space-x-2 mb-4'>
+        <span className='text-sm w-32 capitalize'>
           {key.replace(/_/g, " ")}:
         </span>
-        <span className="text-sm capitalize">{displayValue}</span>
+        <span className='text-sm capitalize'>{displayValue}</span>
       </div>
     );
   };
@@ -70,9 +69,9 @@ const AppDetailViewer = ({ item }) => {
   return (
     <>
       <Separator />
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-        <div className="space-y-4">{leftColumnEntries.map(renderEntry)}</div>
-        <div className="space-y-4">{rightColumnEntries.map(renderEntry)}</div>
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-4 mt-4'>
+        <div className='space-y-4'>{leftColumnEntries.map(renderEntry)}</div>
+        <div className='space-y-4'>{rightColumnEntries.map(renderEntry)}</div>
       </div>
     </>
   );

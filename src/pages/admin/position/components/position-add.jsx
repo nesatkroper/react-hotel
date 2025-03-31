@@ -36,7 +36,7 @@ const PositionAdd = () => {
       await axiosAuth
         .post("/position", formData)
         .then((res) => {
-          console.table(res);
+          console.log(res);
           showToast(`${formData.positionName} Add Successfully.`, "success");
           resetForm();
           dispatch(clearCache());

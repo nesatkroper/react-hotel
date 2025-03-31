@@ -88,8 +88,8 @@ const CustomerAdd = () => {
   };
 
   useEffect(() => {
-    dispatch(getStates({ status: "all" }));
-    dispatch(getCities({ status: "all" }));
+    dispatch(getStates());
+    dispatch(getCities());
   }, [dispatch]);
 
   const filteredCity = citData.filter(
