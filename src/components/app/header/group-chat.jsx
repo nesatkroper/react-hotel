@@ -21,7 +21,9 @@ const SOCKET = io(apiUrl, {
 
 const GroupChat = () => {
   const dispatch = useDispatch();
-  const user = JSON.parse(Cookies.get("user-info")) || null;
+  const user = Cookies.get("user-info")
+    ? JSON.parse(Cookies.get("user-info"))
+    : null;
   const scrollRef = useRef(null);
   const [messages, setMessages] = useState([]);
   const [msg, setMsg] = useState("");
