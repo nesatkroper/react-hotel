@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useRef } from "react";
 import { cDollar } from "@/utils/dec-format";
 import { io } from "socket.io-client";
-import { apiUrl } from "@/lib/api";
+import { apiUrl } from "@/constants/api";
 import QRCode from "react-qr-code";
 import axiosAuth from "@/lib/axios-auth";
 import PropTypes from "prop-types";
@@ -126,24 +126,24 @@ const RequestKHQR = () => {
   };
 
   return (
-    <Card className="w-full p-0">
-      <CardContent className="p-0">
-        <div className="bg-white shadow-lg rounded-lg">
-          <div className="bg-red-600 text-white text-center py-2 rounded-t-lg">
-            <h2 className="text-xl font-semibold">KHQR</h2>
+    <Card className='w-full p-0'>
+      <CardContent className='p-0'>
+        <div className='bg-white shadow-lg rounded-lg'>
+          <div className='bg-red-600 text-white text-center py-2 rounded-t-lg'>
+            <h2 className='text-xl font-semibold'>KHQR</h2>
           </div>
-          <div className="p-4 text-center">
-            <p className="text-gray-700 font-medium">{form.name}</p>
-            <p className="text-2xl font-bold text-gray-800">
+          <div className='p-4 text-center'>
+            <p className='text-gray-700 font-medium'>{form.name}</p>
+            <p className='text-2xl font-bold text-gray-800'>
               {cDollar(amount)}
             </p>
             {qrData ? (
-              <div className="mt-4 flex flex-col items-center relative">
-                <QRCode value={qrData} size={256} className="rounded-xl" />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <img src={dollar} alt="Logo" className="w-12 h-12" />
+              <div className='mt-4 flex flex-col items-center relative'>
+                <QRCode value={qrData} size={256} className='rounded-xl' />
+                <div className='absolute inset-0 flex items-center justify-center'>
+                  <img src={dollar} alt='Logo' className='w-12 h-12' />
                 </div>
-                <p className="mt-2 text-sm text-gray-500">
+                <p className='mt-2 text-sm text-gray-500'>
                   Scan the QR code above
                 </p>
               </div>

@@ -12,7 +12,7 @@ import { Separator } from "@/components/ui/separator";
 import { Label } from "@/components/ui/label";
 import { useDispatch } from "react-redux";
 import { getRoomPictures } from "@/contexts/reducer/room-picture-slice";
-import { apiUrl } from "@/lib/api";
+import { apiUrl } from "@/constants/api";
 import { FormImagePreview, FormInput } from "@/components/app/form";
 import FormImageOriginal from "@/components/app/form/form-image-ori";
 

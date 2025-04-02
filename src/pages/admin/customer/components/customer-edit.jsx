@@ -23,7 +23,7 @@ import { clearCache, getCustomers } from "@/contexts/reducer/customer-slice";
 import { useFormHandler } from "@/hooks/use-form-handler";
 import { getCities, getStates } from "@/contexts/reducer";
 import { defimg } from "@/utils/resize-crop-image";
-import { apiUrl } from "@/lib/api";
+import { apiUrl } from "@/constants/api";
 
 const schema = z.object({
   first_name: z.string().nonempty("Required"),

@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { apiUrl } from "@/lib/api";
+import { apiUrl } from "@/constants/api";
 import axiosInstance from "@/lib/axios-instance";
 import FormInput from "@/components/app/form/form-input";
 import PropTypes from "prop-types";
@@ -83,33 +83,33 @@ const ProductCategoryUpdate = ({ items }) => {
   return (
     <DialogContent>
       <form onSubmit={handleFormSubmit}>
-        <DialogHeader className="mb-3">
+        <DialogHeader className='mb-3'>
           <DialogTitle>Product Category Details Information</DialogTitle>
         </DialogHeader>
         <Separator />
-        <div className="flex justify-between mb-2 mt-2">
+        <div className='flex justify-between mb-2 mt-2'>
           <FormInput
             onCallbackInput={handleFormData}
-            name="category_name"
+            name='category_name'
             value={formData.get("category_name") || ""}
-            label="Product Category Name"
+            label='Product Category Name'
           />
           <FormInput
             onCallbackInput={handleFormData}
-            name="category_code"
+            name='category_code'
             value={formData.get("category_code")}
-            label="Product Category Code"
+            label='Product Category Code'
             readonly={true}
           />
         </div>
         <FormTextArea
           onCallbackInput={handleFormData}
-          label="Description"
-          name="memo"
+          label='Description'
+          name='memo'
           value={formData.get("memo")}
         />
-        <div className="flex justify-between my-3">
-          <div className="flex flex-col gap-2">
+        <div className='flex justify-between my-3'>
+          <div className='flex flex-col gap-2'>
             <Label>Choose Image*</Label>
             <FormImageResize
               onCallbackFormData={handleFormData}
@@ -118,8 +118,8 @@ const ProductCategoryUpdate = ({ items }) => {
           </div>
           <FormImagePreview imgSrc={imagePreview} />
         </div>
-        <DialogClose className="mt-2">
-          <Button type="submit">Submit</Button>
+        <DialogClose className='mt-2'>
+          <Button type='submit'>Submit</Button>
         </DialogClose>
       </form>
     </DialogContent>

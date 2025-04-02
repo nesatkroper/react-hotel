@@ -12,7 +12,7 @@ import { io } from "socket.io-client";
 import { dateFormat } from "@/utils/dec-format";
 import { useDispatch } from "react-redux";
 import { getUser } from "@/contexts/reducer/user-slice";
-import { apiUrl } from "@/lib/api";
+import { apiUrl } from "@/constants/api";
 
 const SOCKET = io(apiUrl, {
   transports: ["websocket", "polling"],

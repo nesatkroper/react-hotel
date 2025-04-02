@@ -15,7 +15,7 @@ import { Separator } from "@/components/ui/separator";
 import { useEffect, useState } from "react";
 import { ModeToggle } from "../theme/mode-toggle";
 import { io } from "socket.io-client";
-import { apiUrl } from "@/lib/api";
+import { apiUrl } from "@/constants/api";
 import { useTranslation } from "react-i18next";
 
 const SOCKET = io(apiUrl);

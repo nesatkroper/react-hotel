@@ -31,7 +31,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { defimg } from "@/utils/resize-crop-image";
 import { useDispatch } from "react-redux";
-import { apiUrl } from "@/lib/api";
+import { apiUrl } from "@/constants/api";
 import ProductCategoryUpdate from "./product-category-update";
 import React from "react";
 import { getCategorys } from "@/contexts/reducer/product-category-slice";
@@ -67,14 +67,14 @@ export const ProductCategoryColumns = [
           (table.getIsSomePageRowsSelected() && "indeterminate")
         }
         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
+        aria-label='Select all'
       />
     ),
     cell: ({ row }) => (
       <Checkbox
         checked={row.getIsSelected()}
         onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
+        aria-label='Select row'
       />
     ),
     enableSorting: false,
@@ -82,14 +82,14 @@ export const ProductCategoryColumns = [
   },
   {
     accessorKey: "picture",
-    header: () => <div className="text-start">Picture</div>,
+    header: () => <div className='text-start'>Picture</div>,
     cell: ({ row }) => {
       return (
         <img
           src={`${apiUrl}/uploads/${row.getValue("picture")}`}
-          alt="product"
+          alt='product'
           onError={(e) => (e.target.src = defimg)}
-          className="h-[80px] rounded-lg"
+          className='h-[80px] rounded-lg'
         />
       );
     },
@@ -99,25 +99,24 @@ export const ProductCategoryColumns = [
     header: ({ column }) => {
       return (
         <Button
-          variant="ghost"
-          className="font-bold"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
+          variant='ghost'
+          className='font-bold'
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
           Category Name
           <ArrowUpDown />
         </Button>
       );
     },
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("category_name")}</div>
+      <div className='capitalize'>{row.getValue("category_name")}</div>
     ),
   },
   {
     accessorKey: "category_code",
-    header: () => <div className="text-center">Category Code</div>,
+    header: () => <div className='text-center'>Category Code</div>,
     cell: ({ row }) => {
       return (
-        <div className="text-center capitalize">
+        <div className='text-center capitalize'>
           {row.getValue("category_code")}
         </div>
       );
@@ -125,10 +124,10 @@ export const ProductCategoryColumns = [
   },
   {
     accessorKey: "memo",
-    header: () => <div className="text-center">Description</div>,
+    header: () => <div className='text-center'>Description</div>,
     cell: ({ row }) => {
       return (
-        <div className="text-center capitalize">
+        <div className='text-center capitalize'>
           {row.getValue("memo") || "N/A"}
         </div>
       );
@@ -144,8 +143,8 @@ export const ProductCategoryColumns = [
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
+            <Button variant='ghost' className='h-8 w-8 p-0'>
+              <span className='sr-only'>Open menu</span>
               <MoreHorizontal />
             </Button>
           </DropdownMenuTrigger>
@@ -167,40 +166,37 @@ export const ProductCategoryColumns = [
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
                   <AlertDialogAction
                     onClick={() => handleDelete(item.product_category_id)}
-                    className="bg-red-500"
-                  >
+                    className='bg-red-500'>
                     Continue
                   </AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>
-              <DropdownMenuContent align="end">
-                <DropdownMenuLabel className="text-center">
+              <DropdownMenuContent align='end'>
+                <DropdownMenuLabel className='text-center'>
                   Actions
                 </DropdownMenuLabel>
                 <DropdownMenuItem
                   onClick={() =>
                     navigator.clipboard.writeText(item.product_category_id)
-                  }
-                >
-                  <Copy className="me-1" />
+                  }>
+                  <Copy className='me-1' />
                   Copy ID
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
-                  onClick={() => console.log(item.category_name)}
-                >
-                  <Fullscreen className="me-1" />
+                  onClick={() => console.log(item.category_name)}>
+                  <Fullscreen className='me-1' />
                   View Item
                 </DropdownMenuItem>
-                <div className="flex flex-col">
+                <div className='flex flex-col'>
                   <DialogTrigger>
                     <DropdownMenuItem>
-                      <FilePenLine className="me-1" /> Edit Item
+                      <FilePenLine className='me-1' /> Edit Item
                     </DropdownMenuItem>
                   </DialogTrigger>
                   <AlertDialogTrigger>
-                    <DropdownMenuItem className="text-red-500">
-                      <Trash2 className="me-1" /> Delete Item
+                    <DropdownMenuItem className='text-red-500'>
+                      <Trash2 className='me-1' /> Delete Item
                     </DropdownMenuItem>
                   </AlertDialogTrigger>
                 </div>

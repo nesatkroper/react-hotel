@@ -30,7 +30,7 @@ import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { useDispatch } from "react-redux";
 
 import { defimg } from "@/utils/resize-crop-image";
-import { apiUrl } from "@/lib/api";
+import { apiUrl } from "@/constants/api";
 import { cDollar, toUnit } from "@/utils/dec-format";
 import { useTranslation } from "react-i18next";
 import axiosAuth from "@/lib/axios-auth";

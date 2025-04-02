@@ -1,16 +1,11 @@
+import Cookies from "js-cookie";
 import axiosAuth from "@/lib/axios-auth";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import Cookies from "js-cookie";
 
 export const getUser = createAsyncThunk("getUser", async () => {
   const res = await axiosAuth.get("/auth/me");
-  Cookies.set(
-    "employee",
-    res.data?.employee
-      ? `${res.data.employee.first_name} ${res.data.employee.last_name}`
-      : "Admin"
-  );
-  Cookies.set("employee_id", res.data.employee.employee_id ?? null);
+  Cookies.set("employee", res.data);
+
   return res?.data;
 });
 

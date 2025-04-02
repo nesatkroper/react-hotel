@@ -17,7 +17,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { defimg } from "@/utils/resize-crop-image";
 import React, { useEffect, useMemo } from "react";
 import { getCarts } from "@/contexts/reducer/cart-slice";
-import { apiUrl } from "@/lib/api";
+import { apiUrl } from "@/constants/api";
 import Cookies from "js-cookie";
 import axiosAuth from "@/lib/axios-auth";
 import Invoice from "@/components/app/invoice/invoice";
@@ -83,18 +83,18 @@ const POSCart = () => {
   };
 
   const renderCartItem = (item) => (
-    <Card key={item.cart_id} className="shadow-none rounded-md">
-      <CardContent className="p-0 flex justify-between">
-        <div className="flex gap-3">
+    <Card key={item.cart_id} className='shadow-none rounded-md'>
+      <CardContent className='p-0 flex justify-between'>
+        <div className='flex gap-3'>
           <img
             src={`${apiUrl}/uploads/${item.product.picture}`}
             onError={(e) => (e.target.src = defimg)}
             alt={item?.product.product_name}
-            className="h-[60px] object-cover rounded-s-md"
+            className='h-[60px] object-cover rounded-s-md'
           />
-          <div className="flex flex-col justify-between py-1">
-            <p className="text-sm">{item.product.product_name}</p>
-            <p className="text-red-700 text-sm">
+          <div className='flex flex-col justify-between py-1'>
+            <p className='text-sm'>{item.product.product_name}</p>
+            <p className='text-red-700 text-sm'>
               {afterPerDollar(
                 item.product.price * item.quantity,
                 item.product.discount_rate
@@ -102,23 +102,21 @@ const POSCart = () => {
             </p>
           </div>
         </div>
-        <div className="flex flex-col items-center justify-center font-semibold">
+        <div className='flex flex-col items-center justify-center font-semibold'>
           <Button
-            variant="icon"
-            size="icon"
-            className="h-5 w-6"
-            onClick={() => handleQuantityChange(item.cart_id, "up")}
-          >
-            <ChevronUp className="text-green-600" />
+            variant='icon'
+            size='icon'
+            className='h-5 w-6'
+            onClick={() => handleQuantityChange(item.cart_id, "up")}>
+            <ChevronUp className='text-green-600' />
           </Button>
-          <p className="text-xs mx-2">{toUnit(item.quantity, 0, "Pcs")}</p>
+          <p className='text-xs mx-2'>{toUnit(item.quantity, 0, "Pcs")}</p>
           <Button
-            variant="icon"
-            size="icon"
-            className="h-5 w-6"
-            onClick={() => handleQuantityChange(item.cart_id, "down")}
-          >
-            <ChevronDown className="text-red-600" />
+            variant='icon'
+            size='icon'
+            className='h-5 w-6'
+            onClick={() => handleQuantityChange(item.cart_id, "down")}>
+            <ChevronDown className='text-red-600' />
           </Button>
         </div>
       </CardContent>
@@ -126,15 +124,15 @@ const POSCart = () => {
   );
 
   const renderSummary = () => (
-    <div className="w-full">
-      <SummaryRow label="Total" value={cDollar(total)} />
+    <div className='w-full'>
+      <SummaryRow label='Total' value={cDollar(total)} />
       <SummaryRow
         label={`Tax (${TaxRate}%)`}
         value={`+ ${cDollar(total, TaxRate)}`}
       />
-      <SummaryRow label="Discount" value={`- ${cDollar(discount)}`} />
-      <Separator className="my-1" />
-      <SummaryRow label="Amount" value={cDollar(finalAmount)} isTotal />
+      <SummaryRow label='Discount' value={`- ${cDollar(discount)}`} />
+      <Separator className='my-1' />
+      <SummaryRow label='Amount' value={cDollar(finalAmount)} isTotal />
     </div>
   );
 
@@ -142,9 +140,8 @@ const POSCart = () => {
     <div
       className={`flex justify-between w-full text-sm font-semibold ${
         isTotal ? "" : ""
-      }`}
-    >
-      <p className="text-sm">{label} :</p>
+      }`}>
+      <p className='text-sm'>{label} :</p>
       <p className={`text-sm text-red-700 ${isTotal ? "font-bold" : ""}`}>
         {value}
       </p>
@@ -152,17 +149,17 @@ const POSCart = () => {
   );
 
   return (
-    <div className="2xl:col-span-1 lg:col-span-1 md:col-span-2 col-span-1 mt-0">
-      <Card className="rounded-md">
-        <CardContent className="p-2 pt-1">
-          <div className="flex justify-between items-center">
-            <p className="font-semibold text-sm">Cart Order</p>
+    <div className='2xl:col-span-1 lg:col-span-1 md:col-span-2 col-span-1 mt-0'>
+      <Card className='rounded-md'>
+        <CardContent className='p-2 pt-1'>
+          <div className='flex justify-between items-center'>
+            <p className='font-semibold text-sm'>Cart Order</p>
           </div>
-          <Separator className="my-2" />
-          <div className="flex flex-col gap-2">
+          <Separator className='my-2' />
+          <div className='flex flex-col gap-2'>
             {cartData?.map(renderCartItem)}
           </div>
-          <Separator className="my-2" />
+          <Separator className='my-2' />
           {renderSummary()}
           <CheckoutDialog amount={finalAmount} />
         </CardContent>
@@ -173,12 +170,12 @@ const POSCart = () => {
 
 const CheckoutDialog = ({ amount }) => (
   <AlertDialog>
-    <AlertDialogTrigger className="w-full">
-      <Button className="w-full mt-2">Check Out</Button>
+    <AlertDialogTrigger className='w-full'>
+      <Button className='w-full mt-2'>Check Out</Button>
     </AlertDialogTrigger>
-    <AlertDialogContent className="w-[400px]">
+    <AlertDialogContent className='w-[400px]'>
       <AlertDialogHeader>
-        <AlertDialogTitle className="text-center">
+        <AlertDialogTitle className='text-center'>
           Invoice Check Out
         </AlertDialogTitle>
       </AlertDialogHeader>
@@ -198,7 +195,7 @@ const ConfirmDialog = () => {
       <AlertDialogTrigger>
         <AlertDialogAction>Continue</AlertDialogAction>
       </AlertDialogTrigger>
-      <AlertDialogContent className="w-[350px] p-6">
+      <AlertDialogContent className='w-[350px] p-6'>
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
         </AlertDialogHeader>

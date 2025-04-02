@@ -32,7 +32,7 @@ import { Button } from "@/components/ui/button";
 import { defimg } from "@/utils/resize-crop-image";
 import { useDispatch } from "react-redux";
 import { getProducts } from "@/contexts/reducer/product-slice";
-import { apiUrl } from "@/lib/api";
+import { apiUrl } from "@/constants/api";
 import React from "react";
 
 export const ProductActions = () => {
@@ -66,14 +66,14 @@ export const ProductColumns = [
           (table.getIsSomePageRowsSelected() && "indeterminate")
         }
         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
+        aria-label='Select all'
       />
     ),
     cell: ({ row }) => (
       <Checkbox
         checked={row.getIsSelected()}
         onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
+        aria-label='Select row'
       />
     ),
     enableSorting: false,
@@ -86,8 +86,9 @@ export const ProductColumns = [
       const status = row.original.status;
       return (
         <div
-          className={`capitalize ${status ? "text-green-600" : "text-red-600"}`}
-        >
+          className={`capitalize ${
+            status ? "text-green-600" : "text-red-600"
+          }`}>
           {row.getValue("status")}
         </div>
       );
@@ -95,15 +96,15 @@ export const ProductColumns = [
   },
   {
     accessorKey: "picture",
-    header: () => <div className="text-start">Picture</div>,
+    header: () => <div className='text-start'>Picture</div>,
     cell: ({ row }) => {
       // console.log(row.original);
       return (
         <img
           src={`${apiUrl}/uploads/${row.getValue("picture")}`}
-          alt="product"
+          alt='product'
           onError={(e) => (e.target.src = defimg)}
-          className="h-[80px] rounded-lg"
+          className='h-[80px] rounded-lg'
         />
       );
     },
@@ -113,25 +114,24 @@ export const ProductColumns = [
     header: ({ column }) => {
       return (
         <Button
-          variant="ghost"
-          className="font-bold"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
+          variant='ghost'
+          className='font-bold'
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
           Product Name
           <ArrowUpDown />
         </Button>
       );
     },
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("product_name")}</div>
+      <div className='capitalize'>{row.getValue("product_name")}</div>
     ),
   },
   {
     accessorKey: "product_code",
-    header: () => <div className="text-center">Product Code</div>,
+    header: () => <div className='text-center'>Product Code</div>,
     cell: ({ row }) => {
       return (
-        <div className="text-start capitalize">
+        <div className='text-start capitalize'>
           {row.getValue("product_code")}
         </div>
       );
@@ -139,19 +139,19 @@ export const ProductColumns = [
   },
   {
     accessorKey: "product_category_id",
-    header: () => <div className="text-center">Category</div>,
+    header: () => <div className='text-center'>Category</div>,
     cell: ({ row }) => {
       const categoryName = row.original.category?.category_name || "N/A";
 
-      return <div className="text-center capitalize">{categoryName}</div>;
+      return <div className='text-center capitalize'>{categoryName}</div>;
     },
   },
   {
     accessorKey: "price",
-    header: () => <div className="text-start">Price</div>,
+    header: () => <div className='text-start'>Price</div>,
     cell: ({ row }) => {
       return (
-        <div className="text-start capitalize">
+        <div className='text-start capitalize'>
           $ {row.getValue("price") || "N/A"}
         </div>
       );
@@ -159,10 +159,10 @@ export const ProductColumns = [
   },
   {
     accessorKey: "discount_rate",
-    header: () => <div className="text-center">Discount Rate</div>,
+    header: () => <div className='text-center'>Discount Rate</div>,
     cell: ({ row }) => {
       return (
-        <div className="text-center capitalize">
+        <div className='text-center capitalize'>
           {row.getValue("discount_rate") || "0 %"} %
         </div>
       );
@@ -178,8 +178,8 @@ export const ProductColumns = [
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
+            <Button variant='ghost' className='h-8 w-8 p-0'>
+              <span className='sr-only'>Open menu</span>
               <MoreHorizontal />
             </Button>
           </DropdownMenuTrigger>
@@ -201,40 +201,37 @@ export const ProductColumns = [
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
                   <AlertDialogAction
                     onClick={() => handleDelete(item.product_id)}
-                    className="bg-red-500"
-                  >
+                    className='bg-red-500'>
                     Continue
                   </AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>
-              <DropdownMenuContent align="end">
-                <DropdownMenuLabel className="text-center">
+              <DropdownMenuContent align='end'>
+                <DropdownMenuLabel className='text-center'>
                   Actions
                 </DropdownMenuLabel>
                 <DropdownMenuItem
                   onClick={() =>
                     navigator.clipboard.writeText(item.product_category_id)
-                  }
-                >
-                  <Copy className="me-1" />
+                  }>
+                  <Copy className='me-1' />
                   Copy ID
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
-                  onClick={() => console.log(item.category_name)}
-                >
-                  <Fullscreen className="me-1" />
+                  onClick={() => console.log(item.category_name)}>
+                  <Fullscreen className='me-1' />
                   View Item
                 </DropdownMenuItem>
-                <div className="flex flex-col">
+                <div className='flex flex-col'>
                   <DialogTrigger>
                     <DropdownMenuItem>
-                      <FilePenLine className="me-1" /> Edit Item
+                      <FilePenLine className='me-1' /> Edit Item
                     </DropdownMenuItem>
                   </DialogTrigger>
                   <AlertDialogTrigger>
-                    <DropdownMenuItem className="text-red-500">
-                      <Trash2 className="me-1" /> Delete Item
+                    <DropdownMenuItem className='text-red-500'>
+                      <Trash2 className='me-1' /> Delete Item
                     </DropdownMenuItem>
                   </AlertDialogTrigger>
                 </div>

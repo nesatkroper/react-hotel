@@ -1,18 +1,16 @@
+import FormInput from "@/components/app/form/form-input";
+import axiosAuth from "@/lib/axios-auth";
+import React, { useState } from "react";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/providers/auth-provider";
+import { useDispatch } from "react-redux";
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
-import { useState } from "react";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "@/providers/auth-provider";
-import FormInput from "@/components/app/form/form-input";
-import axiosAuth from "@/lib/axios-auth";
-import { useDispatch } from "react-redux";
-import { setAuthData } from "@/contexts/reducer/role-slice";
-import { getUser } from "@/contexts/reducer/user-slice";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -94,25 +92,24 @@ const Signup = () => {
     <form onSubmit={handleSubmit}>
       <FormInput
         onCallbackInput={handleChange}
-        name="email"
-        label="Email*"
-        type="email"
-        placeholder="someone@something.com"
-        mainClass="my-2"
+        name='email'
+        label='Email*'
+        type='email'
+        placeholder='someone@something.com'
+        mainClass='my-2'
         inputClass={isComplete ? "border-green-500" : ""}
         labelClass={isComplete ? "text-green-500" : ""}
         required={true}
         readonly={isComplete ? true : false}
       />
-      <div className="flex justify-end gap-3 mb-2">
+      <div className='flex justify-end gap-3 mb-2'>
         {isSend ? (
           <InputOTP
             maxLength={6}
-            name="otp"
+            name='otp'
             onChange={(e) => {
               setOtp(e);
-            }}
-          >
+            }}>
             <InputOTPGroup>
               <InputOTPSlot index={0} />
               <InputOTPSlot index={1} />
@@ -125,7 +122,7 @@ const Signup = () => {
           ""
         )}
         {isMail ? (
-          <Button type="button" onClick={handleOtp} className="px-3">
+          <Button type='button' onClick={handleOtp} className='px-3'>
             {isSend ? "Verify" : "Send OTP"}{" "}
           </Button>
         ) : (
@@ -136,19 +133,18 @@ const Signup = () => {
         <div>
           <FormInput
             onCallbackInput={handleChange}
-            name="password"
-            label="Password"
+            name='password'
+            label='Password'
             type={show ? "password" : "text"}
-            placeholder="1234"
-            mainClass="my-2"
+            placeholder='1234'
+            mainClass='my-2'
             required={true}
           />
-          <div className="flex items-center space-x-2 mb-4">
-            <Checkbox onCheckedChange={handleShowPassword} id="terms" />
+          <div className='flex items-center space-x-2 mb-4'>
+            <Checkbox onCheckedChange={handleShowPassword} id='terms' />
             <label
-              htmlFor="terms"
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-            >
+              htmlFor='terms'
+              className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'>
               {show ? "Hide" : "Show"} Password
             </label>
           </div>
@@ -157,7 +153,7 @@ const Signup = () => {
         ""
       )}
       {isComplete ? (
-        <Button type="submit" className="w-full">
+        <Button type='submit' className='w-full'>
           Sign Up
         </Button>
       ) : (
