@@ -49,13 +49,13 @@ const imageFadeIn = {
 };
 
 const CarouselImage = ({
-  items,
-  loop,
-  auto,
-  delay,
-  height,
-  split,
-  slice,
+  items = defaultItems,
+  loop = true,
+  auto = true,
+  delay = 3000,
+  height = 400,
+  split = false,
+  slice = 2,
   className,
 }) => {
   return (
@@ -103,7 +103,7 @@ CarouselImage.propTypes = {
       name: PropTypes.string,
       src: PropTypes.string,
     })
-  ).isRequired,
+  ),
   loop: PropTypes.bool,
   auto: PropTypes.bool,
   delay: PropTypes.number,
@@ -111,16 +111,6 @@ CarouselImage.propTypes = {
   split: PropTypes.bool,
   slice: PropTypes.number,
   className: PropTypes.string,
-};
-
-CarouselImage.defaultProps = {
-  items: defaultItems,
-  loop: true,
-  auto: true,
-  delay: 3000,
-  height: 400,
-  split: false,
-  slice: 2,
 };
 
 export default CarouselImage;

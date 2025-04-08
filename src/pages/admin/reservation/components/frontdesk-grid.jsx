@@ -278,8 +278,8 @@ const FrontDeskGrid = ({ currentDate, roomData, header }) => {
 };
 
 FrontDeskGrid.propTypes = {
-  currentDate: PropTypes.instanceOf(Date).isRequired,
-  rooms: PropTypes.arrayOf(PropTypes.string).isRequired,
+  currentDate: PropTypes.instanceOf(Date),
+  rooms: PropTypes.arrayOf(PropTypes.string),
   roomData: PropTypes.arrayOf(PropTypes.object),
   header: PropTypes.node,
 };

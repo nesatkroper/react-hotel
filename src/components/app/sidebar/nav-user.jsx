@@ -1,11 +1,10 @@
-import {
-  BadgeCheck,
-  Bell,
-  ChevronsUpDown,
-  CreditCard,
-  LogOut,
-} from "lucide-react";
+import React from "react";
+import axiosAuth from "@/lib/axios-auth";
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { BadgeCheck, ChevronsUpDown, CreditCard, LogOut } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,11 +21,9 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import axiosAuth from "@/lib/axios-auth";
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
-const image =
+import AccountInfo from "@/pages/admin/account";
+
+export const image =
   "https://cdn.i-scmp.com/sites/default/files/styles/1020x680/public/d8/images/canvas/2025/02/14/399a4243-c5ea-41f9-bdb0-47ca4a00132c_a775a7ba.jpg?itok=oTQYtIbb&v=1739524311";
 
 export function NavUser({ user }) {
@@ -39,7 +36,7 @@ export function NavUser({ user }) {
       Cookies.remove("user-info");
       navigate("/auth");
       window.location.reload();
-      await axiosAuth.post("/logout");
+      await axiosAuth.post("/auth/logout");
     } catch (err) {
       console.log(err);
     }
@@ -83,17 +80,22 @@ export function NavUser({ user }) {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <BadgeCheck />
-                Account
+              <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                <AlertDialog>
+                  <AlertDialogTrigger className='w-full flex gap-3'>
+                    <BadgeCheck size={18} />
+                    Account
+                  </AlertDialogTrigger>
+                  <AccountInfo />
+                </AlertDialog>
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <CreditCard />
-                Billing
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Bell />
-                Notifications
+              <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                <AlertDialog>
+                  <AlertDialogTrigger className='w-full flex gap-3'>
+                    <CreditCard size={18} />
+                    Billing
+                  </AlertDialogTrigger>
+                </AlertDialog>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />

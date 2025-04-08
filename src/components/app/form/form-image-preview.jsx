@@ -4,15 +4,18 @@ import { Label } from "@/components/ui/label";
 import { defimg } from "@/utils/resize-crop-image";
 
 const FormImagePreview = ({
-  imgSrc = null,
+  imgSrc = "",
   labelClass = "",
   imgClass = "",
   size = 250,
   label = "Picture Preview",
+  underLine = false,
 }) => {
   return (
     <div className='flex flex-col gap-2'>
-      <Label className={labelClass}>{label}</Label>
+      <Label className={`${labelClass} ${underLine ? "underline" : ""}`}>
+        {label}
+      </Label>
       <img
         src={imgSrc || defimg}
         alt='picture preview'
@@ -28,5 +31,6 @@ FormImagePreview.propTypes = {
   imgClass: PropTypes.string,
   size: PropTypes.number,
   label: PropTypes.string,
+  underLine: PropTypes.bool,
 };
 export default FormImagePreview;

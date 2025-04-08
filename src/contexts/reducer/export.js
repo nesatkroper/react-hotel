@@ -1,4 +1,3 @@
-import roleReduce from "./role-slice";
 import userReduce from "./user-slice";
 import authReduce from "./auth-slice";
 import roomReduce from "./room-slice";
@@ -22,7 +21,6 @@ import stateReduce from "./state-slice";
 import cityReduce from "./city-slice";
 
 export default {
-  role: roleReduce,
   user: userReduce,
   auths: authReduce,
   rooms: roomReduce,

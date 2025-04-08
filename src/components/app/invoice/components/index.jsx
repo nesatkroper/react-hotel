@@ -1,4 +1,4 @@
-export { default as InvoiceHeader } from "./components/inv-header";
-export { default as InvoiceContent } from "./components/inv-content";
-export { default as InvoiceTable } from "./components/inv-table";
-export { default as InvoiceFooter } from "./components/inv-footer";
+export { default as InvoiceHeader } from "./inv-header";
+export { default as InvoiceContent } from "./inv-content";
+export { default as InvoiceTable } from "./inv-table";
+export { default as InvoiceFooter } from "./inv-footer";

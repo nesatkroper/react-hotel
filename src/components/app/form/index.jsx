@@ -10,3 +10,4 @@ export { default as FormOtp } from "./form-otp";
 export { default as FormRatio } from "./form-ratio";
 export { default as FormSelect } from "./form-select";
 export { default as FormTextArea } from "./form-textarea";
+export { default as FormPreview } from "./form-preview";
