@@ -8,13 +8,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { getDepartments } from "@/contexts/reducer/department-slice";
 import { useFormHandler } from "@/hooks/use-form-handler";
 import { showToast } from "@/components/app/toast";
+import { FormComboBox, FormInput, FormTextArea } from "@/components/app/form";
 import {
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogClose,
 } from "@/components/ui/dialog";
-import { FormComboBox, FormInput, FormTextArea } from "@/components/app/form";
+import { toast } from "sonner";
 
 const PositionAdd = () => {
   const dispatch = useDispatch();
@@ -31,23 +32,31 @@ const PositionAdd = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const toastId = showToast("Loading...", "info", true, {
+      description: "Please wait",
+    });
 
     try {
-      await axiosAuth
-        .post("/position", formData)
-        .then((res) => {
-          console.log(res);
+      const response = await axiosAuth.post("/position", formData);
+
+      setTimeout(() => {
+        toast.dismiss(toastId);
+        if (response.status === 201) {
           showToast(`${formData.positionName} Add Successfully.`, "success");
-          resetForm();
-          dispatch(clearCache());
-          dispatch(
-            getPositions({ params: { status: "all", department: true } })
-          );
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+        }
+      }, 100);
+
+      resetForm();
+      dispatch(clearCache());
+      dispatch(getPositions({ params: { status: "all", department: true } }));
     } catch (e) {
+      setTimeout(() => {
+        toast.dismiss(toastId);
+        showToast("Error Occured", "error", false, {
+          description: "Please try again.",
+        });
+      }, 100);
+
       console.log(e);
     }
   };

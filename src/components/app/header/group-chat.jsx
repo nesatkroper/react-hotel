@@ -1,25 +1,48 @@
 import React from "react";
 import Cookies from "js-cookie";
 import axiosAuth from "@/lib/axios-auth";
+import PropTypes from "prop-types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-import { SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useEffect, useRef, useState } from "react";
-import { Send, ArrowDown } from "lucide-react";
+import { Send, ArrowDown, X, EllipsisVertical, Pen, Trash } from "lucide-react";
 import { io } from "socket.io-client";
-import { dateFormat } from "@/utils/dec-format";
 import { useDispatch } from "react-redux";
 import { getUser } from "@/contexts/reducer/user-slice";
 import { apiUrl } from "@/constants/api";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const SOCKET = io(apiUrl, {
   transports: ["websocket", "polling"],
   withCredentials: true,
 });
 
-const GroupChat = () => {
+const messageVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 },
+  exit: { opacity: 0, x: -100 },
+};
+
+const sheetVariants = {
+  hidden: { x: "100%" },
+  visible: {
+    x: 0,
+    transition: { type: "spring", damping: 25, stiffness: 300 },
+  },
+  exit: { x: "100%" },
+};
+
+const GroupChat = ({ onClose }) => {
   const dispatch = useDispatch();
   const user = Cookies.get("user-info")
     ? JSON.parse(Cookies.get("user-info"))
@@ -31,7 +54,7 @@ const GroupChat = () => {
 
   const fetchOldMessages = async () => {
     try {
-      const response = await axiosAuth.get("/groupmessage/group?employee=true");
+      const response = await axiosAuth.get("/groupmessage/group?order=asc");
       setMessages(response?.data?.data);
     } catch (error) {
       console.error("Error fetching old messages:", error);
@@ -47,18 +70,19 @@ const GroupChat = () => {
     });
 
     return () => SOCKET.off("receiveGroup");
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (isAtBottom) {
       scrollToBottom();
     }
-  }, [messages]);
+  }, [messages, isAtBottom]);
 
   const handleSendMessage = () => {
     if (!msg.trim() || !user) return;
     SOCKET.emit("sendGroup", {
-      sender: user.employee?.employee_name || "Admin",
+      sender: user.employee?.employeeName || "Admin",
+      authId: user.authId,
       content: msg,
       time: new Date(),
     });
@@ -68,6 +92,7 @@ const GroupChat = () => {
   const scrollToBottom = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+      setIsAtBottom(true);
     }
   };
 
@@ -78,60 +103,133 @@ const GroupChat = () => {
   };
 
   return (
-    <SheetContent className='flex flex-col justify-between p-3 gap-0'>
-      <div className='relative'>
-        <SheetHeader>
-          <SheetTitle className='text-center text-md'>
-            System Group Chat
-          </SheetTitle>
-        </SheetHeader>
-        <Separator className='my-3' />
-        <div
-          className='h-[83vh] w-[360px] overflow-y-auto rounded-xl'
-          onScroll={handleScroll}
-          ref={scrollRef}>
-          {messages?.map((msg, index) => (
-            <Card key={index} className='mb-1 w-[350px] shadow-none'>
-              <CardHeader className='p-2 px-3 pb-0'>
-                <CardTitle className='flex justify-between'>
-                  <p className='text-sm ps-2'>
-                    {msg.sender
-                      ? msg.sender
-                      : `${msg.employee?.first_name ?? "Admin"} ${
-                          msg.employee?.last_name ?? " "
-                        }`}
-                  </p>
-                  <p className='font-normal text-sm'>{dateFormat(msg.time)}</p>
-                </CardTitle>
-              </CardHeader>
-              <CardContent className='p-3 pt-0'>
-                <p className='text-wrap text-sm'>{msg.content}</p>
-              </CardContent>
-            </Card>
-          ))}
-          {!isAtBottom && (
-            <Button
-              onClick={scrollToBottom}
-              className='absolute bottom-2 right-6 p-2 '>
-              <ArrowDown size={20} />
-            </Button>
-          )}
+    <motion.div
+      initial='hidden'
+      animate='visible'
+      exit='exit'
+      variants={sheetVariants}
+      className='fixed inset-y-0 right-0 w-full max-w-[450px] bg-background shadow-lg border-l z-50 flex flex-col'>
+      <div className='p-2 flex-shrink-0'>
+        <div className='flex justify-between items-center ps-10'>
+          <h3 className='text-md font-semibold'>System Group Chat</h3>
+          <Button
+            onClick={onClose}
+            variant='ghost'
+            size='icon'
+            className='h-8 w-8'
+            aria-label='Close chat'>
+            <X className='h-4 w-4' />
+          </Button>
         </div>
+        <Separator className='mt-2' />
       </div>
-      <div>
-        <div className='flex gap-1 mb-2'>
+
+      <div
+        className='flex-1 overflow-y-auto px-2 pb-1'
+        onScroll={handleScroll}
+        ref={scrollRef}>
+        <AnimatePresence initial={false}>
+          {messages?.map((msg, index) => (
+            <motion.div
+              key={`${msg.time}-${index}`}
+              variants={messageVariants}
+              initial='hidden'
+              animate='visible'
+              exit='exit'
+              transition={{ duration: 0.2 }}
+              layout
+              className='mb-2'>
+              <Card className='rounded-md'>
+                <CardHeader className='p-2 pb-1'>
+                  <CardTitle className='flex justify-between items-center text-sm'>
+                    <span className='font-bold'>
+                      @
+                      {msg.sender ||
+                        `${msg.employee?.first_name ?? "Admin"} ${
+                          msg.employee?.last_name ?? ""
+                        }`}
+                    </span>
+                    <div className='flex items-center gap-2'>
+                      <span className='text-muted-foreground text-xs underline'>
+                        {msg.time}
+                      </span>
+
+                      <DropdownMenu>
+                        <DropdownMenuTrigger>
+                          <EllipsisVertical size={16} />
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent className='me-2 min-w-7'>
+                          <DropdownMenuLabel className='text-center p-0'>
+                            Action
+                          </DropdownMenuLabel>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem className='text-yellow-600 h-6'>
+                            <Pen size={14} />
+                            Edit
+                          </DropdownMenuItem>
+                          <DropdownMenuItem className='text-red-600 h-6'>
+                            <Trash size={14} />
+                            Delete
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className='p-3 pt-0'>
+                  <p className='text-sm mx-4 text-justify'>{msg.content}</p>
+                </CardContent>
+              </Card>
+            </motion.div>
+          ))}
+        </AnimatePresence>
+      </div>
+
+      {!isAtBottom && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className='absolute right-6 bottom-24'>
+          <Button
+            onClick={scrollToBottom}
+            className='p-2'
+            variant='outline'
+            size='icon'>
+            <ArrowDown size={16} />
+          </Button>
+        </motion.div>
+      )}
+
+      <div className='p-3 border-t'>
+        <div className='flex gap-2 items-end'>
           <Textarea
-            onChange={(e) => setMsg(e.target.value)}
             value={msg}
-            placeholder='Say something...'
+            onChange={(e) => setMsg(e.target.value)}
+            placeholder='Type a message...'
+            className='min-h-[40px] resize-none'
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                handleSendMessage();
+              }
+            }}
           />
-          <Button onClick={handleSendMessage} disabled={!msg} className='p-3'>
-            <Send />
+          <Button
+            onClick={handleSendMessage}
+            disabled={!msg.trim()}
+            size='icon'
+            className='h-14 w-10'>
+            <Send size={16} />
           </Button>
         </div>
       </div>
-    </SheetContent>
+    </motion.div>
   );
+};
+
+GroupChat.propTypes = {
+  onClose: PropTypes.func.isRequired,
 };
 
 export default GroupChat;

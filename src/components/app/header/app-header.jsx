@@ -5,7 +5,7 @@ import AppSearchBar from "./app-search-bar";
 import chatSound from "@/assets/mp3/chat.wav";
 import useSound from "../sound/use-sound";
 import LanguageToggle from "../lang/lang-toggle";
-import { Dialog, DialogTrigger, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -17,6 +17,7 @@ import { ModeToggle } from "../theme/mode-toggle";
 import { io } from "socket.io-client";
 import { apiUrl } from "@/constants/api";
 import { useTranslation } from "react-i18next";
+import { showToast } from "../toast";
 
 const SOCKET = io(apiUrl);
 
@@ -43,8 +44,17 @@ const AppHeader = () => {
     const interval = setInterval(updateDateTime, 1000);
 
     SOCKET.on("receiveGroup", (message) => {
-      play();
+      console.table(message);
       if (!isChatOpen) {
+        play();
+        showToast(
+          <div className='font-bold'>New message from @{message.sender}</div>,
+          "success",
+          false,
+          {
+            description: message.content,
+          }
+        );
         setChatcount((prev) => prev + 1);
         setUnreadMessages((prev) => [...prev, message]);
       }
@@ -74,7 +84,6 @@ const AppHeader = () => {
       </div>
       <div className='flex gap-1'>
         <Dialog>
-          <DialogTitle></DialogTitle>
           <DialogTrigger asChild>
             <Button
               variant='outline'
@@ -89,11 +98,19 @@ const AppHeader = () => {
           onOpenChange={(open) =>
             open ? handleChatOpen() : handleChatClose()
           }>
-          <GroupChat messages={unreadMessages} />
+          {isChatOpen && <GroupChat onClose={() => setIsChatOpen(false)} />}
+
           <SheetTrigger asChild>
-            <Button variant='ghost' className='p-2'>
-              <Mail />
-            </Button>
+            <div className='relative'>
+              <Button variant='ghost' className='p-2'>
+                <Mail />
+              </Button>
+              {chatcount > 0 && (
+                <span className='absolute top-2 right-1 flex h-3 w-3 items-center justify-center rounded-full bg-red-600 text-xs font-bold text-white -translate-y-2 translate-x-2'>
+                  {chatcount}
+                </span>
+              )}
+            </div>
           </SheetTrigger>
         </Sheet>
 

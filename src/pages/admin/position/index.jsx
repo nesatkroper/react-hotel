@@ -13,7 +13,11 @@ const Position = () => {
   );
 
   useEffect(() => {
-    dispatch(getPositions({ params: { status: "all", department: true } }));
+    dispatch(
+      getPositions({
+        params: { status: "all", department: true },
+      })
+    );
   }, [dispatch]);
 
   const refresh = () => {

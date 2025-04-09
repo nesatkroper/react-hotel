@@ -1,13 +1,19 @@
-import React, {Suspense, lazy} from "react";
-import {Navigate, RouterProvider, createBrowserRouter} from "react-router-dom";
-import {useAuth} from "@/providers/auth-provider";
-import {ProtectedRoute} from "@/routes/protect-route";
+import React, { Suspense, lazy } from "react";
+import { useAuth } from "@/providers/auth-provider";
+import { ProtectedRoute } from "@/routes/protect-route";
+import {
+  Navigate,
+  RouterProvider,
+  createBrowserRouter,
+} from "react-router-dom";
 
 // Only import components needed for the initial load
 import NotFound from "@/components/app/404";
 import OfflinePage from "@/components/app/offline";
 import LoadingSpinner from "@/components/app/loading/spinner";
 import HomeClient from "@/pages/client/home";
+import ErrorBoundary from "@/components/app/error";
+import RouteTitle from "@/components/app/route-title";
 
 // Lazy load all page components
 const Dashboard = lazy(() => import("@/pages/admin/dashboard"));
@@ -30,16 +36,15 @@ const LazyLoad = (Component) => {
   const WrappedComponent = (props) => (
     <Suspense
       fallback={
-        <div className="flex justify-center items-center h-[90vh]">
+        <div className='flex justify-center items-center h-[90vh]'>
           <LoadingSpinner
-            size="xl"
-            variant="circle"
-            color="purple"
-            text="Loading..."
+            size='xl'
+            variant='circle'
+            color='purple'
+            text='Loading...'
           />
         </div>
-      }
-    >
+      }>
       <Component {...props} />
     </Suspense>
   );
@@ -52,42 +57,55 @@ const LazyLoad = (Component) => {
 };
 
 const Routes = () => {
-  const {token} = useAuth();
+  const { token } = useAuth();
 
   const routesForPublic = [
-    {path: "*", element: <NotFound />},
-    {path: "/", element: <HomeClient />},
-    {path: "/test", element: LazyLoad(Test)()},
-    {path: "/offline", element: <OfflinePage />},
+    { path: "*", element: <NotFound /> },
+    { path: "/", element: <HomeClient /> },
+    { path: "/test", element: LazyLoad(Test)() },
+    { path: "/offline", element: <OfflinePage /> },
   ];
 
   const routesForAuthenticatedOnly = [
     {
       path: "/",
-      element: <ProtectedRoute />,
+      element: (
+        <>
+          <RouteTitle />
+          <ProtectedRoute />
+        </>
+      ),
       children: [
         // {path: "", element: LazyLoad(Home)()},
-        {path: "auth", element: <Navigate to="/" />},
-        {path: "/home", element: LazyLoad(Home)()},
-        {path: "/dashboard", element: LazyLoad(Dashboard)()},
-        {path: "/reservation", element: LazyLoad(Reservation)()},
-        {path: "/room", element: LazyLoad(Room)()},
-        {path: "/department", element: LazyLoad(Department)()},
-        {path: "/position", element: LazyLoad(Position)()},
-        {path: "/customer", element: LazyLoad(Customer)()},
-        {path: "/employee", element: LazyLoad(Employee)()},
-        {path: "/pos", element: LazyLoad(POS)()},
-        {path: "/product", element: LazyLoad(Product)()},
-        {path: "/category", element: LazyLoad(ProductCategory)()},
-        {path: "/room-picture", element: LazyLoad(RoomPicture)()},
-        {path: "/authentication", element: LazyLoad(Authentication)()},
-        {path: "*", element: <NotFound />},
+        { path: "auth", element: <Navigate to='/' /> },
+        { path: "/home", element: LazyLoad(Home)() },
+        { path: "/dashboard", element: LazyLoad(Dashboard)() },
+        { path: "/reservation", element: LazyLoad(Reservation)() },
+        { path: "/room", element: LazyLoad(Room)() },
+        { path: "/department", element: LazyLoad(Department)() },
+        { path: "/position", element: LazyLoad(Position)() },
+        { path: "/customer", element: LazyLoad(Customer)() },
+        { path: "/employee", element: LazyLoad(Employee)() },
+        { path: "/pos", element: LazyLoad(POS)() },
+        { path: "/product", element: LazyLoad(Product)() },
+        { path: "/category", element: LazyLoad(ProductCategory)() },
+        { path: "/room-picture", element: LazyLoad(RoomPicture)() },
+        { path: "/authentication", element: LazyLoad(Authentication)() },
+        { path: "*", element: <NotFound /> },
       ],
     },
   ];
 
   const routesForNotAuthenticatedOnly = [
-    {path: "/auth", element: LazyLoad(Auth)()},
+    {
+      path: "/auth",
+      element: (
+        <>
+          <RouteTitle />
+          {LazyLoad(Auth)()}
+        </>
+      ),
+    },
   ];
 
   const router = createBrowserRouter([
@@ -96,7 +114,11 @@ const Routes = () => {
     ...routesForAuthenticatedOnly,
   ]);
 
-  return <RouterProvider router={router} />;
+  return (
+    <ErrorBoundary>
+      <RouterProvider router={router} />
+    </ErrorBoundary>
+  );
 };
 
 export default Routes;

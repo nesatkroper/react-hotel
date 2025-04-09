@@ -8,7 +8,7 @@
     "search": "ស្វែងរក ..."
   },
   "sidebar": {
-    "app-name": "Drug University",
+    "app-name": "Nun Reservation",
     "location": "Siem Reap",
     "home": "Home",
     "dash": "Dashboard",
@@ -38,7 +38,18 @@
     "profile": "Profile",
     "project": "Project",
     "platform": "Platform",
-    "search": "Search something ..."
+    "search": "Search something ...",
+    "notfound": "Not Found",
+    "login": "Login",
+    "register": "Register",
+    "forgot": "Forgot Password",
+    "reset": "Reset Password",
+    "verify": "Verify Email",
+    "verify-msg": "A fresh verification link has been sent to your email address.",
+    "verify-msg2": "Before proceeding, please check your email for a verification link.",
+    "verify-msg3": "If you did not receive the email,",
+    "verify-msg4": "click here to request another",
+    "verify-msg5": "If you are already logged in, you can close this page."
   },
   "home": {
     "body": "lorem ipsum dolor sit amet, consectetur adip"
