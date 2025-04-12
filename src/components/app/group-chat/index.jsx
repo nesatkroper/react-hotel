@@ -228,7 +228,7 @@ const GroupChat = ({ onClose }) => {
             value={msg}
             onChange={(e) => setMsg(e.target.value)}
             placeholder='Type a message...'
-            className='min-h-[120px] resize-none'
+            className='min-h-[80px] resize-none'
             onKeyDown={(e) => {
               if (e.key === "Enter" && !e.shiftKey) {
                 e.preventDefault();

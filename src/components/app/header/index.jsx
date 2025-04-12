@@ -5,6 +5,7 @@ import AppSearchBar from "./app-search-bar";
 import chatSound from "@/assets/mp3/chat.wav";
 import useSound from "../sound/use-sound";
 import LanguageToggle from "../lang/lang-toggle";
+import UserNav from "./user-nav";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Label } from "@/components/ui/label";
@@ -18,6 +19,8 @@ import { io } from "socket.io-client";
 import { apiUrl } from "@/constants/api";
 import { useTranslation } from "react-i18next";
 import { showToast } from "../toast";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { DialogTitle } from "@radix-ui/react-dialog";
 
 const SOCKET = io(apiUrl);
 
@@ -31,6 +34,7 @@ const SOCKET = io(apiUrl);
 
 const AppHeader = () => {
   const play = useSound(chatSound);
+  const isMobile = useIsMobile();
   const [t, i18n] = useTranslation("admin");
   const [chatcount, setChatcount] = useState(0);
   const [unreadMessages, setUnreadMessages] = useState([]);
@@ -120,31 +124,37 @@ const AppHeader = () => {
       <div className='flex items-center gap-2'>
         <SidebarTrigger className='-ml-1' />
         <Separator orientation='vertical' className='mr-2 h-4' />
-        <Label>{date}</Label>
+        {isMobile ? "" : <Label>{date}</Label>}
       </div>
-      <div className='flex gap-1'>
+      <div className='flex gap-3'>
         <Dialog>
+          <DialogTitle></DialogTitle>
           <DialogTrigger asChild>
-            <Button
-              variant='outline'
-              className='ps-8 text-muted-foreground h-[32px] min-w-52 relative text-start'>
-              <Search className='absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground' />
-              {t("sidebar.search")}
-            </Button>
+            {isMobile ? (
+              <Button size='icon' variant='icon' className='w-4'>
+                <Search />
+              </Button>
+            ) : (
+              <Button
+                variant='outline'
+                className='ps-8 text-muted-foreground h-[32px] min-w-52 relative text-start'>
+                <Search className='absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground' />
+                {t("sidebar.search")}
+              </Button>
+            )}
           </DialogTrigger>
           <AppSearchBar />
         </Dialog>
+
         <Sheet
           onOpenChange={(open) =>
             open ? handleChatOpen() : handleChatClose()
           }>
           {isChatOpen && <GroupChat onClose={() => setIsChatOpen(false)} />}
 
-          <SheetTrigger asChild>
+          <SheetTrigger>
             <div className='relative'>
-              <Button variant='ghost' className='p-2'>
-                <Mail />
-              </Button>
+              <Mail size={16} />
               {chatcount > 0 && (
                 <span className='absolute top-2 right-1 flex h-3 w-3 items-center justify-center rounded-full bg-red-600 text-xs font-bold text-white -translate-y-2 translate-x-2'>
                   {chatcount}
@@ -161,11 +171,9 @@ const AppHeader = () => {
           {isNotificationOpen && (
             <Notification onClose={() => setIsNotificationOpen(false)} />
           )}
-          <SheetTrigger asChild>
+          <SheetTrigger>
             <div className='relative'>
-              <Button variant='ghost' className='p-2'>
-                <BellRing size={28} />
-              </Button>
+              <BellRing size={16} />
               {notiCount > 0 && (
                 <span className='absolute top-2 right-1 flex h-3 w-3 items-center justify-center rounded-full bg-red-600 text-xs font-bold text-white -translate-y-2 translate-x-2'>
                   {notiCount}
@@ -175,8 +183,14 @@ const AppHeader = () => {
           </SheetTrigger>
         </Sheet>
 
-        <ModeToggle />
-        <LanguageToggle />
+        {isMobile ? (
+          <UserNav />
+        ) : (
+          <div className='flex gap-3'>
+            <ModeToggle />
+            <LanguageToggle />
+          </div>
+        )}
       </div>
     </header>
   );

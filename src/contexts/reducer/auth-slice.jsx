@@ -2,7 +2,7 @@ import axiosAuth from "@/lib/axios-auth";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 export const getAuth = createAsyncThunk("getAuth", async () => {
-  const res = await axiosAuth.get("/all-auth");
+  const res = await axiosAuth.get("/auth/all-auth");
   return res.data;
 });
 

@@ -5,6 +5,7 @@
   "description": "A hotel reservation app built with React",
   "author": "Dev. Suon Phanun",
   "bin": "./bin/cli.js",
+  "homepage": ".",
   "publishConfig": {
     "access": "public"
   },

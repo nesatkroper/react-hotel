@@ -6,9 +6,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
 import { Languages } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
@@ -25,12 +23,11 @@ const LanguageToggle = () => {
     localStorage.setItem("lang-key", lang);
     i18n.changeLanguage(lang);
   };
+
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant='ghost' size='icon'>
-          <Languages />
-        </Button>
+      <DropdownMenuTrigger>
+        <Languages size={16} />
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuItem onClick={() => hangleChangeLanguage("en")}>
@@ -41,7 +38,6 @@ const LanguageToggle = () => {
           />
           {t("lang.en")}
         </DropdownMenuItem>
-        <DropdownMenuSeparator />
         <DropdownMenuItem onClick={() => hangleChangeLanguage("kh")}>
           <img
             src={kh_flag}

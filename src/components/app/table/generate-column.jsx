@@ -80,9 +80,24 @@ export const generateColumns = (
           <div className='uppercase font-jet font-light'>{value || "N/A"}</div>
         );
 
-      if (field.key === "fullName") {
+      if (field.key === "fullName" || field.key === "fullname") {
         const firstName = row.original.firstName || "";
         const lastName = row.original.lastName || "";
+
+        return (
+          <div className='capitalize'>
+            {`${firstName} ${lastName}`.trim() || "N/A"}
+          </div>
+        );
+      }
+
+      if (
+        field.key === "employee.fullName" ||
+        field.key === "employee.fullame"
+      ) {
+        const firstName = row.original.employee.firstName || "";
+        const lastName = row.original.employee.lastName || "";
+        console.log(firstName);
 
         return (
           <div className='capitalize'>

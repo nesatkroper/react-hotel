@@ -9,7 +9,6 @@ import { NavMain } from "@/components/app/sidebar/nav-main";
 import { NavProjects } from "@/components/app/sidebar/nav-projects";
 import { NavUser } from "@/components/app/sidebar/nav-user";
 import { TeamSwitcher } from "@/components/app/sidebar/team-switcher";
-// import { useSelector } from "react-redux";
 import { data } from "./sidebar-data";
 import React from "react";
 

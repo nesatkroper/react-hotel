@@ -1,20 +1,19 @@
+import React, { useEffect, useState } from "react";
+import axiosAuth from "@/lib/axios-auth";
+import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
+import { useDispatch, useSelector } from "react-redux";
+import { getEmployees } from "@/contexts/reducer/employee-slice";
+import { Loader2 } from "lucide-react";
+import { getAuth } from "@/contexts/reducer/auth-slice";
+import { useFormHandler } from "@/hooks/use-form-handler";
+import { FormComboBox, FormInput, FormSelect } from "@/components/app/form";
 import {
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogClose,
 } from "@/components/ui/dialog";
-import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
-import { useDispatch, useSelector } from "react-redux";
-import React, { useEffect, useState } from "react";
-import FormInput from "@/components/app/form/form-input";
-import FormComboBox from "@/components/app/form/form-combobox";
-import { getEmployees } from "@/contexts/reducer/employee-slice";
-import FormSelect from "@/components/app/form/form-select";
-import { Loader2 } from "lucide-react";
-import axiosAuth from "@/lib/axios-auth";
-import { getAuth } from "@/contexts/reducer/auth-slice";
 
 const ROLE = [
   {
@@ -24,10 +23,6 @@ const ROLE = [
   {
     value: "management",
     data: "Management (Allow all Data)",
-  },
-  {
-    value: "accountant",
-    data: "Accountant (Allow all Finance)",
   },
   {
     value: "accountant",
@@ -45,41 +40,23 @@ const ROLE = [
 
 const AuthenticationAdd = () => {
   const dispatch = useDispatch();
-  const { empData } = useSelector((state) => state.employees);
+  const { data: empData } = useSelector((state) => state.employees);
   const [issend, setIssend] = useState(false);
-  const [formData, setFormData] = useState({
-    department_id: 0,
+  const { formData, handleChange, resetForm } = useFormHandler({
+    departmentId: 0,
     email: "",
     password: "",
     role: "",
   });
 
-  useEffect(() => {
-    dispatch(getEmployees());
-  }, [dispatch]);
-
-  const handleChange = (eOrName, value = null) => {
-    if (typeof eOrName === "object" && eOrName.target) {
-      const { name, value } = eOrName.target;
-      setFormData((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
-    } else {
-      setFormData((prev) => ({
-        ...prev,
-        [eOrName]: value,
-      }));
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIssend(true);
     await axiosAuth
-      .post("/register", formData)
+      .post("/auth/register", formData)
       .then((res) => {
         console.log(res);
+        resetForm();
         dispatch(getAuth());
         setIssend(false);
       })
@@ -87,6 +64,11 @@ const AuthenticationAdd = () => {
         console.log(err);
       });
   };
+
+  useEffect(() => {
+    dispatch(getEmployees());
+  }, [dispatch]);
+
   return (
     <DialogContent>
       <form onSubmit={handleSubmit}>
@@ -96,22 +78,24 @@ const AuthenticationAdd = () => {
         <Separator className='my-3' />
         <div className='flex justify-between mb-3'>
           <FormComboBox
-            onCallbackSelect={(e) => handleChange("department_id", e)}
-            name='department_id'
+            onCallbackSelect={(e) => handleChange("departmentId", e)}
+            name='departmentId'
             label='Employee'
             item={empData}
-            optID='employee_id'
-            optLabel='last_name'
+            optID='employeeId'
+            optLabel='lastName'
           />
           <FormSelect
             onCallbackSelect={(e) => handleChange("role", e)}
             label='Role'
             item={ROLE}
+            optID='value'
+            optLabel='data'
           />
         </div>
         <div className='flex justify-between mb-3'>
           <FormInput
-            onCallbackInput={(e) => handleChange(e)}
+            onCallbackInput={handleChange}
             name='email'
             type='email'
             label='Email*'
@@ -119,14 +103,14 @@ const AuthenticationAdd = () => {
             required={true}
           />
           <FormInput
-            onCallbackInput={(e) => handleChange(e)}
+            onCallbackInput={handleChange}
             name='password'
             label='Password*'
             placeholder='1234'
             required={true}
           />
         </div>
-        <DialogClose>
+        <DialogClose asChild>
           <Button type='submit' className='w-full'>
             {issend ? <Loader2 className=' animate-spin' /> : "Submit"}
           </Button>
