@@ -9,13 +9,14 @@ import { getDepartments } from "@/contexts/reducer/department-slice";
 import { useFormHandler } from "@/hooks/use-form-handler";
 import { showToast } from "@/components/app/toast";
 import { FormComboBox, FormInput, FormTextArea } from "@/components/app/form";
+import { toast } from "sonner";
+import { handleSendNotification } from "@/components/app/notification/handle-notification";
 import {
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogClose,
 } from "@/components/ui/dialog";
-import { toast } from "sonner";
 
 const PositionAdd = () => {
   const dispatch = useDispatch();
@@ -41,8 +42,21 @@ const PositionAdd = () => {
 
       setTimeout(() => {
         toast.dismiss(toastId);
+        handleSendNotification(
+          "Admin",
+          "31007b7e-93da-47fb-9e6e-c6c9bc0f317d",
+          "New Position Created",
+          "Created"
+        );
         if (response.status === 201) {
-          showToast(`${formData.positionName} Add Successfully.`, "success");
+          showToast(
+            `${formData.positionName} Add Successfully.`,
+            "success",
+            false,
+            {
+              duration: 5000,
+            }
+          );
         }
       }, 100);
 

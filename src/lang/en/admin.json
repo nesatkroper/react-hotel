@@ -1,4 +1,11 @@
 {
+  "cancel": "Cancel",
+  "save": "Save",
+  "add": "Add",
+  "update": "Update",
+  "remove": "Remove",
+  "restore": "Restore",
+  "confirm": "Confirm",
   "lang": {
     "en": "English",
     "kh": "Khmer"
@@ -128,5 +135,18 @@
   "toast": {
     "remove": "Are you sure to remove this item?",
     "restore": "This item will be restore."
+  },
+  "po": {
+    "alert": "Open Shift to continue working...",
+
+    "shift": {
+      "open": "Open Shift",
+      "select": "Select Bank Note.",
+      "close": "Close Shift",
+      "dopen": "Shift Opening Details",
+      "dclose": "Shift Closing Details",
+      "doriel": "Open Money Khmer (៛)*",
+      "dous": "Open Money USD ($)*"
+    }
   }
 }

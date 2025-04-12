@@ -19,14 +19,19 @@ import {
 } from "lucide-react";
 import { DialogContent } from "@/components/ui/dialog";
 
+/**
+ * Functional component representing the search bar in the App.
+ * @returns JSX element for the AppSearchBar component.
+ */
+
 const AppSearchBar = () => {
   return (
-    <DialogContent className="p-0 shadow-none border-none ">
-      <Command className="rounded-lg border shadow-md md:min-w-[450px]">
-        <CommandInput placeholder="Type a command or search..." />
+    <DialogContent className='p-0 shadow-none border-none '>
+      <Command className='rounded-lg border shadow-md md:min-w-[450px]'>
+        <CommandInput placeholder='Type a command or search...' />
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
-          <CommandGroup heading="Suggestions">
+          <CommandGroup heading='Suggestions'>
             <CommandItem>
               <Calendar />
               <span>Calendar</span>
@@ -41,7 +46,7 @@ const AppSearchBar = () => {
             </CommandItem>
           </CommandGroup>
           <CommandSeparator />
-          <CommandGroup heading="Settings">
+          <CommandGroup heading='Settings'>
             <CommandItem>
               <User />
               <span>Profile</span>

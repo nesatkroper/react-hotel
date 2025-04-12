@@ -1,6 +1,6 @@
 import React from "react";
-import NotificationSheet from "./notification-sheet";
-import GroupChat from "./group-chat";
+import Notification from "../notification";
+import GroupChat from "../group-chat";
 import AppSearchBar from "./app-search-bar";
 import chatSound from "@/assets/mp3/chat.wav";
 import useSound from "../sound/use-sound";
@@ -21,13 +21,24 @@ import { showToast } from "../toast";
 
 const SOCKET = io(apiUrl);
 
+/**
+ * Functional component for the header of the App.
+ * It includes various states such as notification count, chat count, unread messages, chat open status, date, etc.
+ * It also uses hooks like useSound, useTranslation, useState, and useEffect.
+ * Additionally, it renders components like Sheet, SheetTrigger, ModeToggle, and LanguageToggle.
+ * @returns JSX element representing the header of the App.
+ */
+
 const AppHeader = () => {
   const play = useSound(chatSound);
   const [t, i18n] = useTranslation("admin");
-  const [notiCount] = useState(2);
   const [chatcount, setChatcount] = useState(0);
   const [unreadMessages, setUnreadMessages] = useState([]);
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [notiCount, setNoticount] = useState(0);
+  const [unreadNotifications, setUnreadNotifications] = useState([]);
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+
   const [date, setDate] = useState("");
 
   useEffect(() => {
@@ -49,10 +60,11 @@ const AppHeader = () => {
         play();
         showToast(
           <div className='font-bold'>New message from @{message.sender}</div>,
-          "success",
+          "msg",
           false,
           {
             description: message.content,
+            duration: 5000,
           }
         );
         setChatcount((prev) => prev + 1);
@@ -60,11 +72,30 @@ const AppHeader = () => {
       }
     });
 
+    SOCKET.on("receiveNotification", (notification) => {
+      console.table(notification);
+      if (!isNotificationOpen) {
+        play();
+        showToast(
+          <div className='font-bold'>New notification</div>,
+          "msg",
+          false,
+          {
+            description: notification.content,
+            duration: 5000,
+          }
+        );
+        setNoticount((prev) => prev + 1);
+        setUnreadNotifications((prev) => [...prev, notification]);
+      }
+    });
+
     return () => {
       clearInterval(interval);
       SOCKET.off("receiveGroup");
+      SOCKET.off("receiveNotification");
     };
-  }, [isChatOpen, i18n.language]);
+  }, [isChatOpen, isNotificationOpen, i18n.language]);
 
   const handleChatOpen = () => {
     setIsChatOpen(true);
@@ -73,6 +104,15 @@ const AppHeader = () => {
 
   const handleChatClose = () => {
     setIsChatOpen(false);
+  };
+
+  const handleNotificationOpen = () => {
+    setIsNotificationOpen(true);
+    setNoticount(0);
+  };
+
+  const handleNotificationClose = () => {
+    setIsNotificationOpen(false);
   };
 
   return (
@@ -114,8 +154,13 @@ const AppHeader = () => {
           </SheetTrigger>
         </Sheet>
 
-        <Sheet>
-          <NotificationSheet />
+        <Sheet
+          onOpenChange={(open) =>
+            open ? handleNotificationOpen() : handleNotificationClose()
+          }>
+          {isNotificationOpen && (
+            <Notification onClose={() => setIsNotificationOpen(false)} />
+          )}
           <SheetTrigger asChild>
             <div className='relative'>
               <Button variant='ghost' className='p-2'>

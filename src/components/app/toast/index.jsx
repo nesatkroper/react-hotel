@@ -6,7 +6,17 @@ import {
   XCircle,
   AlertTriangle,
   InfoIcon,
+  MessageCircle,
 } from "lucide-react";
+
+/**
+ * Displays a toast notification with the given message and type.
+ * @param {string} message - The message to display in the toast notification.
+ * @param {string} [type='success'] - The type of the toast notification (e.g., success, error, warning).
+ * @param {boolean} [loading=false] - Indicates if the toast is being displayed during a loading state.
+ * @param {object} [options={}] - Additional options for the toast notification, such as action label and onClick function.
+ * @returns None
+ */
 
 export const showToast = (
   message,
@@ -27,6 +37,7 @@ export const showToast = (
     error: <XCircle className='w-5 h-5 text-rose-500' />,
     warning: <AlertTriangle className='w-5 h-5 text-amber-500' />,
     info: <InfoIcon className='w-5 h-5 text-sky-500' />,
+    msg: <MessageCircle className='w-5 h-5 text-sky-500' />,
   };
 
   const toastFunction =
@@ -38,13 +49,17 @@ export const showToast = (
       ? toast.warning
       : type === "info"
       ? toast.info
+      : type === "msg"
+      ? toast.message
       : toast;
 
   const content = <div className='text-muted-foreground'>{message}</div>;
 
   const description = options?.description ? (
-    <div className='text-muted-foreground text-wrap h-56'>
-      {options.description}
+    <div className='max-w-sm w-full break-words overflow-hidden'>
+      <p className='text-muted-foreground max-h-56 overflow-y-auto break-words text-sm whitespace-pre-wrap'>
+        {options.description}
+      </p>
     </div>
   ) : (
     <div className='flex items-center text-muted-foreground text-sm'>
@@ -66,9 +81,6 @@ export const showToast = (
       label: options.action.label,
       onClick: options.action.onClick,
     },
-    // style: {
-    //   maxHeight: "30vh",
-    // },
   };
 
   if (loading) {

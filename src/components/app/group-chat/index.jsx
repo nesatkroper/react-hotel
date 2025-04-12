@@ -2,45 +2,32 @@ import React from "react";
 import Cookies from "js-cookie";
 import axiosAuth from "@/lib/axios-auth";
 import PropTypes from "prop-types";
+import { SOCKET } from "@/providers/socket-io";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useEffect, useRef, useState } from "react";
 import { Send, ArrowDown, X, EllipsisVertical, Pen, Trash } from "lucide-react";
-import { io } from "socket.io-client";
 import { useDispatch } from "react-redux";
 import { getUser } from "@/contexts/reducer/user-slice";
-import { apiUrl } from "@/constants/api";
 import { motion, AnimatePresence } from "framer-motion";
+import { groupMessagesByDate } from "./group";
+import { messageVariants, sheetVariants } from "@/constants/variants";
 import {
   DropdownMenu,
+  DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-const SOCKET = io(apiUrl, {
-  transports: ["websocket", "polling"],
-  withCredentials: true,
-});
-
-const messageVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0 },
-  exit: { opacity: 0, x: -100 },
-};
-
-const sheetVariants = {
-  hidden: { x: "100%" },
-  visible: {
-    x: 0,
-    transition: { type: "spring", damping: 25, stiffness: 300 },
-  },
-  exit: { x: "100%" },
-};
+/**
+ * @Functional component for a group chat interface.
+ * @param {{Function}} onClose - Function to close the group chat.
+ * @returns JSX element for the group chat interface.
+ */
 
 const GroupChat = ({ onClose }) => {
   const dispatch = useDispatch();
@@ -52,9 +39,31 @@ const GroupChat = ({ onClose }) => {
   const [msg, setMsg] = useState("");
   const [isAtBottom, setIsAtBottom] = useState(true);
 
+  const formatDisplayDate = (dateString) => {
+    const date = new Date(dateString);
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+
+    if (date.toDateString() === today.toDateString()) {
+      return "Today";
+    } else if (date.toDateString() === yesterday.toDateString()) {
+      return "Yesterday";
+    } else {
+      return date.toLocaleDateString("en-US", {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+    }
+  };
+
   const fetchOldMessages = async () => {
     try {
-      const response = await axiosAuth.get("/groupmessage/group?order=asc");
+      const response = await axiosAuth.get(
+        "/groupmessage/group?limit=15&page=1"
+      );
       setMessages(response?.data?.data);
     } catch (error) {
       console.error("Error fetching old messages:", error);
@@ -102,6 +111,11 @@ const GroupChat = ({ onClose }) => {
     setIsAtBottom(atBottom);
   };
 
+  const handleEditMessage = async (msg) => {
+    setMsg(msg.content);
+  };
+  const groupedMessages = groupMessagesByDate(messages);
+
   return (
     <motion.div
       initial='hidden'
@@ -129,58 +143,65 @@ const GroupChat = ({ onClose }) => {
         onScroll={handleScroll}
         ref={scrollRef}>
         <AnimatePresence initial={false}>
-          {messages?.map((msg, index) => (
-            <motion.div
-              key={`${msg.time}-${index}`}
-              variants={messageVariants}
-              initial='hidden'
-              animate='visible'
-              exit='exit'
-              transition={{ duration: 0.2 }}
-              layout
-              className='mb-2'>
-              <Card className='rounded-md'>
-                <CardHeader className='p-2 pb-1'>
-                  <CardTitle className='flex justify-between items-center text-sm'>
-                    <span className='font-bold'>
-                      @
-                      {msg.sender ||
-                        `${msg.employee?.first_name ?? "Admin"} ${
-                          msg.employee?.last_name ?? ""
-                        }`}
-                    </span>
-                    <div className='flex items-center gap-2'>
-                      <span className='text-muted-foreground text-xs underline'>
-                        {msg.time}
-                      </span>
+          {Object.entries(groupedMessages).map(([date, dateMessages]) => (
+            <div key={date} className='mb-4'>
+              <div className='sticky top-0 z-10 flex justify-center my-2'>
+                <div className='bg-muted px-3 py-1 rounded-full text-sm text-muted-foreground'>
+                  {formatDisplayDate(date)}
+                </div>
+              </div>
 
-                      <DropdownMenu>
-                        <DropdownMenuTrigger>
-                          <EllipsisVertical size={16} />
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent className='me-2 min-w-7'>
-                          <DropdownMenuLabel className='text-center p-0'>
-                            Action
-                          </DropdownMenuLabel>
-                          <DropdownMenuSeparator />
-                          <DropdownMenuItem className='text-yellow-600 h-6'>
-                            <Pen size={14} />
-                            Edit
-                          </DropdownMenuItem>
-                          <DropdownMenuItem className='text-red-600 h-6'>
-                            <Trash size={14} />
-                            Delete
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </div>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className='p-3 pt-0'>
-                  <p className='text-sm mx-4 text-justify'>{msg.content}</p>
-                </CardContent>
-              </Card>
-            </motion.div>
+              {dateMessages.map((msg, index) => (
+                <motion.div
+                  key={`${msg.time}-${index}`}
+                  variants={messageVariants}
+                  initial='hidden'
+                  animate='visible'
+                  exit='exit'
+                  transition={{ duration: 0.2 }}
+                  layout
+                  className='mb-2'>
+                  <Card className='rounded-md'>
+                    <CardHeader className='p-2 pb-1'>
+                      <CardTitle className='flex justify-between items-center text-sm'>
+                        <span className='font-bold'>
+                          From {msg.sender || "Admin"}
+                        </span>
+                        <div className='flex items-center gap-2'>
+                          <span className='text-muted-foreground text-xs underline'>
+                            {msg.time}
+                          </span>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger>
+                              <EllipsisVertical size={16} />
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent className='me-2 min-w-7'>
+                              <DropdownMenuLabel className='text-center p-0'>
+                                Action
+                              </DropdownMenuLabel>
+                              <DropdownMenuSeparator />
+                              <DropdownMenuItem
+                                onClick={() => handleEditMessage(msg)}
+                                className='text-yellow-600 h-6'>
+                                <Pen size={14} />
+                                Edit
+                              </DropdownMenuItem>
+                              <DropdownMenuItem className='text-red-600 h-6'>
+                                <Trash size={14} />
+                                Delete
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </div>
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className='p-3 pt-0'>
+                      <p className='text-sm mx-4 text-justify'>{msg.content}</p>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
           ))}
         </AnimatePresence>
       </div>
@@ -190,7 +211,7 @@ const GroupChat = ({ onClose }) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className='absolute right-6 bottom-24'>
+          className='absolute right-6 bottom-40'>
           <Button
             onClick={scrollToBottom}
             className='p-2'
@@ -207,7 +228,7 @@ const GroupChat = ({ onClose }) => {
             value={msg}
             onChange={(e) => setMsg(e.target.value)}
             placeholder='Type a message...'
-            className='min-h-[40px] resize-none'
+            className='min-h-[120px] resize-none'
             onKeyDown={(e) => {
               if (e.key === "Enter" && !e.shiftKey) {
                 e.preventDefault();
@@ -219,7 +240,7 @@ const GroupChat = ({ onClose }) => {
             onClick={handleSendMessage}
             disabled={!msg.trim()}
             size='icon'
-            className='h-14 w-10'>
+            className='h-10 w-10 rounded-md'>
             <Send size={16} />
           </Button>
         </div>

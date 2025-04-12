@@ -5,12 +5,13 @@ import PropTypes from "prop-types";
 import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { useSelector, useDispatch } from "react-redux";
-// import { getSearchCate } from "@/contexts/reducer/search-category-slice";
 import { getCategorys } from "@/contexts/reducer/product-category-slice";
 import { FormComboBox, FormInput } from "@/components/app/form";
+import { useTranslation } from "react-i18next";
 
 const POSSearch = ({ shift }) => {
   const dispatch = useDispatch();
+  const [t] = useTranslation("admin");
   const { data: pcaData } = useSelector((state) => state?.pcategories);
   // const [open, setOpen] = useState(false);
   // const [value, setValue] = useState("");
@@ -37,17 +38,17 @@ const POSSearch = ({ shift }) => {
       </div>
       <div className='flex gap-2 items-end'>
         <AlertDialog>
-          <AlertDialogTrigger disabled={shift ? true : false}>
+          <AlertDialogTrigger disabled={shift ? true : false} asChild>
             <Button disabled={shift ? true : false} className='bg-green-500'>
-              Open Shift
+              {t("po.shift.open")}
             </Button>
           </AlertDialogTrigger>
           <OpenShift />
         </AlertDialog>
         <AlertDialog>
-          <AlertDialogTrigger disabled={shift ? false : true}>
+          <AlertDialogTrigger disabled={shift ? false : true} asChild>
             <Button disabled={shift ? false : true} className='bg-red-500'>
-              Close Shift
+              {t("po.shift.close")}
             </Button>
           </AlertDialogTrigger>
           <CloseShift />

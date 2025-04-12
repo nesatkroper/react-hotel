@@ -1,3 +1,17 @@
+import React, { useEffect } from "react";
+import Cookie from "js-cookie";
+import axiosAuth from "@/lib/axios-auth";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
+import { useDispatch, useSelector } from "react-redux";
+import { getShifts } from "@/contexts/reducer/shift-slice";
+import { getBanknotes } from "@/contexts/reducer/bank-note-slice";
+import { getCode } from "@/contexts/reducer/code-slice";
+import { useTranslation } from "react-i18next";
+import { khmerDenominations, usDenominations } from "@/constants/shift";
+import { userInfo } from "@/constants/user-info";
+import { useFormHandler } from "@/hooks/use-form-handler";
 import {
   AlertDialogAction,
   AlertDialogCancel,
@@ -6,74 +20,45 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getShifts } from "@/contexts/reducer/shift-slice";
-import { getBanknotes } from "@/contexts/reducer/bank-note-slice";
-import { getCode } from "@/contexts/reducer/code-slice";
-import Cookie from "js-cookie";
-import axiosAuth from "@/lib/axios-auth";
 
 const CloseShift = () => {
   const dispatch = useDispatch();
-  const userInfo = Cookie.get("user-info")
-    ? JSON.parse(Cookie.get("user-info"))
-    : {};
+  const [t] = useTranslation("admin");
   const { codData } = useSelector((state) => state.code);
-  const [data, setData] = useState({
-    open_khmer_riel: 0,
-    open_us_dollar: 0,
-    employee_id: 1,
+  const {
+    formData: data,
+    setFormData: setData,
+    resetForm: resetData,
+  } = useFormHandler({
+    openKhmerRiel: 0,
+    openUsDollar: 0,
+    authId: "31007b7e-93da-47fb-9e6e-c6c9bc0f317d",
   });
-  const [banknote, setBanknote] = useState({
-    shift_id: parseInt(codData.shift_id, 10),
-    khmer_200K: 0,
-    khmer_100K: 0,
-    khmer_50K: 0,
-    khmer_30K: 0,
-    khmer_20K: 0,
-    khmer_15K: 0,
-    khmer_10K: 0,
-    khmer_5K: 0,
-    khmer_2K: 0,
-    khmer_1K: 0,
-    khmer_500: 0,
-    khmer_100: 0,
-    us_100: 0,
-    us_50: 0,
-    us_20: 0,
-    us_10: 0,
-    us_5: 0,
-    us_1: 0,
+  const {
+    formData: banknote,
+    setFormData: setBanknote,
+    resetForm: resetNote,
+  } = useFormHandler({
+    shiftId: codData.shiftId,
+    khmer200K: 0,
+    khmer100K: 0,
+    khmer50K: 0,
+    khmer30K: 0,
+    khmer20K: 0,
+    khmer15K: 0,
+    khmer10K: 0,
+    khmer5K: 0,
+    khmer2K: 0,
+    khmer1K: 0,
+    khmer500: 0,
+    khmer100: 0,
+    us100: 0,
+    us50: 0,
+    us20: 0,
+    us10: 0,
+    us5: 0,
+    us1: 0,
   });
-
-  const khmerDenominations = {
-    khmer_200K: 200000,
-    khmer_100K: 100000,
-    khmer_50K: 50000,
-    khmer_30K: 30000,
-    khmer_20K: 20000,
-    khmer_15K: 15000,
-    khmer_10K: 10000,
-    khmer_5K: 5000,
-    khmer_2K: 2000,
-    khmer_1K: 1000,
-    khmer_500: 500,
-    khmer_100: 100,
-  };
-
-  const usDenominations = {
-    us_100: 100,
-    us_50: 50,
-    us_20: 20,
-    us_10: 10,
-    us_5: 5,
-    us_1: 1,
-  };
 
   useEffect(() => {
     dispatch(getShifts());
@@ -95,7 +80,7 @@ const CloseShift = () => {
     setBanknote((prev) => {
       const updatedBanknote = {
         ...prev,
-        shift_id: parseInt(codData.shift_id, 10),
+        shiftId: parseInt(codData.shiftId, 10),
         [name]: updatedValue,
       };
 
@@ -103,9 +88,9 @@ const CloseShift = () => {
       const totalUS = calculateTotal(updatedBanknote, usDenominations);
 
       setData({
-        employee_id: userInfo.employee_id,
-        open_khmer_riel: totalKhmer,
-        open_us_dollar: totalUS,
+        employeeId: userInfo.employeeId,
+        openKhmerRiel: totalKhmer,
+        openUsDollar: totalUS,
       });
 
       return updatedBanknote;
@@ -113,34 +98,8 @@ const CloseShift = () => {
   };
 
   const handleClearData = () => {
-    setData({
-      open_khmer_riel: 0,
-      open_us_dollar: 0,
-      employee_id: 0,
-    });
-
-    setBanknote({
-      shift_id: 0,
-      khmer_200K: 0,
-      khmer_100K: 0,
-      khmer_50K: 0,
-      khmer_30K: 0,
-      khmer_20K: 0,
-      khmer_15K: 0,
-      khmer_10K: 0,
-      khmer_5K: 0,
-      khmer_2K: 0,
-      khmer_1K: 0,
-      khmer_500: 0,
-      khmer_100: 0,
-      us_100: 0,
-      us_50: 0,
-      us_20: 0,
-      us_10: 0,
-      us_5: 0,
-      us_1: 0,
-    });
-
+    resetData();
+    resetNote();
     console.log("Data cleared successfully!");
   };
 
@@ -148,24 +107,23 @@ const CloseShift = () => {
     e.preventDefault();
     try {
       const shift = await axiosAuth.post("/shift", data);
-      console.log(banknote);
 
       if (shift?.data) {
-        console.log(shift);
         Cookie.set("shift-info", JSON.stringify(shift.data), { expires: 1 });
 
-        const newShiftId = shift.data.shift_id;
+        const newShiftId = shift.data.shiftId;
 
-        setBanknote((prev) => ({
-          ...prev,
-          shift_id: newShiftId,
-        }));
-
-        const note = await axiosAuth.post("/banknote", {
-          ...banknote,
-          shift_id: newShiftId,
-        });
-        console.log(note);
+        if (shift.status === 201) {
+          setBanknote((prev) => ({
+            ...prev,
+            shiftId: newShiftId,
+          }));
+          const note = await axiosAuth.post("/banknote", {
+            ...banknote,
+            shiftId: newShiftId,
+          });
+          console.log(note);
+        }
       }
     } catch (err) {
       console.log(err);
@@ -176,19 +134,21 @@ const CloseShift = () => {
   };
 
   return (
-    <AlertDialogContent className="w-[700]">
+    <AlertDialogContent className='w-[700]'>
       <form onSubmit={handleSubmit}>
         <AlertDialogHeader>
-          <AlertDialogTitle className="text-base">
-            Shift Opening Details
+          <AlertDialogTitle className='text-md'>
+            {t("po.shift.dopen")}
           </AlertDialogTitle>
           <Separator />
         </AlertDialogHeader>
-        <div className="flex justify-between my-2 gap-3">
-          <div className="flex flex-col gap-2">
-            <Label className="font-normal text-xs">Open Money Khmer (៛)*</Label>
-            <div className="flex gap-1">
-              <Input value="៛" readOnly className="w-[25px] p-0 text-center" />
+        <div className='flex justify-between my-2 gap-3'>
+          <div className='flex flex-col gap-2'>
+            <Label className='font-normal text-sm'>
+              {t("po.shift.doriel")}
+            </Label>
+            <div className='flex gap-1'>
+              <Input value='៛' readOnly className='w-[25px] p-0 text-center' />
               <Input
                 readOnly
                 value={
@@ -196,39 +156,38 @@ const CloseShift = () => {
                     style: "decimal",
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2,
-                  }).format(data?.open_khmer_riel)}` || "$ 0"
+                  }).format(data?.openKhmerRiel)}` || "$ 0"
                 }
-                className="w-[150px]"
+                className='w-[150px]'
               />
             </div>
-            <Label className="font-normal text-xs">Select Bank Note</Label>
-            <div className="flex flex-col gap-1 rounded-lg">
+            <Label className='font-normal text-sm'>
+              {t("po.shift.select")}
+            </Label>
+            <div className='flex flex-col gap-1 rounded-lg'>
               {Object.keys(khmerDenominations).map((key) => (
                 <div
                   key={key}
-                  className="flex justify-between w-[160px] items-center px-4"
-                >
-                  <Label className="font-normal text-xs">
+                  className='flex justify-between w-[160px] items-center px-4'>
+                  <Label className='font-normal text-sm'>
                     x {khmerDenominations[key].toLocaleString()} ៛
                   </Label>
                   <Input
-                    type="number"
+                    type='number'
                     name={key}
                     value={banknote[key] || 0}
                     onChange={handleBanknoteChange}
                     min={0}
-                    className="w-[60px] h-[25px]"
+                    className='w-[60px] h-[25px]'
                   />
                 </div>
               ))}
             </div>
           </div>
-          <div className="flex flex-col gap-2">
-            <Label className="font-normal text-xs">
-              Open Money Dollar ($)*
-            </Label>
-            <div className="flex gap-1">
-              <Input value="$" readOnly className="w-[25px] p-0 text-center" />
+          <div className='flex flex-col gap-2'>
+            <Label className='font-normal text-sm'>{t("po.shift.dous")}</Label>
+            <div className='flex gap-1'>
+              <Input value='$' readOnly className='w-[25px] p-0 text-center' />
               <Input
                 readOnly
                 value={
@@ -236,27 +195,28 @@ const CloseShift = () => {
                     style: "decimal",
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2,
-                  }).format(data?.open_us_dollar)}` || ""
+                  }).format(data?.openUsDollar)}` || ""
                 }
-                className="w-[180px]"
+                className='w-[180px]'
               />
             </div>
-            <Label className="font-normal text-xs">Select Bank Note</Label>
-            <div className="flex flex-col gap-1 rounded-lg">
+            <Label className='font-normal text-sm'>
+              {t("po.shift.select")}
+            </Label>
+            <div className='flex flex-col gap-1 rounded-lg'>
               {Object.keys(usDenominations).map((key) => (
                 <div
                   key={key}
-                  className="flex justify-between w-[160px] items-center px-4"
-                >
-                  <Label className="font-normal text-xs">
+                  className='flex justify-between w-[160px] items-center px-4'>
+                  <Label className='font-normal text-sm'>
                     x ${usDenominations[key]}
                   </Label>
                   <Input
-                    type="number"
+                    type='number'
                     name={key}
                     value={banknote[key] || 0}
                     onChange={handleBanknoteChange}
-                    className="w-[60px] h-[25px]"
+                    className='w-[60px] h-[25px]'
                     min={0}
                   />
                 </div>
@@ -264,24 +224,10 @@ const CloseShift = () => {
             </div>
           </div>
         </div>
-        <div className="flex justify-between my-1">
-          <div className="flex flex-col gap-2">
-            <Label className="font-normal text-xs">Staff Name*</Label>
-            <Input
-              name="product_code"
-              type="text"
-              value={`${userInfo.employee?.first_name} ${userInfo.employee?.last_name}`}
-              disabled
-              className="w-[190px]"
-            />
-          </div>
-        </div>
-        <AlertDialogFooter className="mt-3">
-          <AlertDialogCancel className="h-7">Cancel</AlertDialogCancel>
-          <AlertDialogAction className="p-0 h-7">
-            <Button type="submit" className="w-full h-7">
-              Start Open
-            </Button>
+        <AlertDialogFooter className='mt-3'>
+          <AlertDialogCancel className='h-7'>{t("cancel")}</AlertDialogCancel>
+          <AlertDialogAction type='submit' className='h-7'>
+            {t("po.shift.open")}
           </AlertDialogAction>
         </AlertDialogFooter>
       </form>

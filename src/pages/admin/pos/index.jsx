@@ -9,12 +9,14 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useDispatch, useSelector } from "react-redux";
 import { getProducts } from "@/contexts/reducer/product-slice";
 import { getCode } from "@/contexts/reducer/code-slice";
+import { useTranslation } from "react-i18next";
 
 const POS = () => {
   const dispatch = useDispatch();
+  const [t] = useTranslation("admin");
+  const [shift, setShift] = useState(false);
   const { proData, proLoading } = useSelector((state) => state.products);
   const { codData } = useSelector((state) => state.code);
-  const [shift, setShift] = useState(false);
 
   useEffect(() => {
     if (!codData || typeof codData !== "object") {
@@ -35,26 +37,24 @@ const POS = () => {
 
   return (
     <Layout>
-      <div className="p-2">
+      <div className='p-2'>
         <POSSearch shift={shift} />
-        <Separator className="my-2" />
+        <Separator className='my-2' />
         {shift ? (
-          <div className="grid 2xl:grid-cols-6 lg:grid-cols-4 md:grid-cols-5 grid-cols-2 gap-3">
+          <div className='grid 2xl:grid-cols-6 lg:grid-cols-4 md:grid-cols-5 grid-cols-2 gap-3'>
             {!proLoading ? (
-              <ScrollArea className="w-full h-[80vh] 2xl:col-span-5 lg:col-span-3 md:col-span-3 col-span-1 rounded-2xl">
+              <ScrollArea className='w-full h-[80vh] 2xl:col-span-5 lg:col-span-3 md:col-span-3 col-span-1 rounded-2xl'>
                 <POSList data={proData} />
               </ScrollArea>
             ) : (
-              <div className="w-full h-[80vh] 2xl:col-span-5 lg:col-span-3 md:col-span-3 col-span-1 rounded-2xl flex  justify-center">
+              <div className='w-full h-[80vh] 2xl:col-span-5 lg:col-span-3 md:col-span-3 col-span-1 rounded-2xl flex  justify-center'>
                 <AppLoading />
               </div>
             )}
             <POSCart />
           </div>
         ) : (
-          <p className="text-lg text-center font-semibold">
-            Open Shift to continue working...
-          </p>
+          <p className='text-md text-center font-semibold'>{t("po.alert")}</p>
         )}
       </div>
     </Layout>
