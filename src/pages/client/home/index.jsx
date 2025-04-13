@@ -1,6 +1,6 @@
 import React from "react";
 import LayoutClient from "@/layout/layout-client";
-import CarouselImage from "@/components/app/carousel";
+import CarouselImage from "@/components/app/client/carousel";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { useIsMobile } from "@/hooks/use-mobile";

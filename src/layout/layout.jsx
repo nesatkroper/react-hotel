@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app/sidebar/app-sidebar";
-import AppHeader from "@/components/app/header";
+import AppHeader from "@/components/app/admin/header";
 
 export default function Layout({ children, className }) {
   const [_open, _setOpen] = useState(false);

@@ -10,7 +10,7 @@ import {
 // Only import components needed for the initial load
 import NotFound from "@/components/app/404";
 import OfflinePage from "@/components/app/offline";
-import LoadingSpinner from "@/components/app/loading/spinner";
+import LazyLoading from "@/components/app/loading";
 import HomeClient from "@/pages/client/home";
 import ErrorBoundary from "@/components/app/error";
 import RouteTitle from "@/components/app/route-title";
@@ -28,7 +28,7 @@ const ProductCategory = lazy(() => import("@/pages/admin/product-category"));
 const RoomPicture = lazy(() => import("@/pages/admin/room-picture"));
 const Authentication = lazy(() => import("@/pages/admin/authentication"));
 const Home = lazy(() => import("@/pages/admin/home"));
-const Auth = lazy(() => import("@/pages/admin/auth/auth"));
+const Auth = lazy(() => import("@/pages/admin/auth"));
 const Customer = lazy(() => import("@/pages/admin/customer"));
 const Test = lazy(() => import("@/pages/test"));
 
@@ -37,11 +37,10 @@ const LazyLoad = (Component) => {
     <Suspense
       fallback={
         <div className='flex justify-center items-center h-[90vh]'>
-          <LoadingSpinner
-            size='xl'
-            variant='circle'
-            color='purple'
-            text='Loading...'
+          <LazyLoading
+            size='large'
+            color='secondary'
+            text='Loading Component Web App'
           />
         </div>
       }>
@@ -76,8 +75,7 @@ const Routes = () => {
         </>
       ),
       children: [
-        // {path: "", element: LazyLoad(Home)()},
-        { path: "auth", element: <Navigate to='/' /> },
+        { path: "/admin/auth", element: <Navigate to='/' /> },
         { path: "/home", element: LazyLoad(Home)() },
         { path: "/dashboard", element: LazyLoad(Dashboard)() },
         { path: "/reservation", element: LazyLoad(Reservation)() },
@@ -98,7 +96,7 @@ const Routes = () => {
 
   const routesForNotAuthenticatedOnly = [
     {
-      path: "/auth",
+      path: "/admin/auth",
       element: (
         <>
           <RouteTitle />

@@ -10,7 +10,7 @@ import { ArrowDown, X } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { getUser } from "@/contexts/reducer/user-slice";
 import { motion, AnimatePresence } from "framer-motion";
-import { groupMessagesByDate } from "../group-chat/group";
+import { groupMessagesByDate } from "../admin/group-chat/group";
 import { messageVariants, sheetVariants } from "@/constants/variants";
 
 /**

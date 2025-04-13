@@ -1,8 +1,8 @@
 import React from "react";
 import Logo from "@/assets/images/logo.png";
-import LanguageToggle from "../lang/lang-toggle";
+import LanguageToggle from "../../lang/lang-toggle";
 import { Card, CardContent } from "@/components/ui/card";
-import { ModeToggle } from "../theme/mode-toggle";
+import { ModeToggle } from "../../theme/mode-toggle";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -33,8 +33,7 @@ const HeaderClient = () => {
             <img src={Logo} className='h-8' alt='logo' />
             <p className='font-bold text-md'>Nun Hotel</p>
           </a>
-          <div className='flex gap-1'>
-            <a href='/test'>go to test</a>
+          <div className='flex gap-2'>
             <ModeToggle />
             <LanguageToggle />
             {isMobile ? (

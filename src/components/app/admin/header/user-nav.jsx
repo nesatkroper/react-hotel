@@ -1,8 +1,8 @@
 import React from "react";
-import LanguageToggle from "../lang/lang-toggle";
+import LanguageToggle from "../../lang/lang-toggle";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ModeToggle } from "../theme/mode-toggle";
+import { ModeToggle } from "../../theme/mode-toggle";
 import {
   Popover,
   PopoverContent,

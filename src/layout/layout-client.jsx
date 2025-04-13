@@ -1,5 +1,5 @@
-import FooterClient from "@/components/app/footer-client";
-import HeaderClient from "@/components/app/header-client";
+import FooterClient from "@/components/app/client/footer";
+import HeaderClient from "@/components/app/client/header";
 import PropTypes from "prop-types";
 import React from "react";
 

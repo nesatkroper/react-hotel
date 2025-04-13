@@ -12,7 +12,7 @@ const FormInput = ({
   inputClass,
   labelClass,
   placeholder = "Food, Drink, ...",
-  size = 250,
+  // size,
   label = "Email*",
   readonly = false,
   required = false,
@@ -34,7 +34,7 @@ const FormInput = ({
         name={name}
         type={type}
         placeholder={placeholder}
-        className={`${inputClass} w-[${size}px]`}
+        className={`${inputClass}`}
         readOnly={readonly}
         min={min}
         step={step}

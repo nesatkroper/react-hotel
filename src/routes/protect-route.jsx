@@ -16,7 +16,7 @@ export const ProtectedRoute = () => {
     }
   }, [isOnline, location.pathname, navigate]);
 
-  if (!token) return <Navigate to='/auth' />;
+  if (!token) return <Navigate to='/admin/auth' />;
 
   return <Outlet />;
 };

@@ -1,10 +1,10 @@
 import React from "react";
-import Notification from "../notification";
-import GroupChat from "../group-chat";
+import Notification from "../../notification";
+import GroupChat from "../../admin/group-chat";
 import AppSearchBar from "./app-search-bar";
 import chatSound from "@/assets/mp3/chat.wav";
-import useSound from "../sound/use-sound";
-import LanguageToggle from "../lang/lang-toggle";
+import useSound from "../../sound/use-sound";
+import LanguageToggle from "../../lang/lang-toggle";
 import UserNav from "./user-nav";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { SidebarTrigger } from "@/components/ui/sidebar";
@@ -14,21 +14,21 @@ import { Sheet, SheetTrigger } from "@/components/ui/sheet";
 import { BellRing, Mail, Search } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { useEffect, useState } from "react";
-import { ModeToggle } from "../theme/mode-toggle";
+import { ModeToggle } from "../../theme/mode-toggle";
 import { io } from "socket.io-client";
 import { apiUrl } from "@/constants/api";
 import { useTranslation } from "react-i18next";
-import { showToast } from "../toast";
+import { showToast } from "../../toast";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { DialogTitle } from "@radix-ui/react-dialog";
 
 const SOCKET = io(apiUrl);
 
 /**
- * Functional component for the header of the App.
- * It includes various states such as notification count, chat count, unread messages, chat open status, date, etc.
- * It also uses hooks like useSound, useTranslation, useState, and useEffect.
- * Additionally, it renders components like Sheet, SheetTrigger, ModeToggle, and LanguageToggle.
+ * @Functional component for the header of the App.
+ * @It includes various states such as notification count, chat count, unread messages, chat open status, date, etc.
+ * @It also uses hooks like useSound, useTranslation, useState, and useEffect.
+ * @Additionally, it renders components like Sheet, SheetTrigger, ModeToggle, and LanguageToggle.
  * @returns JSX element representing the header of the App.
  */
 

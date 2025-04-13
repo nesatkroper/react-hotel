@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import AppLoading from "../utils/app-loading";
+import TableLoading from "../utils/app-loading";
 import PropTypes from "prop-types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -264,7 +264,7 @@ const AppDataTable = (props) => {
                   ))}
                 </motion.thead>
                 {loading ? (
-                  <AppLoading />
+                  <TableLoading />
                 ) : (
                   <TableBody>
                     {table.getRowModel().rows?.length ? (
