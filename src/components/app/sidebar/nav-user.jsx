@@ -33,7 +33,7 @@ export function NavUser({ user }) {
   const handleLogout = async () => {
     try {
       Cookies.remove("token");
-      Cookies.remove("user-info");
+      Cookies.remove("auth-info");
       navigate("/admin/auth");
       window.location.reload();
       await axiosAuth.post("/auth/logout");

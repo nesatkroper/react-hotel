@@ -20,8 +20,8 @@ import { getCarts } from "@/contexts/reducer/cart-slice";
 import { apiUrl } from "@/constants/api";
 import Cookies from "js-cookie";
 import axiosAuth from "@/lib/axios-auth";
-import Invoice from "@/components/app/invoice/invoice";
-import RequestKHQR from "@/components/app/khqr/request-khqr";
+import Invoice from "@/components/app/admin/invoice/invoice";
+import RequestKHQR from "@/components/app/admin/khqr/request-khqr";
 import PropTypes from "prop-types";
 
 const userInfo = Cookies.get("user-info")

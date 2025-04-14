@@ -1,4 +1,6 @@
 {
+  "app-name": "Nun Reservation",
+  "subtitle": "Enterprise Management System",
   "cancel": "Cancel",
   "save": "Save",
   "add": "Add",
@@ -15,7 +17,6 @@
     "search": "ស្វែងរក ..."
   },
   "sidebar": {
-    "app-name": "Nun Reservation",
     "location": "Siem Reap",
     "home": "Home",
     "dash": "Dashboard",
@@ -57,6 +58,25 @@
     "verify-msg3": "If you did not receive the email,",
     "verify-msg4": "click here to request another",
     "verify-msg5": "If you are already logged in, you can close this page."
+  },
+  "auth": {
+    "title": " Powerful tools for enterprise administration",
+    "label": "Secure access to your organization's management dashboard withadvanced monitoring and control capabilities.",
+    "sys": "All systems operational",
+    "admin": "Admin Portal",
+    "pls": "Please authenticate to continue",
+    "globe": "Global Access",
+    "globe-desc": "Manage resources worldwide",
+    "bell": "Real-time Alerts",
+    "bell-desc": "Instant notification system",
+    "clock": "Audit Logging",
+    "clock-desc": "Track all system activities",
+    "info": "Analytics",
+    "info-desc": "Comprehensive data insights"
+  },
+  "chat": {
+    "header": "System Group Chat",
+    "typ": "Type a message..."
   },
   "home": {
     "body": "lorem ipsum dolor sit amet, consectetur adip"

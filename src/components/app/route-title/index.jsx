@@ -28,8 +28,8 @@ const RouteTitle = () => {
 
   useEffect(() => {
     const path = location.pathname;
-    const title = titleMap[path] || t("sidebar.app-name");
-    document.title = `${title} | ${t("sidebar.app-name")}`;
+    const title = titleMap[path] || t("app-name");
+    document.title = `${title} | ${t("app-name")}`;
   }, [location.pathname, titleMap]);
 
   return null;

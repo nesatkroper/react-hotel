@@ -22,8 +22,6 @@ const Home = () => {
     dispatch(getUser());
   }, [dispatch]);
 
-  console.log(usrData);
-
   return (
     <Layout>
       AuthID: {usrData?.authId}

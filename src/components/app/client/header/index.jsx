@@ -30,10 +30,10 @@ const HeaderClient = () => {
       <Card className='rounded-none py-2 mb-6 w-full '>
         <CardContent className='py-0 md:container md:mx-auto px-4 flex justify-between'>
           <a href='/home' className='flex items-center gap-2'>
-            <img src={Logo} className='h-8' alt='logo' />
+            <img src={Logo} className='h-8 rounded-lg' alt='logo' />
             <p className='font-bold text-md'>Nun Hotel</p>
           </a>
-          <div className='flex gap-2'>
+          <div className='flex gap-3'>
             <ModeToggle />
             <LanguageToggle />
             {isMobile ? (

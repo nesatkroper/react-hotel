@@ -3,6 +3,7 @@ import Signin from "./components/signin";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import {
   LockKeyhole,
   ShieldCheck,
@@ -13,6 +14,7 @@ import {
 } from "lucide-react";
 
 const Auth = () => {
+  const [t] = useTranslation("admin");
   const [currentTime, setCurrentTime] = useState("");
 
   useEffect(() => {
@@ -38,10 +40,8 @@ const Auth = () => {
               <ShieldCheck className='h-6 w-6 text-white' />
             </div>
             <div>
-              <p className='text-md font-bold text-white'>Hotel Reservation</p>
-              <p className='text-slate-400 text-sm'>
-                Enterprise Management System
-              </p>
+              <p className='text-md font-bold text-white'>{t("app-name")}</p>
+              <p className='text-slate-400 text-sm'>{t("subtitle")}</p>
             </div>
           </motion.div>
 
@@ -51,34 +51,31 @@ const Auth = () => {
             transition={{ delay: 0.3, duration: 0.8 }}
             className='mt-16 md:mt-24 max-w-md'>
             <h2 className='text-center text-xl md:text-4xl font-bold text-white leading-tight'>
-              Powerful tools for enterprise administration
+              {t("auth.title")}
             </h2>
-            <p className='mt-4 text-center text-slate-300'>
-              {`Secure access to your organization's management dashboard with
-              advanced monitoring and control capabilities.`}
-            </p>
+            <p className='mt-4 text-center text-slate-300'>{t("auth.label")}</p>
 
             <div className='mt-8 grid grid-cols-2 gap-4'>
               {[
                 {
                   icon: Globe,
-                  title: "Global Access",
-                  desc: "Manage resources worldwide",
+                  title: t("auth.globe"),
+                  desc: t("auth.globe-desc"),
                 },
                 {
                   icon: Bell,
-                  title: "Real-time Alerts",
-                  desc: "Instant notification system",
+                  title: t("auth.bell"),
+                  desc: t("auth.bell-desc"),
                 },
                 {
                   icon: Clock,
-                  title: "Audit Logging",
-                  desc: "Track all system activities",
+                  title: t("auth.clock"),
+                  desc: t("auth.clock-desc"),
                 },
                 {
                   icon: Info,
-                  title: "Analytics",
-                  desc: "Comprehensive data insights",
+                  title: t("auth.info"),
+                  desc: t("auth.info-desc"),
                 },
               ].map((feature, index) => (
                 <motion.div
@@ -109,7 +106,7 @@ const Auth = () => {
           className='mt-8 md:mt-0 text-slate-400 text-sm flex items-center justify-between'>
           <div className='flex items-center space-x-2'>
             <div className='w-2 h-2 rounded-full bg-green-500'></div>
-            <span>All systems operational</span>
+            <span>{t("auth.sys")}</span>
           </div>
           <div>{currentTime}</div>
         </motion.div>
@@ -122,10 +119,10 @@ const Auth = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}>
             <div className='text-center mb-8'>
-              <h2 className='text-xl font-bold text-slate-900'>Admin Portal</h2>
-              <p className='text-slate-500 mt-1'>
-                Please authenticate to continue
-              </p>
+              <h2 className='text-xl font-bold text-slate-900'>
+                {t("auth.admin")}
+              </h2>
+              <p className='text-slate-500 mt-1'>{t("auth.pls")}</p>
             </div>
 
             <Card className='border-0 shadow-xl overflow-hidden'>
@@ -290,8 +287,7 @@ const Auth = () => {
               </span>
             </div>
             <div className='mt-2 text-xs text-slate-400'>
-              © {new Date().getFullYear()} ACME Corporation. All rights
-              reserved.
+              © {new Date().getFullYear()} Dev Suon Phanun. All rights reserved.
             </div>
           </motion.div>
         </div>

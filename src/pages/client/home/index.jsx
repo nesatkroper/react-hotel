@@ -40,7 +40,7 @@ const HomeClient = () => {
   return (
     <LayoutClient>
       <motion.p
-        className='mb-2 text-lg md:text-xl font-semibold tracking-tighter md:tracking-wide'
+        className='mb-2 text-md md:text-lg font-semibold tracking-tighter md:tracking-wide'
         initial='hidden'
         whileInView='visible'
         viewport={{ once: true, amount: 0.5 }}
@@ -57,7 +57,7 @@ const HomeClient = () => {
       </motion.div>
 
       <motion.p
-        className='text-lg md:text-xl mt-3'
+        className='text-md md:text-lg mt-3'
         initial='hidden'
         whileInView='visible'
         viewport={{ once: true, amount: 0.5 }}

@@ -1,5 +1,4 @@
 import React from "react";
-import Cookies from "js-cookie";
 import axiosAuth from "@/lib/axios-auth";
 import PropTypes from "prop-types";
 import { SOCKET } from "@/providers/socket-io";
@@ -9,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useEffect, useRef, useState } from "react";
 import { Send, ArrowDown, X, EllipsisVertical, Pen, Trash } from "lucide-react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "@/contexts/reducer/user-slice";
 import { motion, AnimatePresence } from "framer-motion";
 import { groupMessagesByDate } from "./group";
@@ -22,6 +21,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
+import { useTranslation } from "react-i18next";
+import LazyLoading from "../../loading";
 
 /**
  * @Functional component for a group chat interface.
@@ -31,10 +32,9 @@ import {
 
 const GroupChat = ({ onClose }) => {
   const dispatch = useDispatch();
-  const user = Cookies.get("user-info")
-    ? JSON.parse(Cookies.get("user-info"))
-    : null;
   const scrollRef = useRef(null);
+  const { usrData, usrLoading } = useSelector((state) => state.user);
+  const [t] = useTranslation("admin");
   const [messages, setMessages] = useState([]);
   const [msg, setMsg] = useState("");
   const [isAtBottom, setIsAtBottom] = useState(true);
@@ -62,7 +62,7 @@ const GroupChat = ({ onClose }) => {
   const fetchOldMessages = async () => {
     try {
       const response = await axiosAuth.get(
-        "/groupmessage/group?limit=15&page=1"
+        `/groupmessage?select={"groupmessageId":true,"content":true,"time":true,"auth":{"select":{"authId":true,"employee":{"select":{"firstName":true,"lastName":true}}}}}&page=1&limit=15`
       );
       setMessages(response?.data?.data);
     } catch (error) {
@@ -70,28 +70,13 @@ const GroupChat = ({ onClose }) => {
     }
   };
 
-  useEffect(() => {
-    dispatch(getUser());
-    fetchOldMessages();
-
-    SOCKET.on("receiveGroup", (message) => {
-      setMessages((prev) => [...prev, message]);
-    });
-
-    return () => SOCKET.off("receiveGroup");
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (isAtBottom) {
-      scrollToBottom();
-    }
-  }, [messages, isAtBottom]);
-
   const handleSendMessage = () => {
-    if (!msg.trim() || !user) return;
+    if (!msg.trim() || !usrData) return;
     SOCKET.emit("sendGroup", {
-      sender: user.employee?.employeeName || "Admin",
-      authId: user.authId,
+      sender: usrData.employee
+        ? `${usrData.employee?.firstName} ${usrData.employee?.lastName}`
+        : "Admin",
+      authId: usrData.authId,
       content: msg,
       time: new Date(),
     });
@@ -116,6 +101,23 @@ const GroupChat = ({ onClose }) => {
   };
   const groupedMessages = groupMessagesByDate(messages);
 
+  useEffect(() => {
+    dispatch(getUser());
+    fetchOldMessages();
+
+    SOCKET.on("receiveGroup", (message) => {
+      setMessages((prev) => [...prev, message]);
+    });
+
+    return () => SOCKET.off("receiveGroup");
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (isAtBottom) {
+      scrollToBottom();
+    }
+  }, [messages, isAtBottom]);
+
   return (
     <motion.div
       initial='hidden'
@@ -125,7 +127,7 @@ const GroupChat = ({ onClose }) => {
       className='fixed inset-y-0 right-0 w-full max-w-[450px] bg-background shadow-lg border-l z-50 flex flex-col'>
       <div className='p-2 flex-shrink-0'>
         <div className='flex justify-between items-center ps-10'>
-          <h3 className='text-md font-semibold'>System Group Chat</h3>
+          <h3 className='text-md font-semibold'>{t("chat.header")}</h3>
           <Button
             onClick={onClose}
             variant='ghost'
@@ -138,73 +140,82 @@ const GroupChat = ({ onClose }) => {
         <Separator className='mt-2' />
       </div>
 
-      <div
-        className='flex-1 overflow-y-auto px-2 pb-1'
-        onScroll={handleScroll}
-        ref={scrollRef}>
-        <AnimatePresence initial={false}>
-          {Object.entries(groupedMessages).map(([date, dateMessages]) => (
-            <div key={date} className='mb-4'>
-              <div className='sticky top-0 z-10 flex justify-center my-2'>
-                <div className='bg-muted px-3 py-1 rounded-full text-sm text-muted-foreground'>
-                  {formatDisplayDate(date)}
+      {usrLoading ? (
+        <LazyLoading />
+      ) : (
+        <div
+          className='flex-1 overflow-y-auto px-2 pb-1'
+          onScroll={handleScroll}
+          ref={scrollRef}>
+          <AnimatePresence initial={false}>
+            {Object.entries(groupedMessages).map(([date, dateMessages]) => (
+              <div key={date} className='mb-4'>
+                <div className='sticky top-0 z-10 flex justify-center my-2'>
+                  <div className='bg-muted px-3 py-1 rounded-full text-sm text-muted-foreground'>
+                    {formatDisplayDate(date)}
+                  </div>
                 </div>
-              </div>
 
-              {dateMessages.map((msg, index) => (
-                <motion.div
-                  key={`${msg.time}-${index}`}
-                  variants={messageVariants}
-                  initial='hidden'
-                  animate='visible'
-                  exit='exit'
-                  transition={{ duration: 0.2 }}
-                  layout
-                  className='mb-2'>
-                  <Card className='rounded-md'>
-                    <CardHeader className='p-2 pb-1'>
-                      <CardTitle className='flex justify-between items-center text-sm'>
-                        <span className='font-bold'>
-                          From {msg.sender || "Admin"}
-                        </span>
-                        <div className='flex items-center gap-2'>
-                          <span className='text-muted-foreground text-xs underline'>
-                            {msg.time}
+                {dateMessages.map((msg, index) => (
+                  <motion.div
+                    key={`${msg.time}-${index}`}
+                    variants={messageVariants}
+                    initial='hidden'
+                    animate='visible'
+                    exit='exit'
+                    transition={{ duration: 0.2 }}
+                    layout
+                    className='mb-2'>
+                    <Card className='rounded-md'>
+                      <CardHeader className='p-2 pb-1'>
+                        <CardTitle className='flex justify-between items-center text-sm'>
+                          <span className='font-bold'>
+                            From{" "}
+                            {msg?.auth?.employee
+                              ? `${msg?.auth?.employee.firstName} ${msg?.auth?.employee.lastName}`
+                              : msg.sender || "Admin"}
                           </span>
-                          <DropdownMenu>
-                            <DropdownMenuTrigger>
-                              <EllipsisVertical size={16} />
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent className='me-2 min-w-7'>
-                              <DropdownMenuLabel className='text-center p-0'>
-                                Action
-                              </DropdownMenuLabel>
-                              <DropdownMenuSeparator />
-                              <DropdownMenuItem
-                                onClick={() => handleEditMessage(msg)}
-                                className='text-yellow-600 h-6'>
-                                <Pen size={14} />
-                                Edit
-                              </DropdownMenuItem>
-                              <DropdownMenuItem className='text-red-600 h-6'>
-                                <Trash size={14} />
-                                Delete
-                              </DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
-                        </div>
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className='p-3 pt-0'>
-                      <p className='text-sm mx-4 text-justify'>{msg.content}</p>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
-            </div>
-          ))}
-        </AnimatePresence>
-      </div>
+                          <div className='flex items-center gap-2'>
+                            <span className='text-muted-foreground text-xs underline'>
+                              {msg.time}
+                            </span>
+                            <DropdownMenu>
+                              <DropdownMenuTrigger>
+                                <EllipsisVertical size={16} />
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent className='me-2 min-w-7'>
+                                <DropdownMenuLabel className='text-center p-0'>
+                                  Action
+                                </DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem
+                                  onClick={() => handleEditMessage(msg)}
+                                  className='text-yellow-600 h-6'>
+                                  <Pen size={14} />
+                                  Edit
+                                </DropdownMenuItem>
+                                <DropdownMenuItem className='text-red-600 h-6'>
+                                  <Trash size={14} />
+                                  Delete
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </div>
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className='p-3 pt-0'>
+                        <p className='text-sm mx-4 text-justify'>
+                          {msg.content}
+                        </p>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                ))}
+              </div>
+            ))}
+          </AnimatePresence>
+        </div>
+      )}
 
       {!isAtBottom && (
         <motion.div
@@ -227,7 +238,7 @@ const GroupChat = ({ onClose }) => {
           <Textarea
             value={msg}
             onChange={(e) => setMsg(e.target.value)}
-            placeholder='Type a message...'
+            placeholder={t("chat.typ")}
             className='min-h-[80px] resize-none'
             onKeyDown={(e) => {
               if (e.key === "Enter" && !e.shiftKey) {
