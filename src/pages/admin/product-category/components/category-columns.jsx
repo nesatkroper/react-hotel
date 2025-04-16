@@ -1,31 +1,31 @@
 import React from "react";
 import PropTypes from "prop-types";
-import ProductEdit from "./product-edit";
+import CategoryUpdate from "./category-edit";
 import { generateColumns } from "@/components/app/table/generate-column";
 import { useTranslation } from "react-i18next";
-import { getProducts } from "@/contexts/reducer";
+import { getCategorys } from "@/contexts/reducer";
 
-const ProductUpdate = ({ item }) => {
-  return <ProductEdit items={item} />;
+const CategoryEdit = ({ item }) => {
+  return <CategoryUpdate items={item} />;
 };
 
-export const ProductColumns = () => {
+export const CategoryColumns = () => {
   const [t] = useTranslation("admin");
 
   return generateColumns(
     [
       { key: "picture", label: t("table.pic") },
-      { key: "productName", label: t("table.cate.name") },
-      { key: "productCode", label: t("table.cate.code") },
+      { key: "categoryName", label: t("table.cate.name") },
+      { key: "categoryCode", label: t("table.cate.code") },
       { key: "memo", label: t("table.desc") },
       { key: "status", label: t("table.status") },
     ],
-    (item) => <ProductUpdate item={item} />,
+    (item) => <CategoryEdit item={item} />,
     "department",
-    getProducts
+    getCategorys
   );
 };
 
-ProductUpdate.propTypes = {
+CategoryEdit.propTypes = {
   item: PropTypes.object,
 };

@@ -7,19 +7,18 @@ const FormImagePreview = ({
   imgSrc = "",
   labelClass = "",
   imgClass = "",
-  size = 250,
   label = "Picture Preview",
   underLine = false,
 }) => {
   return (
-    <div className='flex flex-col gap-2'>
+    <div className='columns-1'>
       <Label className={`${labelClass} ${underLine ? "underline" : ""}`}>
         {label}
       </Label>
       <img
         src={imgSrc || defimg}
         alt='picture preview'
-        className={`w-[${size}px] rounded-xl shadow ${imgClass}`}
+        className={`rounded-xl shadow ${imgClass}`}
       />
     </div>
   );

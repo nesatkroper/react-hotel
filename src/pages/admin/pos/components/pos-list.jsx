@@ -1,3 +1,7 @@
+import Cookies from "js-cookie";
+import PropTypes from "prop-types";
+import axiosAuth from "@/lib/axios-auth";
+import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { defimg } from "@/utils/resize-crop-image";
 import { apiUrl } from "@/constants/api";
@@ -6,19 +10,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { getCarts } from "@/contexts/reducer/cart-slice";
 import { Plus } from "lucide-react";
 import { cDollar } from "@/utils/dec-format";
-import Cookies from "js-cookie";
-import PropTypes from "prop-types";
-import axiosAuth from "@/lib/axios-auth";
-import React from "react";
 
 const userInfo = Cookies.get("user-info")
   ? JSON.parse(Cookies.get("user-info"))
   : {};
-
 const AuthID = userInfo?.auth_id;
 
-const POSList = (props) => {
-  const { data } = props;
+const POSList = ({ data }) => {
   console.log(data);
 
   const dispatch = useDispatch();
@@ -59,7 +57,7 @@ const POSList = (props) => {
     <div className='grid 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-3'>
       {data?.map((item) => (
         <Card
-          key={item.product_id}
+          key={item.productId}
           onClick={() => handleAddToCart(item)}
           className='relative cursor-pointer shadow-none'>
           <CardContent className='p-0 relative'>
@@ -68,6 +66,7 @@ const POSList = (props) => {
             </Button>
             <img
               src={`${apiUrl}/uploads/${item?.picture}`}
+              crossOrigin='anonymous'
               onError={(e) => (e.target.src = defimg)}
               alt={item?.product_name}
               className='rounded-t-lg h-full w-full object-cover'
@@ -77,7 +76,7 @@ const POSList = (props) => {
               <p className='font-bold text-red-500'>{cDollar(item?.price)}</p>
             </div>
             <div className='px-3 pb-2 flex justify-between text-xs'>
-              <p>{item?.category?.category_name ?? "Uncategorized"}</p>
+              <p>{item?.category?.categoryName ?? "Uncategorized"}</p>
               <p className='font-bold text-red-500'>
                 {item?.discount_rate <= 0
                   ? ""

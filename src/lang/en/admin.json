@@ -150,6 +150,10 @@
     },
     "cus": {
       "name": "Customer Name"
+    },
+    "cate": {
+      "name": "Category Name",
+      "code": "Category Code"
     }
   },
   "toast": {

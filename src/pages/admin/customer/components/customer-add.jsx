@@ -17,7 +17,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { Loader2 } from "lucide-react";
 import { GENDER } from "@/utils/default-data";
 import { z } from "zod";
-import { clearCache, getCustomers } from "@/contexts/reducer/customer-slice";
+import {
+  clearCacheAsyce,
+  getCustomers,
+} from "@/contexts/reducer/customer-slice";
 import { useFormHandler } from "@/hooks/use-form-handler";
 import PropTypes from "prop-types";
 import axiosInstance from "@/lib/axios-instance";
@@ -78,7 +81,7 @@ const CustomerAdd = () => {
       await axiosInstance.post("/customer", submissionData);
 
       resetForm();
-      dispatch(clearCache());
+      dispatch(clearCacheAsyce());
       dispatch(getCustomers());
     } catch (e) {
       console.log("Submission error:", e);

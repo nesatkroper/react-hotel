@@ -18,7 +18,7 @@ import FormImagePreview from "@/components/app/form/form-image-preview";
 import FormImageResize from "@/components/app/form/form-image-resize";
 import { getCategorys } from "@/contexts/reducer/product-category-slice";
 
-const ProductCategoryUpdate = ({ items }) => {
+const CategoryEdit = ({ items }) => {
   const dispatch = useDispatch();
   const [imagePreview, setImagePreview] = useState(
     `${apiUrl}/uploads/category/${items.picture}`
@@ -126,8 +126,8 @@ const ProductCategoryUpdate = ({ items }) => {
   );
 };
 
-ProductCategoryUpdate.propTypes = {
+CategoryEdit.propTypes = {
   items: PropTypes.object,
 };
 
-export default ProductCategoryUpdate;
+export default CategoryEdit;

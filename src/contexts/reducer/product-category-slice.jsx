@@ -11,4 +11,5 @@ export const getCategorys = createApiThunk(
 const categorySlice = createGenericSlice("categorys", getCategorys);
 
 export const { clearCache } = categorySlice.actions;
+export const { clearCacheAsync } = categorySlice;
 export default categorySlice.reducer;

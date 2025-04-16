@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Layout from "@/layout/layout";
 import POSSearch from "./components/pos-search";
 import POSCart from "./components/pos-cart";
@@ -9,26 +9,15 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useDispatch, useSelector } from "react-redux";
 import { getProducts } from "@/contexts/reducer/product-slice";
 import { getCode } from "@/contexts/reducer/code-slice";
-import { useTranslation } from "react-i18next";
+// import { useTranslation } from "react-i18next";
 
 const POS = () => {
   const dispatch = useDispatch();
-  const [t] = useTranslation("admin");
-  const [shift, setShift] = useState(false);
-  const { proData, proLoading } = useSelector((state) => state.products);
-  const { codData } = useSelector((state) => state.code);
+  // const [t] = useTranslation("admin");
 
-  useEffect(() => {
-    if (!codData || typeof codData !== "object") {
-      setShift(false);
-    } else if (Object.keys(codData).length === 0) {
-      setShift(false);
-    } else if (codData?.shift_code) {
-      setShift(true);
-    } else {
-      setShift(false);
-    }
-  }, [codData]);
+  const { data: proData, loading: proLoading } = useSelector(
+    (state) => state?.products
+  );
 
   useEffect(() => {
     dispatch(getProducts({ category: true }));
@@ -38,24 +27,20 @@ const POS = () => {
   return (
     <Layout>
       <div className='p-2'>
-        <POSSearch shift={shift} />
+        <POSSearch />
         <Separator className='my-2' />
-        {shift ? (
-          <div className='grid 2xl:grid-cols-6 lg:grid-cols-4 md:grid-cols-5 grid-cols-2 gap-3'>
-            {!proLoading ? (
-              <ScrollArea className='w-full h-[80vh] 2xl:col-span-5 lg:col-span-3 md:col-span-3 col-span-1 rounded-2xl'>
-                <POSList data={proData} />
-              </ScrollArea>
-            ) : (
-              <div className='w-full h-[80vh] 2xl:col-span-5 lg:col-span-3 md:col-span-3 col-span-1 rounded-2xl flex  justify-center'>
-                <AppLoading />
-              </div>
-            )}
-            <POSCart />
-          </div>
-        ) : (
-          <p className='text-md text-center font-semibold'>{t("po.alert")}</p>
-        )}
+        <div className='grid 2xl:grid-cols-6 lg:grid-cols-4 md:grid-cols-5 grid-cols-2 gap-3'>
+          {!proLoading ? (
+            <ScrollArea className='w-full h-[80vh] 2xl:col-span-5 lg:col-span-3 md:col-span-3 col-span-1 rounded-2xl'>
+              <POSList data={proData} />
+            </ScrollArea>
+          ) : (
+            <div className='w-full h-[80vh] 2xl:col-span-5 lg:col-span-3 md:col-span-3 col-span-1 rounded-2xl flex  justify-center'>
+              <AppLoading />
+            </div>
+          )}
+          <POSCart />
+        </div>
       </div>
     </Layout>
   );

@@ -1,3 +1,18 @@
+import React, { useEffect, useMemo } from "react";
+import Cookies from "js-cookie";
+import axiosAuth from "@/lib/axios-auth";
+import Invoice from "@/components/app/admin/invoice/invoice";
+import RequestKHQR from "@/components/app/admin/khqr/request-khqr";
+import PropTypes from "prop-types";
+import { afterPerDollar, cDollar, toUnit } from "@/utils/dec-format";
+import { Card, CardContent } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
+import { ChevronDown, ChevronUp } from "lucide-react";
+import { useSelector, useDispatch } from "react-redux";
+import { defimg } from "@/utils/resize-crop-image";
+import { getCarts } from "@/contexts/reducer/cart-slice";
+import { apiUrl } from "@/constants/api";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -8,21 +23,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { afterPerDollar, cDollar, toUnit } from "@/utils/dec-format";
-import { Card, CardContent } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
-import { ChevronDown, ChevronUp } from "lucide-react";
-import { useSelector, useDispatch } from "react-redux";
-import { defimg } from "@/utils/resize-crop-image";
-import React, { useEffect, useMemo } from "react";
-import { getCarts } from "@/contexts/reducer/cart-slice";
-import { apiUrl } from "@/constants/api";
-import Cookies from "js-cookie";
-import axiosAuth from "@/lib/axios-auth";
-import Invoice from "@/components/app/admin/invoice/invoice";
-import RequestKHQR from "@/components/app/admin/khqr/request-khqr";
-import PropTypes from "prop-types";
 
 const userInfo = Cookies.get("user-info")
   ? JSON.parse(Cookies.get("user-info"))
@@ -170,7 +170,7 @@ const POSCart = () => {
 
 const CheckoutDialog = ({ amount }) => (
   <AlertDialog>
-    <AlertDialogTrigger className='w-full'>
+    <AlertDialogTrigger className='w-full' asChild>
       <Button className='w-full mt-2'>Check Out</Button>
     </AlertDialogTrigger>
     <AlertDialogContent className='w-[400px]'>
@@ -216,7 +216,7 @@ POSCart.propTypes = {
 };
 
 CheckoutDialog.propTypes = {
-  amount: PropTypes.string,
+  amount: PropTypes.number,
 };
 
 export default POSCart;

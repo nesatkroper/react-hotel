@@ -18,7 +18,6 @@ import {
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { useTranslation } from "react-i18next";
@@ -118,6 +117,8 @@ const GroupChat = ({ onClose }) => {
     }
   }, [messages, isAtBottom]);
 
+  console.log(usrData);
+
   return (
     <motion.div
       initial='hidden'
@@ -166,16 +167,29 @@ const GroupChat = ({ onClose }) => {
                     transition={{ duration: 0.2 }}
                     layout
                     className='mb-2'>
-                    <Card className='rounded-md'>
+                    <Card
+                      className={`rounded-md ${
+                        usrData.authId == msg?.auth?.authId ? "ms-12" : "me-12"
+                      }`}>
                       <CardHeader className='p-2 pb-1'>
-                        <CardTitle className='flex justify-between items-center text-sm'>
+                        <CardTitle
+                          className={`flex justify-between items-center text-sm ${
+                            usrData.authId == msg?.auth?.authId
+                              ? "flex-row-reverse"
+                              : ""
+                          }`}>
                           <span className='font-bold'>
                             From{" "}
                             {msg?.auth?.employee
                               ? `${msg?.auth?.employee.firstName} ${msg?.auth?.employee.lastName}`
                               : msg.sender || "Admin"}
                           </span>
-                          <div className='flex items-center gap-2'>
+                          <div
+                            className={`flex items-center gap-2 ${
+                              usrData.authId == msg?.auth?.authId
+                                ? "flex-row-reverse"
+                                : ""
+                            }`}>
                             <span className='text-muted-foreground text-xs underline'>
                               {msg.time}
                             </span>
@@ -184,16 +198,13 @@ const GroupChat = ({ onClose }) => {
                                 <EllipsisVertical size={16} />
                               </DropdownMenuTrigger>
                               <DropdownMenuContent className='me-2 min-w-7'>
-                                <DropdownMenuLabel className='text-center p-0'>
-                                  Action
-                                </DropdownMenuLabel>
-                                <DropdownMenuSeparator />
                                 <DropdownMenuItem
                                   onClick={() => handleEditMessage(msg)}
                                   className='text-yellow-600 h-6'>
                                   <Pen size={14} />
                                   Edit
                                 </DropdownMenuItem>
+                                <DropdownMenuSeparator />
                                 <DropdownMenuItem className='text-red-600 h-6'>
                                   <Trash size={14} />
                                   Delete
@@ -204,7 +215,12 @@ const GroupChat = ({ onClose }) => {
                         </CardTitle>
                       </CardHeader>
                       <CardContent className='p-3 pt-0'>
-                        <p className='text-sm mx-4 text-justify'>
+                        <p
+                          className={`text-sm mx-4 text-justify ${
+                            usrData.authId == msg?.auth?.authId
+                              ? "text-justify"
+                              : ""
+                          }`}>
                           {msg.content}
                         </p>
                       </CardContent>

@@ -128,6 +128,7 @@ export const generateColumns = (
         return (
           <img
             src={`${apiUrl}/uploads/${value}`}
+            crossOrigin='anonymous'
             alt={value}
             onError={(e) => (e.target.src = defimg)}
             className='h-[80px] rounded-lg'

@@ -23,7 +23,6 @@ const FormComboBox = ({
   optID = "time",
   optLabel = "less",
   labelClass = "",
-  size = 250,
   label = "Email*",
   item = [
     { time: "next.js", less: "Next.js" },
@@ -47,16 +46,15 @@ const FormComboBox = ({
   }, []);
 
   return (
-    <div className='flex flex-col gap-2'>
+    <div className='columns-1'>
       <Label className={labelClass}>{label}</Label>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
-            style={{ width: `${size}px` }}
             variant='outline'
             role='combobox'
             aria-expanded={open}
-            className='justify-between'>
+            className='justify-between w-full'>
             {data
               ? filter.find((d) => d.value === data)?.label ||
                 `Select ${label}...`
@@ -64,7 +62,7 @@ const FormComboBox = ({
             <ChevronsUpDown className='opacity-50' />
           </Button>
         </PopoverTrigger>
-        <PopoverContent style={{ width: `${size}px` }} className='p-0'>
+        <PopoverContent className='p-0 w-full'>
           <Command
             filter={(value, search) => {
               const item = filter.find((f) => f.value === value);
