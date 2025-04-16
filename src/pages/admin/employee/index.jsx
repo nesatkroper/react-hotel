@@ -4,7 +4,10 @@ import EmployeeAdd from "./components/employee-add";
 import AppDataTable from "@/components/app/table/app-data-table";
 import { useDispatch, useSelector } from "react-redux";
 import { EmployeeColumns } from "./components/employee-columns";
-import { clearCache, getEmployees } from "@/contexts/reducer/employee-slice";
+import {
+  clearCacheAsync,
+  getEmployees,
+} from "@/contexts/reducer/employee-slice";
 
 const Employee = () => {
   const dispatch = useDispatch();
@@ -19,7 +22,7 @@ const Employee = () => {
   }, [dispatch]);
 
   const refresh = () => {
-    dispatch(clearCache());
+    dispatch(clearCacheAsync());
     dispatch(
       getEmployees({ params: { status: "all", info: true, position: true } })
     );

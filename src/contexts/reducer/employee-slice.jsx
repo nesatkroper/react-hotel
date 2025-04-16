@@ -14,6 +14,7 @@ export const getEmployees = createApiThunk(
 
 const employeeSlice = createGenericSlice("employees", getEmployees);
 
+export const { clearCacheAsync } = employeeSlice;
 export const { clearCache, updateItem, addItem, removeItem } =
   employeeSlice.actions;
 export default employeeSlice.reducer;

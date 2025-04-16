@@ -12,7 +12,7 @@ const FormInput = ({
   inputClass,
   labelClass,
   placeholder = "Food, Drink, ...",
-  // size,
+  size = 250,
   label = "Email*",
   readonly = false,
   required = false,
@@ -29,6 +29,7 @@ const FormInput = ({
     <div className={`flex flex-col gap-2 ${mainClass}`}>
       <Label className={`${labelClass}`}>{label}</Label>
       <Input
+        style={{ width: `${size}px` }}
         onChange={handleChange}
         value={value}
         name={name}

@@ -5,7 +5,7 @@ import DepartmentAdd from "./components/department-add";
 import { DepartmentColumns } from "./components/department-columns";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  clearCache,
+  clearCacheAsync,
   getDepartments,
 } from "@/contexts/reducer/department-slice";
 
@@ -19,10 +19,8 @@ const Department = () => {
     dispatch(getDepartments({ params: { status: "all" } }));
   }, [dispatch]);
 
-  console.table(depData);
-
   const refresh = () => {
-    dispatch(clearCache());
+    dispatch(clearCacheAsync());
     dispatch(getDepartments({ params: { status: "all" } }));
   };
 
