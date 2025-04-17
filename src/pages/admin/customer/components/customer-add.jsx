@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import {
   DialogContent,
   DialogHeader,
@@ -9,7 +10,6 @@ import {
   FormImageResize,
   FormInput,
 } from "@/components/app/form";
-import React, { useEffect, useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
@@ -18,7 +18,7 @@ import { Loader2 } from "lucide-react";
 import { GENDER } from "@/utils/default-data";
 import { z } from "zod";
 import {
-  clearCacheAsyce,
+  clearCacheAsync,
   getCustomers,
 } from "@/contexts/reducer/customer-slice";
 import { useFormHandler } from "@/hooks/use-form-handler";
@@ -81,7 +81,7 @@ const CustomerAdd = () => {
       await axiosInstance.post("/customer", submissionData);
 
       resetForm();
-      dispatch(clearCacheAsyce());
+      dispatch(clearCacheAsync());
       dispatch(getCustomers());
     } catch (e) {
       console.log("Submission error:", e);
