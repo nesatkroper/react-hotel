@@ -56,7 +56,7 @@ const ProductAdd = () => {
   }, [dispatch]);
 
   return (
-    <DialogContent className='w-[500px]'>
+    <DialogContent className='max-w-[500px]'>
       <form onSubmit={handleFormSubmit} className='flex flex-col gap-2'>
         <DialogHeader className='mb-3'>
           <DialogTitle className='text-md'>

@@ -4,7 +4,6 @@ import {
   Bot,
   Frame,
   GalleryVerticalEnd,
-  Map,
   PieChart,
   Settings2,
   SquareTerminal,
@@ -46,6 +45,7 @@ export const data = {
       title: "pro",
       url: "#",
       icon: SquareTerminal,
+      isActive: true,
       items: [
         {
           title: "all-pro",
@@ -65,6 +65,7 @@ export const data = {
       title: "cate",
       url: "#",
       icon: BookOpen,
+      isActive: true,
       items: [
         {
           title: "sup",
@@ -80,6 +81,7 @@ export const data = {
       title: "human",
       url: "#",
       icon: Bot,
+      isActive: true,
       items: [
         {
           title: "emp",
@@ -111,6 +113,7 @@ export const data = {
       title: "setting",
       url: "#",
       icon: Settings2,
+      isActive: true,
       items: [
         {
           title: "gen",
@@ -133,11 +136,6 @@ export const data = {
   ],
   projects: [
     {
-      name: "home",
-      url: "/home",
-      icon: Frame,
-    },
-    {
       name: "po",
       url: "pos",
       icon: ClipboardPen,
@@ -150,7 +148,7 @@ export const data = {
     {
       name: "reserve",
       url: "/reservation",
-      icon: Map,
+      icon: Frame,
     },
   ],
 };

@@ -47,13 +47,13 @@ const DepartmentAdd = () => {
   };
 
   return (
-    <DialogContent>
+    <DialogContent className='max-w-[500px]'>
       <form onSubmit={handleSubmit}>
         <DialogHeader>
           <DialogTitle>Department Details Information.</DialogTitle>
         </DialogHeader>
         <Separator className='my-3' />
-        <div className='flex justify-between mb-3'>
+        <div className='columns-2 mb-3'>
           <FormInput
             onCallbackInput={handleChange}
             name='departmentName'

@@ -62,13 +62,13 @@ const EmployeeAdd = () => {
   );
 
   return (
-    <DialogContent>
+    <DialogContent className='max-w-[500px]'>
       <form onSubmit={handleFormSubmit}>
         <DialogHeader className='mb-3'>
           <DialogTitle className='text-md'>Employee Details</DialogTitle>
         </DialogHeader>
         <Separator />
-        <div className='flex justify-between mb-2 mt-2'>
+        <div className='columns-2 mb-2 mt-2'>
           <FormInput
             onCallbackInput={handleChange}
             label='First Name*'
@@ -84,7 +84,7 @@ const EmployeeAdd = () => {
             required
           />
         </div>
-        <div className='flex justify-between mb-2 mt-3'>
+        <div className='columns-2 mb-2 mt-3'>
           <FormComboBox
             item={GENDER}
             optID='value'
@@ -100,7 +100,7 @@ const EmployeeAdd = () => {
             placeholder='010280202'
           />
         </div>
-        <div className='flex justify-between mb-2 mt-2'>
+        <div className='columns-2 mb-2 mt-2'>
           <FormDatePicker
             onCallbackPicker={(event) => handleChange("dob", event)}
             label='Date of Birth*'
@@ -110,7 +110,7 @@ const EmployeeAdd = () => {
             label='Hired Date*'
           />
         </div>
-        <div className='flex justify-between mb-2 mt-3'>
+        <div className='columns-2 mb-2 mt-3'>
           <FormComboBox
             onCallbackSelect={(event) => handleChange("departmentId", event)}
             label='Department*'
@@ -126,7 +126,7 @@ const EmployeeAdd = () => {
             optLabel='positionName'
           />
         </div>
-        <div className='flex justify-between mb-2 mt-2'>
+        <div className='columns-2 mb-2 mt-2'>
           <FormInput
             onCallbackInput={handleChange}
             label='Salary*'

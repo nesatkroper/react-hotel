@@ -70,13 +70,15 @@ const AuthenticationAdd = () => {
   }, [dispatch]);
 
   return (
-    <DialogContent>
+    <DialogContent className='max-w-[500px]'>
       <form onSubmit={handleSubmit}>
         <DialogHeader>
-          <DialogTitle>Authentication Details Information.</DialogTitle>
+          <DialogTitle className='text-md'>
+            Authentication Details Information.
+          </DialogTitle>
         </DialogHeader>
         <Separator className='my-3' />
-        <div className='flex justify-between mb-3'>
+        <div className='columns-2 mb-3'>
           <FormComboBox
             onCallbackSelect={(e) => handleChange("departmentId", e)}
             name='departmentId'
@@ -93,7 +95,7 @@ const AuthenticationAdd = () => {
             optLabel='data'
           />
         </div>
-        <div className='flex justify-between mb-3'>
+        <div className='columns-2 mb-3'>
           <FormInput
             onCallbackInput={handleChange}
             name='email'

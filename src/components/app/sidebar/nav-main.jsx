@@ -1,4 +1,7 @@
+import React from "react";
+import PropTypes from "prop-types";
 import { ChevronRight } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import {
   Collapsible,
   CollapsibleContent,
@@ -6,7 +9,6 @@ import {
 } from "@/components/ui/collapsible";
 import {
   SidebarGroup,
-  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -14,17 +16,11 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
-import PropTypes from "prop-types";
-import React from "react";
-import { useTranslation } from "react-i18next";
 
 export function NavMain({ items }) {
   const [t] = useTranslation("admin");
   return (
     <SidebarGroup>
-      <SidebarGroupLabel className='text-sm font-semibold'>
-        {t("sidebar.platform")}
-      </SidebarGroupLabel>
       <SidebarMenu>
         {items?.map((item) => (
           <Collapsible

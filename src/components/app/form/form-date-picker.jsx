@@ -16,7 +16,6 @@ const FormDatePicker = ({
   onCallbackPicker,
   mainClass,
   labelClass,
-  size = 250,
   label = "Date of Birth*",
   fromYear = 1900,
   toYear = new Date().getFullYear(),
@@ -55,7 +54,7 @@ const FormDatePicker = ({
           <Button
             variant={"outline"}
             className={cn(
-              `w-[${size}px] justify-start text-left font-normal`,
+              `justify-start text-left font-normal`,
               !date && "text-muted-foreground"
             )}>
             <CalendarIcon className='mr-2' />

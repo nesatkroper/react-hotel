@@ -20,11 +20,11 @@ export function AppSidebar({ ...props }) {
   //   delete data.projects;
   // }
   return (
-    <Sidebar collapsible='icon' {...props} className='z-20'>
+    <Sidebar collapsible='icon' {...props} className='z-20 bg-background'>
       <SidebarHeader>
         <TeamSwitcher teams={data.teams} />
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent className='gap-0'>
         <NavProjects projects={data.projects} />
         <NavMain items={data.navMain} />
       </SidebarContent>

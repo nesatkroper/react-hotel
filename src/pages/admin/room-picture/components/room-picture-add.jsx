@@ -1,5 +1,10 @@
 import React, { useEffect } from "react";
 import axios from "@/lib/axios-instance";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { useDispatch, useSelector } from "react-redux";
+import { getRooms } from "@/contexts/reducer/room-slice";
+import { useFormHandler } from "@/hooks/use-form-handler";
 import {
   DialogContent,
   DialogHeader,
@@ -15,12 +20,6 @@ import {
   FormImagePreview,
   FormImageResize,
 } from "@/components/app/form";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { Label } from "@/components/ui/label";
-import { useDispatch, useSelector } from "react-redux";
-import { getRooms } from "@/contexts/reducer/room-slice";
-import { useFormHandler } from "@/hooks/use-form-handler";
 
 const RoomPictureAdd = () => {
   const dispatch = useDispatch();
@@ -57,13 +56,13 @@ const RoomPictureAdd = () => {
   };
 
   return (
-    <DialogContent>
+    <DialogContent className='max-w-[500px]'>
       <form onSubmit={handleSubmit}>
         <DialogHeader className='mb-4'>
           <DialogTitle>Room Picture Information.</DialogTitle>
         </DialogHeader>
         <Separator />
-        <div className='flex justify-between mb-3 mt-2'>
+        <div className='columns-2 mb-3 mt-2'>
           <FormComboBox
             onCallbackSelect={(event) => handleChange("room_id", event)}
             label='Room Name*'
@@ -72,11 +71,8 @@ const RoomPictureAdd = () => {
             optLabel='room_name'
           />
         </div>
-        <div className='flex justify-between mb-3'>
-          <div className='flex flex-col gap-2'>
-            <Label>Chosing Image</Label>
-            <FormImageResize onCallbackFormData={handleImageData} />
-          </div>
+        <div className='columns-2 mb-3'>
+          <FormImageResize onCallbackFormData={handleImageData} />
           <FormImagePreview
             imgSrc={
               formData.picture ? URL.createObjectURL(formData.picture) : null

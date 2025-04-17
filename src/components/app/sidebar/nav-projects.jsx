@@ -9,7 +9,6 @@ import {
 import { PropTypes } from "prop-types";
 import {
   SidebarGroup,
-  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuAction,
   SidebarMenuButton,
@@ -25,9 +24,6 @@ export function NavProjects({ projects }) {
 
   return (
     <SidebarGroup className='group-data-[collapsible=icon]:hidden'>
-      <SidebarGroupLabel className='text-sm font-semibold'>
-        {t("sidebar.project")}
-      </SidebarGroupLabel>
       <SidebarMenu>
         {projects?.map((item) => (
           <SidebarMenuItem key={item.name}>

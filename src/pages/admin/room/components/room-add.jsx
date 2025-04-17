@@ -1,20 +1,20 @@
 import React, { useEffect } from "react";
+import FormInput from "@/components/app/form/form-input";
+import FormRatio from "@/components/app/form/form-ratio";
+import FormComboBox from "@/components/app/form/form-combobox";
+import axiosAuth from "@/lib/axios-auth";
+import { getRoomtypes } from "@/contexts/reducer/room-type-slice";
+import { useFormHandler } from "@/hooks/use-form-handler";
+import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
+import { useDispatch, useSelector } from "react-redux";
+import { clearCache, getRooms } from "@/contexts/reducer/room-slice";
 import {
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogClose,
 } from "@/components/ui/dialog";
-import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
-import { useDispatch, useSelector } from "react-redux";
-import { clearCache, getRooms } from "@/contexts/reducer/room-slice";
-import { getRoomtypes } from "@/contexts/reducer/room-type-slice";
-import { useFormHandler } from "@/hooks/use-form-handler";
-import FormInput from "@/components/app/form/form-input";
-import FormRatio from "@/components/app/form/form-ratio";
-import FormComboBox from "@/components/app/form/form-combobox";
-import axiosAuth from "@/lib/axios-auth";
 
 const RoomAdd = () => {
   const dispatch = useDispatch();
@@ -49,13 +49,13 @@ const RoomAdd = () => {
   };
 
   return (
-    <DialogContent>
+    <DialogContent className='max-w-[500px]'>
       <form onSubmit={handleFormSubmit}>
         <DialogHeader className='mb-3'>
           <DialogTitle>Reservation Details Information.</DialogTitle>
         </DialogHeader>
         <Separator />
-        <div className='flex justify-between mb-2 mt-2'>
+        <div className='columns-2 mb-2 mt-2'>
           <FormInput
             onCallbackInput={handleChange}
             name='room_name'
@@ -71,7 +71,7 @@ const RoomAdd = () => {
             label='Room Type'
           />
         </div>
-        <div className='flex justify-between mb-2'>
+        <div className='columns-2 mb-2'>
           <FormInput
             onCallbackInput={handleChange}
             name='price'
@@ -88,7 +88,7 @@ const RoomAdd = () => {
             step={1}
           />
         </div>
-        <div className='flex justify-between mb-2'>
+        <div className='columns-2 mb-2'>
           <FormInput
             onCallbackInput={handleChange}
             name='size'
@@ -106,7 +106,7 @@ const RoomAdd = () => {
             step={1}
           />
         </div>
-        <div className='flex justify-between mb-2'>
+        <div className='columns-2 mb-2'>
           <FormRatio onCallbackSelect={handleChange} />
         </div>
         <DialogClose className='mt-2'>

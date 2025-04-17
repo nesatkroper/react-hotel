@@ -5,7 +5,6 @@ import FormImagePreview from "@/components/app/form/form-image-preview";
 import FormImageResize from "@/components/app/form/form-image-resize";
 import axiosInstance from "@/lib/axios-instance";
 import { Separator } from "@/components/ui/separator";
-import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useDispatch } from "react-redux";
 import { getRooms } from "@/contexts/reducer/room-slice";
@@ -59,38 +58,34 @@ const CategoryAdd = () => {
   }, [dispatch]);
 
   return (
-    <DialogContent>
+    <DialogContent className='max-w-[500px]'>
       <form onSubmit={handleFormSubmit}>
         <DialogHeader className='mb-3'>
           <DialogTitle>Product Category Details Information.</DialogTitle>
         </DialogHeader>
         <Separator />
-        <div className='flex justify-between mb-2 mt-2'>
+        <div className='columns-2 mb-2 mt-2'>
           <FormInput
             onCallbackInput={handleChange}
             label='Product Category Name*'
             name='categoryName'
             type='text'
           />
-          <div className='flex flex-col gap-2'>
-            <Label>Choose Image*</Label>
-            <FormImageResize
-              onCallbackFormData={handleImageData}
-              resolution={400}
-            />
-          </div>
+          <FormTextArea
+            onCallbackInput={handleChange}
+            name='memo'
+            label='Description'
+          />
+          <FormImageResize
+            onCallbackFormData={handleImageData}
+            resolution={400}
+          />
+          <FormImagePreview
+            imgSrc={
+              formData.picture ? URL.createObjectURL(formData.picture) : null
+            }
+          />
         </div>
-        <FormTextArea
-          onCallbackInput={handleChange}
-          name='memo'
-          label='Description'
-        />
-
-        <FormImagePreview
-          imgSrc={
-            formData.picture ? URL.createObjectURL(formData.picture) : null
-          }
-        />
 
         <DialogClose className='mt-2' asChild>
           <Button type='submit'>Submit</Button>

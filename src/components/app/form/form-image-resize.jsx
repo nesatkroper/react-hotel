@@ -18,6 +18,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import PropTypes from "prop-types";
 
 const FormImageResize = ({ onCallbackFormData, resolution = 600 }) => {
   const [imageSrc, setImageSrc] = useState(defimg);
@@ -138,7 +139,7 @@ const FormImageResize = ({ onCallbackFormData, resolution = 600 }) => {
             />
           </div>
         </AlertDialogTrigger>
-        <AlertDialogContent className='max-w-[450px] p-4'>
+        <AlertDialogContent className='max-w-[400px] p-4 gap-2'>
           <AlertDialogHeader>
             <AlertDialogTitle className='text-md font-semibold'>
               Crop Your Picture
@@ -150,7 +151,7 @@ const FormImageResize = ({ onCallbackFormData, resolution = 600 }) => {
             <p className='text-sm text-center text-muted-foreground mb-2'>
               Choose aspect ratio:
             </p>
-            <div className='grid grid-cols-4 gap-4'>
+            <div className='grid grid-cols-4 gap-3'>
               {[
                 { value: "1x1", label: "1:1", width: 40, height: 40 },
                 { value: "3x2", label: "3:2", width: 40, height: 26.5 },
@@ -175,7 +176,7 @@ const FormImageResize = ({ onCallbackFormData, resolution = 600 }) => {
             <div
               className='relative rounded-lg overflow-hidden bg-checkerboard'
               style={{
-                height: "300px",
+                height: "220px",
                 width: "100%",
               }}>
               <Cropper
@@ -273,205 +274,18 @@ function AspectRatioOption({
   );
 }
 
+FormImageResize.propTypes = {
+  onCallbackFormData: PropTypes.func,
+  resolution: PropTypes.number,
+};
+
+AspectRatioOption.propTypes = {
+  value: PropTypes.any,
+  label: PropTypes.string,
+  width: PropTypes.number,
+  height: PropTypes.number,
+  isSelected: PropTypes.bool,
+  onClick: PropTypes.func,
+};
+
 export default FormImageResize;
-
-// import React, { useState, useCallback } from "react";
-// import Cropper from "react-easy-crop";
-// import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-// import { Separator } from "@/components/ui/separator";
-// import { Input } from "@/components/ui/input";
-// import { Label } from "@/components/ui/label";
-// import { getCroppedImg } from "@/utils/crop-image";
-// import { defimg } from "@/utils/resize-crop-image";
-// import { PropTypes } from "prop-types";
-// import {
-//   AlertDialog,
-//   AlertDialogAction,
-//   AlertDialogCancel,
-//   AlertDialogContent,
-//   AlertDialogFooter,
-//   AlertDialogHeader,
-//   AlertDialogTitle,
-//   AlertDialogTrigger,
-// } from "@/components/ui/alert-dialog";
-
-// const FormImageResize = ({ onCallbackFormData, resolution = 600 }) => {
-//   const [imageSrc, setImageSrc] = useState(defimg);
-//   const [dialogOpen, setDialogOpen] = useState(false);
-//   const [crop, setCrop] = useState({ x: 0, y: 0 });
-//   const [zoom, setZoom] = useState(1);
-//   const [aspect, setAspect] = useState(1 / 1);
-//   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
-
-//   const handleFileUpload = (e) => {
-//     const file = e.target.files[0];
-//     if (file) {
-//       const reader = new FileReader();
-//       reader.onload = () => setImageSrc(reader.result);
-//       reader.readAsDataURL(file);
-//     }
-//   };
-
-//   const handleAspectChange = (value) => {
-//     switch (value) {
-//       case "1x1":
-//         setAspect(1 / 1);
-//         break;
-//       case "2x3":
-//         setAspect(2 / 3);
-//         break;
-//       case "3x2":
-//         setAspect(3 / 2);
-//         break;
-//       case "16x9":
-//         setAspect(16 / 9);
-//         break;
-//       default:
-//         setAspect(1 / 1);
-//     }
-//   };
-
-//   const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
-//     setCroppedAreaPixels(croppedAreaPixels);
-//   }, []);
-
-//   const generateCroppedImage = useCallback(async () => {
-//     try {
-//       const original = new Image();
-//       original.src = imageSrc;
-
-//       let outputWidth = resolution;
-//       let outputHeight = resolution;
-
-//       switch (aspect) {
-//         case 1 / 1:
-//           outputWidth = resolution;
-//           outputHeight = resolution;
-//           break;
-//         case 2 / 3:
-//           outputWidth = (resolution * 2) / 3;
-//           outputHeight = resolution;
-//           break;
-//         case 3 / 2:
-//           outputWidth = resolution;
-//           outputHeight = (resolution * 2) / 3;
-//           break;
-//         case 16 / 9:
-//           outputWidth = resolution;
-//           outputHeight = (resolution * 9) / 16;
-//           break;
-//         default:
-//           outputWidth = resolution;
-//           outputHeight = resolution;
-//       }
-
-//       const cropped = await getCroppedImg(
-//         imageSrc,
-//         croppedAreaPixels,
-//         outputWidth,
-//         outputHeight
-//       );
-//       return cropped;
-//     } catch (e) {
-//       console.log("Error generating cropped image:", e);
-//       throw e;
-//     }
-//   }, [imageSrc, croppedAreaPixels, aspect, resolution]);
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     const formData = new FormData();
-//     try {
-//       const cropped = await generateCroppedImage();
-//       if (!cropped) throw new Error("Cropped image is null or undefined");
-
-//       formData.append("picture", cropped, "cropped-image.jpg");
-//       onCallbackFormData(formData);
-//       setDialogOpen(false);
-//     } catch (err) {
-//       console.log("Error uploading image:", err);
-//     }
-//   };
-
-//   return (
-//     <div className='columns-1'>
-//       <Label>Choose Image*</Label>
-//       <AlertDialog open={dialogOpen} onOpenChange={setDialogOpen}>
-//         <AlertDialogTrigger>
-//           <Input type='file' accept='image/*' onChange={handleFileUpload} />
-//         </AlertDialogTrigger>
-//         <AlertDialogContent className='max-w-[400px] p-4'>
-//           <AlertDialogHeader>
-//             <AlertDialogTitle className='text-md'>
-//               Crop Your Picture:
-//             </AlertDialogTitle>
-//           </AlertDialogHeader>
-
-//           <Separator />
-//           <RadioGroup
-//             onValueChange={handleAspectChange}
-//             defaultValue='1x1'
-//             className='flex justify-between'>
-//             <div className='flex items-center space-x-2'>
-//               <RadioGroupItem value='1x1' id='1x1' />
-//               <Label htmlFor='1x1' className='font-bold'>
-//                 1 : 1
-//               </Label>
-//             </div>
-//             <div className='flex items-center space-x-2'>
-//               <RadioGroupItem value='3x2' id='3x2' />
-//               <Label htmlFor='3x2' className='font-bold'>
-//                 3 : 2
-//               </Label>
-//             </div>
-//             <div className='flex items-center space-x-2'>
-//               <RadioGroupItem value='2x3' id='2x3' />
-//               <Label htmlFor='2x3' className='font-bold'>
-//                 2 : 3
-//               </Label>
-//             </div>
-//             <div className='flex items-center space-x-2'>
-//               <RadioGroupItem value='16x9' id='16x9' />
-//               <Label htmlFor='16x9' className='font-bold'>
-//                 16 : 9
-//               </Label>
-//             </div>
-//           </RadioGroup>
-
-//           <Separator />
-//           {imageSrc && (
-//             <div
-//               style={{
-//                 position: "relative",
-//                 height: "300px",
-//                 width: "100%",
-//               }}>
-//               <Cropper
-//                 image={imageSrc}
-//                 crop={crop}
-//                 zoom={zoom}
-//                 aspect={aspect}
-//                 onCropChange={setCrop}
-//                 onZoomChange={setZoom}
-//                 onCropComplete={onCropComplete}
-//               />
-//             </div>
-//           )}
-//           <AlertDialogFooter>
-//             <AlertDialogCancel>Cancel</AlertDialogCancel>
-//             <AlertDialogAction onClick={handleSubmit}>
-//               Continue
-//             </AlertDialogAction>
-//           </AlertDialogFooter>
-//         </AlertDialogContent>
-//       </AlertDialog>
-//     </div>
-//   );
-// };
-
-// FormImageResize.propTypes = {
-//   onCallbackFormData: PropTypes.func,
-//   resolution: PropTypes.number,
-// };
-
-// export default FormImageResize;

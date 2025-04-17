@@ -26,7 +26,6 @@ const FormSelect = ({
   labelClass,
   optID,
   optLabel,
-  size = 250,
   label = "Gender",
   item = demo,
   isLabel = true,
@@ -43,7 +42,7 @@ const FormSelect = ({
     <div className={`flex flex-col gap-2 ${mainClass}`}>
       {isLabel ? <Label className={labelClass}>{label}</Label> : ""}
       <Select onValueChange={handleSelect}>
-        <SelectTrigger className={`w-[${size}px]`}>
+        <SelectTrigger>
           <SelectValue placeholder={`Set ${label}`} />
         </SelectTrigger>
         <SelectContent>
