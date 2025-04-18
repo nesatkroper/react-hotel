@@ -47,13 +47,12 @@ const DepartmentAdd = () => {
   };
 
   return (
-    <DialogContent className='max-w-[500px]'>
+    <DialogContent className='max-w-[400px]'>
       <form onSubmit={handleSubmit}>
         <DialogHeader>
-          <DialogTitle>Department Details Information.</DialogTitle>
+          <DialogTitle className="text-md">Department Details Information.</DialogTitle>
         </DialogHeader>
         <Separator className='my-3' />
-        <div className='columns-2 mb-3'>
           <FormInput
             onCallbackInput={handleChange}
             name='departmentName'
@@ -63,12 +62,7 @@ const DepartmentAdd = () => {
             placeholder='IT, Finance, ...'
             required={true}
           />
-          <FormInput
-            label='Department Code*'
-            name='id'
-            value={`DEP-Something`}
-          />
-        </div>
+
         <FormTextArea
           onCallbackInput={handleChange}
           label='Decription'

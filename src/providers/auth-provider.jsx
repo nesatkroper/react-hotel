@@ -20,7 +20,7 @@ const AuthProvider = ({ children }) => {
   };
 
   const checkTokenExpiration = (token) => {
-    if (!token) return;
+    if (!token) return; // Skip if token is not available
 
     try {
       const payload = JSON.parse(atob(token.split(".")[1]));
