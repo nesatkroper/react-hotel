@@ -12,6 +12,7 @@ import { getRooms } from "./room-slice";
 import { getRoomtypes } from "./room-type-slice";
 import { getShifts } from "./shift-slice";
 import { getStates } from "./state-slice";
+import { getGroupMessages } from "./group-message-slice";
 
 export {
   getBanknotes,
@@ -28,4 +29,5 @@ export {
   getRoomtypes,
   getShifts,
   getStates,
+  getGroupMessages,
 };

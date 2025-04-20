@@ -58,13 +58,13 @@ const ProductAdd = () => {
   return (
     <DialogContent className='max-w-[500px]'>
       <form onSubmit={handleFormSubmit} className='flex flex-col gap-2'>
-        <DialogHeader className='mb-3'>
+        <DialogHeader className='mb-0'>
           <DialogTitle className='text-md'>
             Product Details Information
           </DialogTitle>
         </DialogHeader>
         <Separator />
-        <div className='columns-2'>
+        <div className='grid sm:grid-cols-2 gap-3'>
           <FormInput
             onCallbackInput={handleChange}
             label='Product Name*'
@@ -78,8 +78,7 @@ const ProductAdd = () => {
             optID='categoryId'
             optLabel='categoryName'
           />
-        </div>
-        <div className='columns-2'>
+
           <FormInput
             onCallbackInput={handleChange}
             label='Price*'
@@ -95,8 +94,6 @@ const ProductAdd = () => {
             placeholder='5 %'
             step={1}
           />
-        </div>
-        <div className='columns-2'>
           <FormImageResize
             onCallbackFormData={handleImageData}
             resolution={400}

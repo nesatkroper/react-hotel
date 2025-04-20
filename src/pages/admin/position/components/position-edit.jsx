@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/dialog";
 import { FormComboBox, FormInput, FormTextArea } from "@/components/app/form";
 
-const PositionUpdate = ({ items = {} }) => {
+const PositionEdit = ({ items = {} }) => {
   const dispatch = useDispatch();
   const { data: depData } = useSelector((state) => state.departments);
 
@@ -39,15 +39,15 @@ const PositionUpdate = ({ items = {} }) => {
     dispatch(getPositions({ status: "all", department: true }));
   };
   return (
-    <DialogContent>
+    <DialogContent className='max-w-[350px]'>
       <form onSubmit={handleSubmit}>
         <DialogHeader>
           <DialogTitle className='text-md'>
-            Position Details Information.
+            Position Edit Information.
           </DialogTitle>
         </DialogHeader>
         <Separator className='my-3' />
-        <div className='flex justify-between mb-3'>
+        <div className='grid gap-4'>
           <FormInput
             onCallbackInput={handleChange}
             name='positionName'
@@ -62,8 +62,7 @@ const PositionUpdate = ({ items = {} }) => {
             value={items.positionCode}
             readonly
           />
-        </div>
-        <div className='flex justify-between mb-3'>
+
           <FormComboBox
             onCallbackSelect={(val) => handleChange("departmentId", val)}
             name='departmentId'
@@ -78,7 +77,6 @@ const PositionUpdate = ({ items = {} }) => {
             onCallbackInput={handleChange}
             label='Decription'
             name='memo'
-            mainClass='w-[250px]'
             placeholder='N/A'
           />
         </div>
@@ -92,8 +90,8 @@ const PositionUpdate = ({ items = {} }) => {
   );
 };
 
-PositionUpdate.propTypes = {
+PositionEdit.propTypes = {
   items: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 };
 
-export default PositionUpdate;
+export default PositionEdit;

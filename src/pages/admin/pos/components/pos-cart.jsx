@@ -23,21 +23,21 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { getUser } from "@/contexts/reducer/user-slice";
 
-const userInfo = Cookies.get("user-info")
-  ? JSON.parse(Cookies.get("user-info"))
-  : {};
-
-const AuthID = userInfo.auth_id;
 const TaxRate = 10;
 
 const POSCart = () => {
   const dispatch = useDispatch();
+  const { usrData } = useSelector((state) => state.user);
   const { cartData } = useSelector((state) => state.cart);
 
+  // console.log(usrData);
+
   useEffect(() => {
-    if (AuthID) {
-      dispatch(getCarts({ id: AuthID }));
+    dispatch(getUser());
+    if (usrData?.AuthID) {
+      dispatch(getCarts({ id: usrData?.AuthID }));
     }
   }, [dispatch]);
 
@@ -54,7 +54,7 @@ const POSCart = () => {
           sum +
           (item.product.price *
             item.quantity *
-            (item.product.discount_rate || 0)) /
+            (item.product.discountRate || 0)) /
             100,
         0
       ) || 0;
@@ -71,33 +71,33 @@ const POSCart = () => {
     return { total, tax, discount, finalAmount };
   }, [cartData]);
 
-  const handleQuantityChange = async (cart_id, action) => {
+  const handleQuantityChange = async (cartId, action) => {
     try {
       const url =
-        action === "up" ? `/cart/inc/${cart_id}` : `/cart/dec/${cart_id}`;
+        action === "up" ? `/cart/inc/${cartId}` : `/cart/dec/${cartId}`;
       await axiosAuth.put(url);
-      dispatch(getCarts({ id: AuthID }));
+      dispatch(getCarts({ id: usrData?.AuthID }));
     } catch (error) {
       console.error(error);
     }
   };
 
   const renderCartItem = (item) => (
-    <Card key={item.cart_id} className='shadow-none rounded-md'>
+    <Card key={item.cartId} className='shadow-none rounded-md'>
       <CardContent className='p-0 flex justify-between'>
         <div className='flex gap-3'>
           <img
             src={`${apiUrl}/uploads/${item.product.picture}`}
             onError={(e) => (e.target.src = defimg)}
-            alt={item?.product.product_name}
+            alt={item?.product.productName}
             className='h-[60px] object-cover rounded-s-md'
           />
           <div className='flex flex-col justify-between py-1'>
-            <p className='text-sm'>{item.product.product_name}</p>
+            <p className='text-sm'>{item.product.productName}</p>
             <p className='text-red-700 text-sm'>
               {afterPerDollar(
                 item.product.price * item.quantity,
-                item.product.discount_rate
+                item.product.discountRate
               )}
             </p>
           </div>
@@ -107,7 +107,7 @@ const POSCart = () => {
             variant='icon'
             size='icon'
             className='h-5 w-6'
-            onClick={() => handleQuantityChange(item.cart_id, "up")}>
+            onClick={() => handleQuantityChange(item.cartId, "up")}>
             <ChevronUp className='text-green-600' />
           </Button>
           <p className='text-xs mx-2'>{toUnit(item.quantity, 0, "Pcs")}</p>
@@ -115,7 +115,7 @@ const POSCart = () => {
             variant='icon'
             size='icon'
             className='h-5 w-6'
-            onClick={() => handleQuantityChange(item.cart_id, "down")}>
+            onClick={() => handleQuantityChange(item.cartId, "down")}>
             <ChevronDown className='text-red-600' />
           </Button>
         </div>

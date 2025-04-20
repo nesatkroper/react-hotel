@@ -19,6 +19,7 @@ import cartReduce from "./cart-slice";
 import codeReduce from "./code-slice";
 import stateReduce from "./state-slice";
 import cityReduce from "./city-slice";
+import groupMessageReduce from "./group-message-slice";
 
 export default {
   user: userReduce,
@@ -42,4 +43,5 @@ export default {
   states: stateReduce,
   cities: cityReduce,
   counters: counterReduce,
+  groupmessage: groupMessageReduce,
 };

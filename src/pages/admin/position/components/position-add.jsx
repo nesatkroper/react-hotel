@@ -75,7 +75,7 @@ const PositionAdd = () => {
     }
   };
   return (
-    <DialogContent className='max-w-[500px]'>
+    <DialogContent className='max-w-[350px]'>
       <form onSubmit={handleSubmit}>
         <DialogHeader>
           <DialogTitle className='text-md'>
@@ -83,7 +83,7 @@ const PositionAdd = () => {
           </DialogTitle>
         </DialogHeader>
         <Separator className='my-3' />
-        <div className='columns-2 mb-3'>
+        <div className='grid gap-4'>
           <FormInput
             onCallbackInput={handleChange}
             name='positionName'
@@ -100,15 +100,14 @@ const PositionAdd = () => {
             optID='departmentId'
             optLabel='departmentName'
           />
+
+          <FormTextArea
+            onCallbackInput={handleChange}
+            label='Decription'
+            name='memo'
+            placeholder='N/A'
+          />
         </div>
-
-        <FormTextArea
-          onCallbackInput={handleChange}
-          label='Decription'
-          name='memo'
-          placeholder='N/A'
-        />
-
         <DialogClose asChild>
           <Button type='submit' className='w-full'>
             Submit

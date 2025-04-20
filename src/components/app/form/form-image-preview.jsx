@@ -18,6 +18,7 @@ const FormImagePreview = ({
       <img
         src={imgSrc || defimg}
         alt='picture preview'
+        crossOrigin='anonymous'
         className={`rounded-xl shadow ${imgClass}`}
       />
     </div>

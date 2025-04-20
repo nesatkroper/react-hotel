@@ -70,7 +70,7 @@ const AuthenticationAdd = () => {
   }, [dispatch]);
 
   return (
-    <DialogContent className='max-w-[500px]'>
+    <DialogContent className='max-w-[350px]'>
       <form onSubmit={handleSubmit}>
         <DialogHeader>
           <DialogTitle className='text-md'>
@@ -78,7 +78,7 @@ const AuthenticationAdd = () => {
           </DialogTitle>
         </DialogHeader>
         <Separator className='my-3' />
-        <div className='columns-2 mb-3'>
+        <div className='grid gap-3 mb-3'>
           <FormComboBox
             onCallbackSelect={(e) => handleChange("departmentId", e)}
             name='departmentId'
@@ -94,8 +94,7 @@ const AuthenticationAdd = () => {
             optID='value'
             optLabel='data'
           />
-        </div>
-        <div className='columns-2 mb-3'>
+
           <FormInput
             onCallbackInput={handleChange}
             name='email'

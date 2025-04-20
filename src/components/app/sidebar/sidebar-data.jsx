@@ -61,22 +61,7 @@ export const data = {
         },
       ],
     },
-    {
-      title: "cate",
-      url: "#",
-      icon: BookOpen,
-      isActive: true,
-      items: [
-        {
-          title: "sup",
-          url: "supplier",
-        },
-        {
-          title: "cus",
-          url: "customer",
-        },
-      ],
-    },
+
     {
       title: "human",
       url: "#",
@@ -110,6 +95,22 @@ export const data = {
       ],
     },
     {
+      title: "cate",
+      url: "#",
+      icon: BookOpen,
+      isActive: true,
+      items: [
+        {
+          title: "sup",
+          url: "supplier",
+        },
+        {
+          title: "cus",
+          url: "customer",
+        },
+      ],
+    },
+    {
       title: "setting",
       url: "#",
       icon: Settings2,
@@ -136,6 +137,11 @@ export const data = {
   ],
   projects: [
     {
+      name: "reserve",
+      url: "/reservation",
+      icon: Frame,
+    },
+    {
       name: "po",
       url: "pos",
       icon: ClipboardPen,
@@ -144,11 +150,6 @@ export const data = {
       name: "dash",
       url: "/dashboard",
       icon: PieChart,
-    },
-    {
-      name: "reserve",
-      url: "/reservation",
-      icon: Frame,
     },
   ],
 };

@@ -66,13 +66,13 @@ const EmployeeEdit = ({ item = {} }) => {
   }, [dispatch]);
 
   return (
-    <DialogContent>
+    <DialogContent className='max-w-[500px]'>
       <form onSubmit={handleFormSubmit}>
         <DialogHeader className='mb-3'>
-          <DialogTitle className='text-md'>Employee Details</DialogTitle>
+          <DialogTitle className='text-md'>Employee Edit Details</DialogTitle>
         </DialogHeader>
         <Separator />
-        <div className='flex justify-between mb-2 mt-2'>
+        <div className='grid sm:grid-cols-2 gap-3 mb-3'>
           <FormInput
             onCallbackInput={handleChange}
             label='First Name*'
@@ -87,8 +87,7 @@ const EmployeeEdit = ({ item = {} }) => {
             value={item?.lastName}
             required
           />
-        </div>
-        <div className='flex justify-between mb-2 mt-3'>
+
           <FormComboBox
             item={GENDER}
             optID='value'
@@ -103,8 +102,7 @@ const EmployeeEdit = ({ item = {} }) => {
             name='phone'
             placeholder='010280202'
           />
-        </div>
-        <div className='flex justify-between mb-2 mt-2'>
+
           <FormDatePicker
             onCallbackPicker={(event) => handleChange("dob", event)}
             label='Date of Birth*'
@@ -113,8 +111,7 @@ const EmployeeEdit = ({ item = {} }) => {
             onCallbackPicker={(event) => handleChange("hiredDate", event)}
             label='Hired Date*'
           />
-        </div>
-        <div className='flex justify-between mb-2 mt-3'>
+
           <FormComboBox
             onCallbackSelect={(event) => handleChange("departmentId", event)}
             label='Department*'
@@ -129,8 +126,7 @@ const EmployeeEdit = ({ item = {} }) => {
             optID='positionId'
             optLabel='positionName'
           />
-        </div>
-        <div className='flex justify-between mb-2 mt-2'>
+
           <FormInput
             onCallbackInput={handleChange}
             label='Salary*'

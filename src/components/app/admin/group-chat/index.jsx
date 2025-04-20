@@ -33,6 +33,7 @@ const GroupChat = ({ onClose }) => {
   const dispatch = useDispatch();
   const scrollRef = useRef(null);
   const { usrData, usrLoading } = useSelector((state) => state.user);
+  const { data: grmData } = useSelector((state) => state.groupmessage);
   const [t] = useTranslation("admin");
   const [messages, setMessages] = useState([]);
   const [msg, setMsg] = useState("");
@@ -57,6 +58,8 @@ const GroupChat = ({ onClose }) => {
       });
     }
   };
+
+  console.log(grmData);
 
   const fetchOldMessages = async () => {
     try {
@@ -117,7 +120,7 @@ const GroupChat = ({ onClose }) => {
     }
   }, [messages, isAtBottom]);
 
-  console.log(usrData);
+  // console.log(usrData);
 
   return (
     <motion.div

@@ -37,13 +37,13 @@ const DepartmentUpdate = ({ items = {} }) => {
   };
 
   return (
-    <DialogContent>
+    <DialogContent className='max-w-[350px]'>
       <form onSubmit={handleSubmit}>
         <DialogHeader>
           <DialogTitle>Department Update Information</DialogTitle>
         </DialogHeader>
         <Separator className='my-3' />
-        <div className='flex justify-between mb-3'>
+        <div className='grid gap-4'>
           <FormInput
             onCallbackInput={handleChange}
             name='departmentName'
@@ -54,14 +54,14 @@ const DepartmentUpdate = ({ items = {} }) => {
             required={true}
           />
           <FormInput label='Department Code*' value={items.departmentCode} />
+          <FormTextArea
+            onCallbackInput={handleChange}
+            label='Description'
+            name='memo'
+            placeholder='N/A'
+            value={formData.memo}
+          />
         </div>
-        <FormTextArea
-          onCallbackInput={handleChange}
-          label='Description'
-          name='memo'
-          placeholder='N/A'
-          value={formData.memo}
-        />
         <DialogClose asChild>
           <Button type='submit' className='w-full'>
             Submit
